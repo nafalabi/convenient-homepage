@@ -5,6 +5,7 @@ import { actions as homepageActions } from "./features/homepage/slice";
 import Homepage from "./features/homepage/Homepage";
 import Sidebar from "./features/sidebar/Sidebar";
 import Todo from "./features/todo/Todo";
+import Note from "./features/note/Note";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {
   ThemeProvider,
@@ -25,6 +26,7 @@ function App() {
         <Homepage />
         <Sidebar />
         <Todo />
+        <Note />
       </ThemeProvider>
     </>
   );

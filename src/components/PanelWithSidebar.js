@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Dialog,
@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
+    paddingTop: theme.spacing(2),
     overflow: "auto",
   },
 }));
@@ -50,11 +51,14 @@ const PanelWithSidebar = ({
   title,
   SidebarComponent,
   ContentComponent,
+  ToolbarItemComponent,
 }) => {
   const classes = useStyles();
+  const dialogRef = useRef(null);
 
   return (
     <Dialog
+      ref={dialogRef}
       open={open}
       onClose={toggle}
       maxWidth="lg"
@@ -67,6 +71,7 @@ const PanelWithSidebar = ({
             <Typography variant="h6" noWrap>
               {title}
             </Typography>
+            <ToolbarItemComponent dialogRef={dialogRef} />
           </Toolbar>
         </AppBar>
         <Drawer
@@ -78,7 +83,7 @@ const PanelWithSidebar = ({
         >
           <Toolbar />
           <div className={classes.drawerContainer}>
-            <SidebarComponent />
+            <SidebarComponent dialogRef={dialogRef} />
           </div>
         </Drawer>
         <Box
@@ -89,7 +94,7 @@ const PanelWithSidebar = ({
         >
           <Toolbar />
           <main className={classes.content}>
-            <ContentComponent />
+            <ContentComponent dialogRef={dialogRef} />
           </main>
         </Box>
       </div>
@@ -100,6 +105,7 @@ const PanelWithSidebar = ({
 PanelWithSidebar.defaultProps = {
   SidebarComponent: () => null,
   ContentComponent: () => null,
+  ToolbarItemComponent: () => null,
 };
 
 export default PanelWithSidebar;

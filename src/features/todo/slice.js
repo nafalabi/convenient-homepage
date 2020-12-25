@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import localstorage from "../../app/storage/localstorage/localstorage";
 
 const initialState = {
-  isOpen: true,
+  isOpen: false,
   selectedTodoId: Number(localstorage.selectedTodoId()) || 0,
 };
 
