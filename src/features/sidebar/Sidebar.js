@@ -13,14 +13,11 @@ import { Menu } from "@material-ui/icons";
 const SidebarTogglerBtn = withStyles({
   root: {
     position: "fixed",
-    top: 0,
-    left: 0,
-    backgroundColor: "rgba(255,255,255,0.95)",
-    margin: "0.5rem",
-    boxShadow:
-      "0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12)",
+    top: "0.5rem",
+    left: "1rem",
+    color: "#ffffffad",
     "&:hover": {
-      backgroundColor: "rgba(255,255,255,0.95)",
+      color: "#fff",
     },
   },
 })(IconButton);
@@ -38,7 +35,7 @@ const Sidebar = () => {
         color="inherit"
         size="small"
       >
-        <Menu />
+        <Menu fontSize="large" />
       </SidebarTogglerBtn>
       <SwipeableDrawer
         anchor="left"
