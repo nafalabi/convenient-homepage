@@ -10,6 +10,8 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import useSubscribeNoteList from "./hooks/useSubscribeNoteList";
 import { actions } from "./slice";
+import InputWithConfirmation from "../../components/InputWithConfirmation";
+import { Note } from "../../app/storage/Dexie";
 
 const Sidebar = () => {
   const noteList = useSubscribeNoteList();
@@ -17,12 +19,11 @@ const Sidebar = () => {
 
   return (
     <Box>
-      <List>
+      <List dense>
         {noteList.map((noteItem) => {
           return (
             <ListItem
               button
-              dense
               key={noteItem.noteid}
               onClick={() => dispatch(actions.selectNote(noteItem.noteid))}
             >
@@ -33,6 +34,17 @@ const Sidebar = () => {
             </ListItem>
           );
         })}
+        <ListItem>
+          <InputWithConfirmation
+            onConfirm={(value) => {
+              const newNote = new Note();
+              newNote.notename = value;
+              newNote.save();
+            }}
+            inputProps={{ style: { fontSize: 13 } }}
+            placeholder="Add New Note"
+          />
+        </ListItem>
       </List>
     </Box>
   );
