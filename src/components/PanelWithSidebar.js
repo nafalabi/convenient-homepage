@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
   dialogPaper: {
     minWidth: "800px",
-    minHeight: "80vh",
+    minHeight: `calc(100vh - ${theme.spacing(6)}px)`,
     overflow: "hidden",
   },
   appBar: {

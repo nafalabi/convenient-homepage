@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import localstorage from "../../app/storage/localstorage/localstorage";
+import localData from "../../app/storage/localData";
 
 const initialState = {
   isOpen: false,
-  selectedTodoId: Number(localstorage.selectedTodoId()) || 0,
+  selectedTodoId: Number(localData.selectedTodoId()) || 0,
 };
 
 export const slice = createSlice({
@@ -15,7 +15,7 @@ export const slice = createSlice({
     },
     selectTodo: (state, { payload: todoId }) => {
       state.selectedTodoId = todoId;
-      localstorage.selectedTodoId(todoId);
+      localData.selectedTodoId(todoId);
     },
   },
 });

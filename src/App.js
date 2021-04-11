@@ -6,6 +6,7 @@ import Homepage from "./features/homepage/Homepage";
 import Sidebar from "./features/sidebar/Sidebar";
 import Todo from "./features/todo/Todo";
 import Note from "./features/note/Note";
+import Settings from "./features/settings/Settings";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {
   ThemeProvider,
@@ -27,6 +28,7 @@ function App() {
         <Sidebar />
         <Todo />
         <Note />
+        <Settings />
       </ThemeProvider>
     </>
   );

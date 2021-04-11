@@ -3,6 +3,7 @@ import homepageReducer from "../features/homepage/slice";
 import sidebarReducer from "../features/sidebar/slice";
 import todoReducer from "../features/todo/slice";
 import noteReducer from "../features/note/slice";
+import settingsReducer from "../features/settings/slice";
 
 export default configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export default configureStore({
     sidebar: sidebarReducer,
     todo: todoReducer,
     note: noteReducer,
+    settings: settingsReducer,
   },
 });

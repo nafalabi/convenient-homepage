@@ -1,31 +1,34 @@
 import axios from "axios";
+import localData from "../../app/storage/localData";
 
 class Pixabay {
   apiUrl = "https://pixabay.com/api/?";
-  apiKey = process.env.REACT_APP_PIXABAY_API_KEY;
-  params = {
-    q: "landscape",
-    category: "background",
-    image_type: "photo",
-    per_page: "10",
-    page: "1",
-    editors_choice: "true",
-    min_width: "1920",
-  };
+
+  generateUrl() {
+    let { pixabay_apikey, ...rawParams } = localData.backgroundProvider();
+    const paramsString = Object.entries(rawParams).reduce(
+      (stream, [key, value]) => {
+        if (!key.includes("pixabay_")) return "";
+        key = key.replace("pixabay_", "");
+        if (typeof stream == "object") stream = `${stream[0]}=${stream[1]}`;
+        return encodeURI(`${stream}&${key}=${value}`);
+      }
+    );
+    const fullUrl = `${this.apiUrl}key=${pixabay_apikey}&${paramsString}`;
+    return fullUrl;
+  }
 
   async getImageBase64() {
-    const params = Object.entries(this.params).reduce((stream, [key, value]) =>
-      encodeURI(`${stream}&${key}=${value}`)
-    );
-    const res = await axios.get(`${this.apiUrl}key=${this.apiKey}${params}`);
-    const random = Math.floor(Math.random() * this.params.per_page);
+    let { pixabay_per_page } = localData.backgroundProvider();
+    const res = await axios.get(this.generateUrl());
+    const random = Math.floor(Math.random() * pixabay_per_page);
     const imageStream = await axios({
       method: "GET",
       url: res.data.hits[random].largeImageURL,
       responseType: "arraybuffer",
     });
 
-    return new Buffer(imageStream.data, "binary").toString("base64");
+    return Buffer.from(imageStream.data, "binary").toString("base64");
   }
 }
 

@@ -1,29 +1,30 @@
 import axios from "axios";
+import localData from "../../app/storage/localData";
 
 class Unsplash {
   apiUrl = "https://source.unsplash.com/";
-  minImageSize = "1600x900";
-  searchRetention = null;
-  keyword = ["nature", "landscape"];
 
   generateUrl() {
-    const retention =
-      this.searchRetention !== null ? `${this.searchRetention}/` : "";
-    const keyword = this.keyword.join(",");
-    return `${this.apiUrl}${this.minImageSize}/${retention}?${keyword}`;
+    let {
+      unsplash_keyword: keyword,
+      unsplash_dimension: dimension,
+      unsplash_search_retention: retention,
+    } = localData.backgroundProvider();
+    retention = this.search_retention ? `${this.search_retention}/` : "";
+    return `${this.apiUrl}${dimension}/${retention}?${keyword}`;
   }
 
   async getImageBase64() {
-    const retention =
-      this.searchRetention !== null ? `${this.searchRetention}/` : "";
-    const keyword = this.keyword.join(",");
     const imageStream = await axios({
       method: "GET",
-      url: `${this.apiUrl}${this.minImageSize}/${retention}?${keyword}`,
+      url: this.generateUrl(),
       responseType: "arraybuffer",
     });
 
-    return new Buffer(imageStream.data, "binary").toString("base64");
+    const base64Image = Buffer.from(imageStream.data, "binary").toString(
+      "base64"
+    );
+    return base64Image;
   }
 }
 
