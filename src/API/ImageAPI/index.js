@@ -24,10 +24,11 @@ export const ImageAPI = {
         break;
     }
 
-    const activeBackground = await db.background
+    const activeBackground = (await db.background
       .where("expireat")
       .above(Date.now() / 1000)
-      .first();
+      .reverse()
+      .sortBy("expireat"))[0];
 
     if (activeBackground) return activeBackground.content;
 

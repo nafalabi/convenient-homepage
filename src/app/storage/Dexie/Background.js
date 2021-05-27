@@ -12,6 +12,10 @@ class Background extends BackgroundSchema {
     this.backgroundid = backgroundid;
     return backgroundid;
   }
+
+  async delete() {
+    return await db.background.delete(this.backgroundid);
+  }
 }
 
 db.background.mapToClass(Background);
