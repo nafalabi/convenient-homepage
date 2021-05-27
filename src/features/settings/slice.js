@@ -6,7 +6,7 @@ export const PAGE_BACKGROUND = 1;
 export const slice = createSlice({
   name: "settings",
   initialState: {
-    isOpen: false,
+    isOpen: true,
     page: PAGE_BACKGROUND,
   },
   reducers: {
