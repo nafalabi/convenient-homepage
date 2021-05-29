@@ -3,6 +3,10 @@ import db from "./db";
 const NoteSchema = db.note.defineClass({
   noteid: Number,
   notename: String,
+  // notecontent: String, // unindexed
+  firstlevel: Boolean,
+  parentnoteid: Number,
+  expanded: Boolean, // if the note is a parent note it can be expanded
 });
 
 class Note extends NoteSchema {
