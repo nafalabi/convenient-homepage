@@ -27,9 +27,14 @@ const useStyles = makeStyles({
     bottom: 0,
     left: 0,
     right: 0,
-    padding: "4px 8px",
     borderTop: "1px solid gainsboro",
     color: "#555",
+    display: "flex",
+    flexDirection: "row-reverse",
+    "&>*": {
+      padding: "4px 12px",
+      borderLeft: "1px solid gainsboro",
+    },
   },
 });
 
@@ -95,7 +100,7 @@ const NoteEditor = ({ selectedNote }) => {
         <Divider />
       </Box>
 
-      <Box ml={1}>
+      <Box ml={1} mb={2}>
         {noteData ? (
           <Editor
             defaultValue={noteData.notecontent}
