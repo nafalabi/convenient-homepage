@@ -1,8 +1,15 @@
-import { Box, Divider, makeStyles, TextField } from "@material-ui/core";
-import React from "react";
+import {
+  Box,
+  Divider,
+  makeStyles,
+  TextField,
+  Typography,
+} from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab";
+import React, { useState } from "react";
 import Editor from "rich-markdown-editor";
 import useDebouncedCallback from "../../hooks/useDebounceCallback";
-import useSubscribeNote from "./hooks/useSubscribeNote";
+import useFetchNoteData from "./hooks/useFetchNoteData";
 
 const useStyles = makeStyles({
   "@global": {
@@ -10,12 +17,27 @@ const useStyles = makeStyles({
       // The popover of "+" button for rich markdown editor
       zIndex: 2000, // need to bring up otherwise will be blocked by the note panel/modal
     },
+    "div[offset]": {
+      // similar as the above, to bring the covered element up
+      zIndex: 2000,
+    },
+  },
+  statusBar: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: "4px 8px",
+    borderTop: "1px solid gainsboro",
+    color: "#555",
   },
 });
 
 const NoteEditor = ({ selectedNote }) => {
-  useStyles();
-  const noteData = useSubscribeNote(selectedNote);
+  const classes = useStyles();
+  const noteData = useFetchNoteData(selectedNote);
+  const [touched, setTouched] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const updateNoteName = (e) => {
     const { value } = e.target;
@@ -24,36 +46,49 @@ const NoteEditor = ({ selectedNote }) => {
     noteData.save();
   };
 
-  const updateNoteData = useDebouncedCallback((getData) => {
+  const debounceUpdateNoteData = useDebouncedCallback((getData) => {
     const data = getData();
     noteData.notecontent = data;
     noteData.save();
+    setIsSaving(false);
+  }, 500);
+
+  const updateNoteData = useDebouncedCallback((getData) => {
+    !touched && setTouched(true);
+    !isSaving && setIsSaving(true);
+    debounceUpdateNoteData(getData);
   }, 1000);
 
   return (
     <Box ml={1} onKeyDown={(e) => e.stopPropagation()}>
       <Box mb={2} ml={1}>
-        <TextField
-          fullWidth
-          label="Note Name"
-          defaultValue={noteData.notename}
-          key={noteData.notename}
-          onBlur={updateNoteName}
-          onKeyDown={(e) => {
-            e.stopPropagation();
-            switch (e.key) {
-              case "Enter":
-                updateNoteName(e);
-                break;
-              case "Escape":
-                e.target.value = noteData.notename;
-                e.target.blur();
-                break;
-              default:
-                break;
-            }
-          }}
-        />
+        {noteData ? (
+          <TextField
+            fullWidth
+            label="Note Name"
+            defaultValue={noteData?.notename}
+            key={noteData?.notename}
+            onBlur={updateNoteName}
+            onKeyDown={(e) => {
+              e.stopPropagation();
+              switch (e.key) {
+                case "Enter":
+                  updateNoteName(e);
+                  break;
+                case "Escape":
+                  e.target.value = noteData.notename;
+                  e.target.blur();
+                  break;
+                default:
+                  break;
+              }
+            }}
+          />
+        ) : (
+          <>
+            <Skeleton />
+          </>
+        )}
       </Box>
 
       <Box mb={1} ml={-4} mr={-3}>
@@ -61,21 +96,39 @@ const NoteEditor = ({ selectedNote }) => {
       </Box>
 
       <Box ml={1}>
-        <Editor
-          defaultValue={noteData.notecontent}
-          key={noteData.notecontent}
-          onChange={updateNoteData}
-          handleDOMEvents={
-            {
-              // focus: () => console.log("FOCUS"),
-              // blur: () => console.log("BLUR"),
-              // paste: () => console.log("PASTE"),
-              // touchstart: () => console.log("TOUCH START"),
+        {noteData ? (
+          <Editor
+            defaultValue={noteData.notecontent}
+            key={selectedNote}
+            onChange={updateNoteData}
+            handleDOMEvents={
+              {
+                // focus: () => console.log("FOCUS"),
+                // blur: () => console.log("BLUR"),
+                // paste: () => console.log("PASTE"),
+                // touchstart: () => console.log("TOUCH START"),
+              }
             }
-          }
-          autoFocus
-        />
+            autoFocus
+          />
+        ) : (
+          <>
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+          </>
+        )}
       </Box>
+
+      <div className={classes.statusBar}>
+        {!touched && <Typography variant="body2">Ready</Typography>}
+        {touched && isSaving && (
+          <Typography variant="body2">Saving...</Typography>
+        )}
+        {touched && !isSaving && (
+          <Typography variant="body2">Changes saved</Typography>
+        )}
+      </div>
     </Box>
   );
 };

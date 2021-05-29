@@ -91,6 +91,7 @@ const PanelWithSidebar = ({
           display="flex"
           flexDirection="column"
           overflow="hidden"
+          position="relative"
         >
           <Toolbar />
           <main className={classes.content}>
