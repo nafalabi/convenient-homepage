@@ -12,11 +12,9 @@ import NoteTreeListItem from "./NoteTreeListItem";
 import NoteTreeListActionMenu from "./NoteTreeListActionMenu";
 
 const Sidebar = () => {
-  const treeListRefreshReference = useSelector(
-    selectors.treeListRefreshReference
-  );
+  const treeListRefreshRef = useSelector(selectors.treeListRefreshRef);
   const [expandedNoteIds, setExpandedNoteIds] = useFetchExpandedNoteIds();
-  const noteList = useFetchNoteList(treeListRefreshReference);
+  const noteList = useFetchNoteList(treeListRefreshRef);
   const dispatch = useDispatch();
 
   const toggleExpandNode = (e, ids) => {
@@ -30,7 +28,7 @@ const Sidebar = () => {
       db.note.update(parseInt(idToBeShrinked), { expanded: 0 });
     }
     setExpandedNoteIds(ids);
-    dispatch(actions.refreshTreeList());
+    setTimeout(() => dispatch(actions.refreshTreeList()), 500);
   };
 
   const mapList = (arrayList) => {

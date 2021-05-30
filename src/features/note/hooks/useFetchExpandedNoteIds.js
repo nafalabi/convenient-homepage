@@ -7,7 +7,7 @@ const useFetchExpandedNoteIds = () => {
     db.note
       .where("expanded")
       .equals(1)
-      .keys()
+      .primaryKeys()
       .then((result) => setExpandedNoteIds(result.map((a) => String(a))));
   }, []);
 

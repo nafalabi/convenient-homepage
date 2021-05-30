@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isOpen: true,
   selectedNote: 0,
-  treeListRefreshReference: 0,
+  treeListRefreshRef: 0,
   noteIdOfOpenedActionMenu: 0,
 };
 
@@ -18,7 +18,7 @@ const slice = createSlice({
       state.selectedNote = noteId;
     },
     refreshTreeList: (state) => {
-      state.treeListRefreshReference = Math.random();
+      state.treeListRefreshRef = Math.random();
     },
     openNoteListActionMenu: (state, { payload: noteid }) => {
       state.noteIdOfOpenedActionMenu = noteid;
@@ -34,7 +34,7 @@ export const actions = { ...slice.actions };
 export const selectors = {
   isOpen: ({ note }) => note.isOpen,
   selectedNote: ({ note }) => note.selectedNote,
-  treeListRefreshReference: ({ note }) => note.treeListRefreshReference,
+  treeListRefreshRef: ({ note }) => note.treeListRefreshRef,
   noteIdOfOpenedActionMenu: ({ note }) => note.noteIdOfOpenedActionMenu,
 };
 
