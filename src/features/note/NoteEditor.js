@@ -7,9 +7,11 @@ import {
 } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import Editor from "rich-markdown-editor";
 import useDebouncedCallback from "../../hooks/useDebounceCallback";
 import useFetchNoteData from "./hooks/useFetchNoteData";
+import { actions } from "./slice";
 
 const useStyles = makeStyles({
   "@global": {
@@ -39,6 +41,7 @@ const useStyles = makeStyles({
 });
 
 const NoteEditor = ({ selectedNote }) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const noteData = useFetchNoteData(selectedNote);
   const [touched, setTouched] = useState(false);
@@ -48,7 +51,14 @@ const NoteEditor = ({ selectedNote }) => {
     const { value } = e.target;
     if (!value) return;
     noteData.notename = value;
-    noteData.save();
+    noteData
+      .save()
+      .catch((e) => {
+        console.log(e);
+      })
+      .then((a) => {
+        dispatch(actions.refreshTreeList());
+      });
   };
 
   const debounceUpdateNoteData = useDebouncedCallback((getData) => {
