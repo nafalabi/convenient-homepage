@@ -1,5 +1,5 @@
-import { Box, LinearProgress } from "@material-ui/core";
-import { ChevronRight, ExpandMore, Notes } from "@material-ui/icons";
+import { Box, IconButton, LinearProgress } from "@material-ui/core";
+import { ChevronRight, ExpandMore, MoreVert, Notes } from "@material-ui/icons";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useFetchNoteList from "./hooks/useFetchNoteList";
@@ -9,6 +9,7 @@ import { db, Note } from "../../app/storage/Dexie";
 import { TreeView } from "@material-ui/lab";
 import useFetchExpandedNoteIds from "./hooks/useFetchExpandedNoteIds";
 import NoteTreeListItem from "./NoteTreeListItem";
+import NoteTreeListActionMenu from "./NoteTreeListActionMenu";
 
 const Sidebar = () => {
   const treeListRefreshReference = useSelector(
@@ -23,14 +24,10 @@ const Sidebar = () => {
     const idToBeExpanded = ids.find((id) => !expandedNoteIds.includes(id));
     const idToBeShrinked = expandedNoteIds.find((id) => !ids.includes(id));
     if (idToBeExpanded) {
-      db.note
-        .update(parseInt(idToBeExpanded), { expanded: 1 })
-        .then((a) => console.log(a));
+      db.note.update(parseInt(idToBeExpanded), { expanded: 1 });
     }
     if (idToBeShrinked) {
-      db.note
-        .update(parseInt(idToBeShrinked), { expanded: 0 })
-        .then((a) => console.log(a));
+      db.note.update(parseInt(idToBeShrinked), { expanded: 0 });
     }
     setExpandedNoteIds(ids);
     dispatch(actions.refreshTreeList());
@@ -38,6 +35,19 @@ const Sidebar = () => {
 
   const mapList = (arrayList) => {
     return arrayList.map((note) => {
+      const ActionButton = () => (
+        <IconButton
+          size="small"
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatch(actions.openNoteListActionMenu(note.noteid));
+          }}
+          id={"list-action-" + note.noteid}
+        >
+          <MoreVert />
+        </IconButton>
+      );
+
       if (note.totalChildren > 0) {
         return (
           <NoteTreeListItem
@@ -45,25 +55,28 @@ const Sidebar = () => {
             nodeId={String(note.noteid)}
             labelText={note.notename}
             labelIcon={Notes}
+            ActionButton={<ActionButton />}
           >
             {note.children && mapList(note.children)}
             {!note.expanded && <LinearProgress />}
           </NoteTreeListItem>
         );
       }
+
       return (
         <NoteTreeListItem
           key={note.noteid}
           nodeId={String(note.noteid)}
           labelText={note.notename}
           labelIcon={Notes}
+          ActionButton={<ActionButton />}
         />
       );
     });
   };
 
   return (
-    <Box>
+    <Box pb={4}>
       <TreeView
         defaultCollapseIcon={<ExpandMore />}
         defaultExpandIcon={<ChevronRight />}
@@ -92,6 +105,8 @@ const Sidebar = () => {
           />
         </Box>
       </TreeView>
+
+      <NoteTreeListActionMenu />
     </Box>
   );
 };

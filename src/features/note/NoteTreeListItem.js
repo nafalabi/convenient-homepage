@@ -44,6 +44,9 @@ const useTreeItemStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     padding: theme.spacing(0.5, 0),
+    "&:hover $actionButton": {
+      opacity: 1,
+    },
   },
   labelIcon: {
     marginRight: theme.spacing(1),
@@ -52,6 +55,9 @@ const useTreeItemStyles = makeStyles((theme) => ({
     fontWeight: "inherit",
     flexGrow: 1,
   },
+  actionButton: {
+    opacity: 0,
+  },
 }));
 
 function NoteTreeListItem(props) {
@@ -59,7 +65,7 @@ function NoteTreeListItem(props) {
   const {
     labelText,
     labelIcon: LabelIcon,
-    labelInfo,
+    ActionButton,
     color,
     bgColor,
     ...other
@@ -73,9 +79,7 @@ function NoteTreeListItem(props) {
           <Typography variant="body2" className={classes.labelText}>
             {labelText}
           </Typography>
-          <Typography variant="caption" color="inherit">
-            {labelInfo}
-          </Typography>
+          <div className={classes.actionButton}>{ActionButton}</div>
         </div>
       }
       style={{
@@ -99,8 +103,8 @@ NoteTreeListItem.propTypes = {
   bgColor: PropTypes.string,
   color: PropTypes.string,
   labelIcon: PropTypes.elementType.isRequired,
-  labelInfo: PropTypes.string,
   labelText: PropTypes.string.isRequired,
+  ActionButton: PropTypes.any,
 };
 
 export default NoteTreeListItem;
