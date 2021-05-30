@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, fade } from "@material-ui/core/styles";
 import TreeItem from "@material-ui/lab/TreeItem";
 import Typography from "@material-ui/core/Typography";
 
@@ -8,10 +8,10 @@ const useTreeItemStyles = makeStyles((theme) => ({
   root: {
     color: theme.palette.text.primary,
     "&:hover > $content": {
-      backgroundColor: theme.palette.action.hover,
+      // backgroundColor: theme.palette.action.hover,
     },
     "&:focus > $content, &$selected > $content": {
-      backgroundColor: `var(--tree-view-bg-color, ${theme.palette.grey[400]})`,
+      // backgroundColor: `var(--tree-view-bg-color, ${theme.palette.grey[400]})`,
       color: "var(--tree-view-color)",
     },
     "&:focus > $content $label, &:hover > $content $label, &$selected > $content $label":
@@ -29,10 +29,9 @@ const useTreeItemStyles = makeStyles((theme) => ({
     },
   },
   group: {
-    marginLeft: 0,
-    "& $content": {
-      paddingLeft: theme.spacing(2),
-    },
+    marginLeft: 14,
+    paddingLeft: 0,
+    borderLeft: `1px dashed ${fade(theme.palette.text.primary, 0.4)}`,
   },
   expanded: {},
   selected: {},
