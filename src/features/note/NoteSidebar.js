@@ -13,6 +13,7 @@ import NoteTreeListActionMenu from "./NoteTreeListActionMenu";
 
 const Sidebar = () => {
   const treeListRefreshRef = useSelector(selectors.treeListRefreshRef);
+  const selectedNote = useSelector(selectors.selectedNote);
   const [expandedNoteIds, setExpandedNoteIds] = useFetchExpandedNoteIds();
   const noteList = useFetchNoteList(treeListRefreshRef);
   const dispatch = useDispatch();
@@ -79,6 +80,7 @@ const Sidebar = () => {
         defaultCollapseIcon={<ExpandMore />}
         defaultExpandIcon={<ChevronRight />}
         expanded={expandedNoteIds}
+        selected={String(selectedNote)}
         onNodeToggle={toggleExpandNode}
         onNodeSelect={(e, id) => dispatch(actions.selectNote(parseInt(id)))}
       >

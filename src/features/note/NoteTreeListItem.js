@@ -11,7 +11,7 @@ const useTreeItemStyles = makeStyles((theme) => ({
       // backgroundColor: theme.palette.action.hover,
     },
     "&:focus > $content, &$selected > $content": {
-      // backgroundColor: `var(--tree-view-bg-color, ${theme.palette.grey[400]})`,
+      backgroundColor: `var(--tree-view-bg-color, ${theme.palette.grey[100]})`,
       color: "var(--tree-view-color)",
     },
     "&:focus > $content $label, &:hover > $content $label, &$selected > $content $label":
