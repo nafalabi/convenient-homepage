@@ -65,6 +65,7 @@ const PanelWithSidebar = ({
       maxWidth="lg"
       fullWidth={true}
       classes={{ paper: classes.dialogPaper }}
+      disableEnforceFocus={true}
     >
       <div className={classes.root}>
         <AppBar position="absolute" className={classes.appBar}>

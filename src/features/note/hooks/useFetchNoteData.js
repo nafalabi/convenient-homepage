@@ -8,7 +8,9 @@ const useFetchNoteData = (noteid) => {
     db.note
       .where({ noteid })
       .first()
-      .then((data) => setNoteData(data));
+      .then((data) => {
+        setNoteData(data);
+      });
   }, [noteid, setNoteData]);
 
   return noteData;

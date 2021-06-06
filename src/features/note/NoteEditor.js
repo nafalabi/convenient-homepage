@@ -6,12 +6,11 @@ import {
   Typography,
 } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
 import Editor from "rich-markdown-editor";
-import useDebouncedCallback from "../../hooks/useDebounceCallback";
 import useFetchNoteData from "./hooks/useFetchNoteData";
-import { actions } from "./slice";
+import useNoteActions from "./hooks/useNoteActions";
+import NoteCouldntLoad from "./NoteCouldntLoad";
 
 const useStyles = makeStyles({
   "@global": {
@@ -41,38 +40,20 @@ const useStyles = makeStyles({
 });
 
 const NoteEditor = ({ selectedNote }) => {
-  const dispatch = useDispatch();
   const classes = useStyles();
   const noteData = useFetchNoteData(selectedNote);
-  const [touched, setTouched] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
+  const {
+    updateNoteName,
+    updateNoteData,
+    onSearchLink,
+    addSubNote,
+    uploadImage,
+    touched,
+    isSaving,
+    onClickLink,
+  } = useNoteActions(noteData);
 
-  const updateNoteName = (e) => {
-    const { value } = e.target;
-    if (!value) return;
-    noteData.notename = value;
-    noteData
-      .save()
-      .catch((e) => {
-        console.log(e);
-      })
-      .then((a) => {
-        dispatch(actions.refreshTreeList());
-      });
-  };
-
-  const debounceUpdateNoteData = useDebouncedCallback((getData) => {
-    const data = getData();
-    noteData.notecontent = data;
-    noteData.save();
-    setIsSaving(false);
-  }, 500);
-
-  const updateNoteData = useDebouncedCallback((getData) => {
-    !touched && setTouched(true);
-    !isSaving && setIsSaving(true);
-    debounceUpdateNoteData(getData);
-  }, 1000);
+  if (noteData === undefined) return <NoteCouldntLoad />;
 
   return (
     <Box ml={1} onKeyDown={(e) => e.stopPropagation()}>
@@ -113,17 +94,14 @@ const NoteEditor = ({ selectedNote }) => {
       <Box ml={1} mb={2}>
         {noteData ? (
           <Editor
+            // readOnly={true}
             defaultValue={noteData.notecontent}
             key={selectedNote}
             onChange={updateNoteData}
-            handleDOMEvents={
-              {
-                // focus: () => console.log("FOCUS"),
-                // blur: () => console.log("BLUR"),
-                // paste: () => console.log("PASTE"),
-                // touchstart: () => console.log("TOUCH START"),
-              }
-            }
+            onSearchLink={onSearchLink}
+            onCreateLink={addSubNote}
+            onClickLink={onClickLink}
+            uploadImage={uploadImage}
             autoFocus
           />
         ) : (

@@ -21,14 +21,17 @@ export const ImageAPI = {
         ApiProvider = new Unsplash();
         break;
       default:
+        ApiProvider = new Unsplash();
         break;
     }
 
-    const activeBackground = (await db.background
-      .where("expireat")
-      .above(Date.now() / 1000)
-      .reverse()
-      .sortBy("expireat"))[0];
+    const activeBackground = (
+      await db.background
+        .where("expireat")
+        .above(Date.now() / 1000)
+        .reverse()
+        .sortBy("expireat")
+    )[0];
 
     if (activeBackground) return activeBackground.content;
 
