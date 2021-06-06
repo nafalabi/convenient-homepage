@@ -117,7 +117,7 @@ const useNoteActions = (noteData) => {
 
   const onClickLink = useCallback(
     async (href) => {
-      const match = href.match(/:\/\/.*?\/note\?id=(\d+)/);
+      const match = href.match(/\/note\?id=(\d+)/);
       if (match) {
         const noteid = parseInt(match[1]);
         dispatch(actions.selectNote(noteid));
