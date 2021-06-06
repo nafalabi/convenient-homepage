@@ -53,7 +53,7 @@ const NoteHome = () => {
       <Box mt={2}>
         <Grid container spacing={2}>
           {noteList.map((note) => (
-            <Grid item>
+            <Grid item key={note.noteid}>
               <Box clone width="100px" p={1} textAlign="center" display="block">
                 <Paper
                   component={Button}
