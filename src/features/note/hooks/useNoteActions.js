@@ -121,6 +121,8 @@ const useNoteActions = (noteData) => {
       if (match) {
         const noteid = parseInt(match[1]);
         dispatch(actions.selectNote(noteid));
+      } else {
+        window.open(href, "_blank").focus();
       }
     },
     [dispatch]
