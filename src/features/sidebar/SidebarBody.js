@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { actions as sidebarActions } from "./slice";
 import { actions as todoActions } from "../todo/slice";
 import { actions as noteActions } from "../note/slice";
+import { actions as bookmarkActions } from "../bookmark/slice";
 import { actions as settingsActions } from "../settings/slice";
 import {
   List,
@@ -12,7 +13,7 @@ import {
   styled,
 } from "@material-ui/core";
 import ListIcon from "@material-ui/icons/List";
-import { Notes, Search, Settings } from "@material-ui/icons";
+import { Notes, Search, Settings, Bookmark } from "@material-ui/icons";
 import InputWithConfirmation from "../../components/InputWithConfirmation";
 
 const SidebarBodyRoot = styled("div")({
@@ -29,11 +30,15 @@ const SidebarBody = ({ ...props }) => {
         onClick: () => dispatch(todoActions.toggleTodo()),
       },
       {
-        label: "Note",
+        label: "Notes",
         icon: <Notes />,
         onClick: () => dispatch(noteActions.toggleNote()),
       },
       {
+        label: "Bookmarks",
+        icon: <Bookmark />,
+        onClick: () => dispatch(bookmarkActions.toggleBookmark()),
+      },      {
         label: "Settings",
         icon: <Settings />,
         onClick: () => dispatch(settingsActions.toggleSettings()),

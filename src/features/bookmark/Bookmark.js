@@ -14,7 +14,7 @@ const Bookmark = () => {
   return (
     <PanelWithSidebar
       open={isOpen}
-      toggle={() => dispatch(actions.toggleNote())}
+      toggle={() => dispatch(actions.toggleBookmark())}
       title="Bookmarks"
       ToolbarItemComponent={({ dialogRef }) => (
         <Box marginLeft="auto">
