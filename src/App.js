@@ -12,6 +12,7 @@ import {
   ThemeProvider,
   unstable_createMuiStrictModeTheme,
 } from "@material-ui/core";
+import Bookmark from "./features/bookmark/Bookmark";
 
 ImageAPI.getImageBase64().then((imageURI) => {
   store.dispatch(homepageActions.loadImage(imageURI));
@@ -28,6 +29,7 @@ function App() {
         <Sidebar />
         <Todo />
         <Note />
+        <Bookmark />
         <Settings />
       </ThemeProvider>
     </>
