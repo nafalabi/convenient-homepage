@@ -20,6 +20,7 @@ ImageAPI.getImageBase64().then((imageURI) => {
 const theme = unstable_createMuiStrictModeTheme();
 
 function App() {
+  console.log("app")
   return (
     <>
       <ThemeProvider theme={theme}>
