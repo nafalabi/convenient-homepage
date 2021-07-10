@@ -28,8 +28,11 @@ const useBookmarksActions = (nodeId = null) => {
     [nodeId]
   );
   const editBookmark = useCallback(
-    async (title, url) => await chrome.bookmarks.update(nodeId, { title, url }),
-    [nodeId]
+    async (title, url) => {
+      await chrome.bookmarks.update(nodeId, { title, url });
+      setBookmarkDetail({ ...bookmarkDetail, title, url });
+    },
+    [nodeId, setBookmarkDetail, bookmarkDetail]
   );
   const deleteBookmark = useCallback(
     async () => chrome.bookmarks.remove(nodeId),

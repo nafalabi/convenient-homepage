@@ -13,24 +13,29 @@ import {
   unstable_createMuiStrictModeTheme,
 } from "@material-ui/core";
 import Bookmark from "./features/bookmark/Bookmark";
+import { GlobalDialogProvider } from "./components/GlobalDialog";
 
 ImageAPI.getImageBase64().then((imageURI) => {
   store.dispatch(homepageActions.loadImage(imageURI));
 });
 
-const theme = unstable_createMuiStrictModeTheme();
+const theme = unstable_createMuiStrictModeTheme({
+  typography: { button: { textTransform: "none" } },
+});
 
 function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Homepage />
-        <Sidebar />
-        <Todo />
-        <Note />
-        <Bookmark />
-        <Settings />
+        <GlobalDialogProvider>
+          <CssBaseline />
+          <Homepage />
+          <Sidebar />
+          <Todo />
+          <Note />
+          <Bookmark />
+          <Settings />
+        </GlobalDialogProvider>
       </ThemeProvider>
     </>
   );

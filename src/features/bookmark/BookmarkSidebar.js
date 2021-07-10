@@ -7,7 +7,7 @@ import useSubscribeBookmarks from "./hooks/useSubscribeBookmarks";
 import { useSelector } from "react-redux";
 import { selectors } from "./slice";
 import useSidebarContextMenu from "./hooks/useSidebarContextMenu";
-import SidebarPopupMenu from "./SidebarPopupMenu";
+import SidebarContextMenu from "./SidebarContextMenu";
 
 const BookmarkSidebar = () => {
   const bookmarks = useSubscribeBookmarks();
@@ -56,7 +56,7 @@ const BookmarkSidebar = () => {
       >
         {mapItem(bookmarks)}
       </TreeView>
-      <SidebarPopupMenu
+      <SidebarContextMenu
         handleClose={handleClose}
         clickPosition={clickPosition}
         clickedNodeId={clickedNodeId}
