@@ -1,4 +1,4 @@
-import { Box, Menu, MenuItem, Paper } from "@material-ui/core";
+import { Menu, MenuItem } from "@material-ui/core";
 import React, { useContext, useState } from "react";
 import useBookmarksActions from "./hooks/useBookmarksActions";
 import {
@@ -65,9 +65,27 @@ const SidebarContextMenu = ({ clickPosition, handleClose, clickedNodeId }) => {
             bookmarkDetail={bookmarkDetail}
           />
         )}
-        {openedDialog === 1 && <DialogDeleteBookmark />}
-        {openedDialog === 2 && <DialogAddBookmark />}
-        {openedDialog === 3 && <DialogAddBookmarkFolder />}
+        {openedDialog === 1 && (
+          <DialogDeleteBookmark
+            action={deleteBookmark}
+            handleClose={handleCloseDialog}
+            bookmarkDetail={bookmarkDetail}
+          />
+        )}
+        {openedDialog === 2 && (
+          <DialogAddBookmark
+            action={createBookmark}
+            handleClose={handleCloseDialog}
+            bookmarkDetail={bookmarkDetail}
+          />
+        )}
+        {openedDialog === 3 && (
+          <DialogAddBookmarkFolder
+            action={createFolder}
+            handleClose={handleCloseDialog}
+            bookmarkDetail={bookmarkDetail}
+          />
+        )}
       </GlobalDialog>
     </>
   );
