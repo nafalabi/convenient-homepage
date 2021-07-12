@@ -76,14 +76,12 @@ const SidebarContextMenu = ({ clickPosition, handleClose, clickedNodeId }) => {
           <DialogAddBookmark
             action={createBookmark}
             handleClose={handleCloseDialog}
-            bookmarkDetail={bookmarkDetail}
           />
         )}
         {openedDialog === 3 && (
           <DialogAddBookmarkFolder
             action={createFolder}
             handleClose={handleCloseDialog}
-            bookmarkDetail={bookmarkDetail}
           />
         )}
       </GlobalDialog>

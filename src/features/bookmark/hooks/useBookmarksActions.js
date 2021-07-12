@@ -35,7 +35,7 @@ const useBookmarksActions = (nodeId = null) => {
     [nodeId, setBookmarkDetail, bookmarkDetail]
   );
   const deleteBookmark = useCallback(
-    async () => chrome.bookmarks.remove(nodeId),
+    async () => chrome.bookmarks.removeTree(nodeId),
     [nodeId]
   );
 

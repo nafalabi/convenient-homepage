@@ -9,8 +9,6 @@ import {
 import { Bookmark } from "@material-ui/icons";
 
 const DialogDeleteBookmark = ({ action, handleClose, bookmarkDetail }) => {
-  console.log("asd", bookmarkDetail);
-
   const bookmarkDomain = bookmarkDetail.url
     ? new URL(bookmarkDetail.url).hostname
     : "";
