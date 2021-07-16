@@ -20,7 +20,7 @@ const BookmarkMain = () => {
   return (
     <div>
       {parseInt(id) === 0 && <HomeGreetings />}
-      <Grid container spacing={2} justifyContent="center">
+      <Grid container spacing={2} justifyContent="flex-start">
         {bookmarks.map((bookmark) => {
           const bookmarkDomain = bookmark.url
             ? new URL(bookmark.url).hostname

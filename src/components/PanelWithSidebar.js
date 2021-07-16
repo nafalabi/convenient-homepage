@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Dialog,
@@ -7,9 +7,13 @@ import {
   Toolbar,
   Typography,
   Box,
+  Divider,
 } from "@material-ui/core";
+import { useCallback } from "react";
+import useDebouncedCallback from "../hooks/useDebounceCallback";
 
-const drawerWidth = 240;
+const MIN_WIDTH = 240;
+const MAX_WIDTH = 600;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,12 +31,13 @@ const useStyles = makeStyles((theme) => ({
     zIndex: theme.zIndex.drawer + 1,
   },
   drawer: {
-    width: drawerWidth,
+    width: MIN_WIDTH,
     flexShrink: 0,
   },
   drawerPaper: {
     position: "absolute",
-    width: drawerWidth,
+    width: MIN_WIDTH,
+    border: "none",
   },
   drawerContainer: {
     overflow: "auto",
@@ -56,6 +61,74 @@ const PanelWithSidebar = ({
 }) => {
   const classes = useStyles();
   const dialogRef = useRef(null);
+  const drawerRef = useRef(null);
+
+  const [dragging, setDragging] = useState(false);
+
+  const onTouchStart = (e) => {
+    setDragging(true);
+  };
+
+  const onMove = useCallback(
+    useDebouncedCallback((clientX) => {
+      if (!drawerRef.current) return;
+      const drawerWidth = drawerRef.current.clientWidth;
+
+      if (dragging && drawerWidth) {
+        const leftBound = drawerRef.current.getBoundingClientRect().x;
+        let newDrawerWidth = clientX - leftBound;
+
+        if (newDrawerWidth < MIN_WIDTH) {
+          newDrawerWidth = MIN_WIDTH;
+        }
+
+        if (newDrawerWidth > MAX_WIDTH) {
+          newDrawerWidth = MAX_WIDTH;
+        }
+
+        const drawerEl = drawerRef.current;
+        const drawerBodyEl = drawerRef.current.children[0];
+        drawerEl.style["width"] = `${newDrawerWidth}px`;
+        drawerBodyEl.style["width"] = `${newDrawerWidth}px`;
+      }
+    }, 10),
+    [dragging]
+  );
+
+  const onMouseMove = useCallback(
+    (e) => {
+      if (dragging) e.preventDefault();
+      onMove(e.clientX);
+    },
+    [onMove, dragging]
+  );
+
+  const onTouchMove = useCallback(
+    (e) => {
+      onMove(e.touches[0].clientX);
+    },
+    [onMove]
+  );
+
+  const onMouseUp = useCallback(() => {
+    setDragging(false);
+  }, [setDragging]);
+
+  const onMouseDown = (e) => {
+    setDragging(true);
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("touchmove", onTouchMove);
+    document.addEventListener("mouseup", onMouseUp);
+
+    return () => {
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("touchmove", onTouchMove);
+      document.removeEventListener("mouseup", onMouseUp);
+    };
+  }, [onMouseMove, onTouchMove, onMouseUp]);
 
   return (
     <Dialog
@@ -76,18 +149,30 @@ const PanelWithSidebar = ({
             <ToolbarItemComponent dialogRef={dialogRef} />
           </Toolbar>
         </AppBar>
-        <Drawer
-          className={classes.drawer}
-          variant="permanent"
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-        >
-          <Toolbar />
-          <div className={classes.drawerContainer}>
-            <SidebarComponent dialogRef={dialogRef} />
-          </div>
-        </Drawer>
+        <Box display="flex">
+          <Drawer
+            ref={drawerRef}
+            className={classes.drawer}
+            variant="permanent"
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+          >
+            <Toolbar />
+            <div className={classes.drawerContainer}>
+              <SidebarComponent dialogRef={dialogRef} />
+            </div>
+          </Drawer>
+          <Box
+            pl={1}
+            style={{ cursor: "w-resize" }}
+            onMouseDown={onMouseDown}
+            onTouchStart={onTouchStart}
+            onTouchEnd={onMouseUp}
+          >
+            <Divider orientation="vertical" />
+          </Box>
+        </Box>
         <Box
           flexGrow={1}
           display="flex"
