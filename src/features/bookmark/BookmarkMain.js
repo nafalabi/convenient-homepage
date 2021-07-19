@@ -34,6 +34,7 @@ const BookmarkMain = () => {
           ) : (
             <Bookmark fontSize="large" />
           );
+          const isFolder = bookmark.url === undefined;
 
           return (
             <Grid item key={bookmark.id}>
@@ -41,7 +42,9 @@ const BookmarkMain = () => {
                 <Paper
                   component={Button}
                   onClick={() => {
-                    dispatch(actions.selectBookmark(bookmark.id));
+                    if (isFolder) {
+                      dispatch(actions.selectBookmark(bookmark.id));
+                    }
                   }}
                 >
                   <Tooltip title={bookmark.title}>

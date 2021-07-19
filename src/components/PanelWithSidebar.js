@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import {
   Dialog,
   Drawer,
@@ -29,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
+  },
+  title: {
+    width: MIN_WIDTH - theme.spacing(2),
   },
   drawer: {
     width: MIN_WIDTH,
@@ -60,8 +63,10 @@ const PanelWithSidebar = ({
   ToolbarItemComponent,
 }) => {
   const classes = useStyles();
+  const theme = useTheme();
   const dialogRef = useRef(null);
   const drawerRef = useRef(null);
+  const titleRef = useRef(null);
 
   const [dragging, setDragging] = useState(false);
 
@@ -86,10 +91,14 @@ const PanelWithSidebar = ({
           newDrawerWidth = MAX_WIDTH;
         }
 
+        // Set Drawer Width
         const drawerEl = drawerRef.current;
         const drawerBodyEl = drawerRef.current.children[0];
         drawerEl.style["width"] = `${newDrawerWidth}px`;
         drawerBodyEl.style["width"] = `${newDrawerWidth}px`;
+        // Set title width
+        const titleEl = titleRef.current;
+        titleEl.style["width"] = `${newDrawerWidth - theme.spacing(2)}px`;
       }
     }, 10),
     [dragging]
@@ -143,7 +152,12 @@ const PanelWithSidebar = ({
       <div className={classes.root}>
         <AppBar position="absolute" className={classes.appBar}>
           <Toolbar>
-            <Typography variant="h6" noWrap>
+            <Typography
+              variant="h6"
+              ref={titleRef}
+              className={classes.title}
+              noWrap
+            >
               {title}
             </Typography>
             <ToolbarItemComponent dialogRef={dialogRef} />
