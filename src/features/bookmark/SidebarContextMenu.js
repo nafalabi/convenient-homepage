@@ -9,8 +9,11 @@ import DialogEditBookmark from "./dialogs/edit";
 import DialogDeleteBookmark from "./dialogs/delete";
 import DialogAddBookmark from "./dialogs/addBookmark";
 import DialogAddBookmarkFolder from "./dialogs/addFolder";
+import { useDispatch } from "react-redux";
+import { actions } from "./slice";
 
 const SidebarContextMenu = ({ clickPosition, handleClose, clickedNodeId }) => {
+  const dispatch = useDispatch();
   const {
     bookmarkDetail,
     createFolder,
@@ -26,6 +29,10 @@ const SidebarContextMenu = ({ clickPosition, handleClose, clickedNodeId }) => {
     setDialogOpen(true);
   };
   const handleCloseDialog = () => setDialogOpen(false);
+  const deleteBookmarkSafely = async () => {
+    await dispatch(actions.selectBookmark(bookmarkDetail.parentId));
+    await deleteBookmark();
+  }
 
   return (
     <>
@@ -67,7 +74,7 @@ const SidebarContextMenu = ({ clickPosition, handleClose, clickedNodeId }) => {
         )}
         {openedDialog === 1 && (
           <DialogDeleteBookmark
-            action={deleteBookmark}
+            action={deleteBookmarkSafely}
             handleClose={handleCloseDialog}
             bookmarkDetail={bookmarkDetail}
           />
