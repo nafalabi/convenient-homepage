@@ -5,6 +5,9 @@ const initialState = {
   isOpen: true,
   selectedBookmark: 0,
   folderStack: [],
+  layout: {
+    mode: "list", // possible values - grid, list
+  },
 };
 
 const slice = createSlice({
@@ -23,11 +26,15 @@ const slice = createSlice({
     replaceFolderStack: (state, { payload: newStack }) => {
       state.folderStack = newStack;
     },
+    changeLayoutMode: (state, { payload: layoutMode }) => {
+      state.layout.mode = layoutMode;
+    },
   },
 });
 
 export const actions = {
   ...slice.actions,
+
   selectBookmark: (id) => async (dispatch) => {
     const newFolderStack = [];
 
@@ -50,6 +57,7 @@ export const selectors = {
   isOpen: ({ bookmark }) => bookmark.isOpen,
   selectedBookmark: ({ bookmark }) => bookmark.selectedBookmark,
   folderStack: ({ bookmark }) => bookmark.folderStack,
+  layoutMode: ({ bookmark }) => bookmark.layout.mode,
 };
 
 export default slice.reducer;

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "./slice";
 import PanelWithSidebar from "../../components/PanelWithSidebar";
 import BookmarkSidebar from "./sidebar/BookmarkSidebar";
-import BookmarkMain from "./BookmarkMain";
+import BookmarkMain from "./main/BookmarkMain";
 import BookmarkBreadcrumb from "./BookmarkBreadcrumb";
 
 const Bookmark = () => {
