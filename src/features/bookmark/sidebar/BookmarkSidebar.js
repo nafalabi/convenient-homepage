@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "@material-ui/core";
-import { ExpandMore, ChevronRight, Bookmark } from "@material-ui/icons";
+import { ExpandMore, ChevronRight, Folder } from "@material-ui/icons";
 import { TreeView } from "@material-ui/lab";
 import BookmarkTreeListItem from "./BookmarkTreeListItem";
 import useSubscribeBookmarks from "../hooks/useSubscribeBookmarks";
@@ -26,7 +26,7 @@ const BookmarkSidebar = () => {
           key: bookmark.id,
           nodeId: String(bookmark.id),
           labelText: bookmark.title,
-          labelIcon: <Bookmark />,
+          labelIcon: <Folder />,
           ActionButton: null,
         };
 

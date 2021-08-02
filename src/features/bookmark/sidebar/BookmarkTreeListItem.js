@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { makeStyles, fade } from "@material-ui/core/styles";
+import { makeStyles, fade, useTheme } from "@material-ui/core/styles";
 import TreeItem from "@material-ui/lab/TreeItem";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
@@ -64,6 +64,7 @@ const useTreeItemStyles = makeStyles((theme) => ({
 
 function BookmarkTreeListItem(props) {
   const classes = useTreeItemStyles();
+  const theme = useTheme();
   const {
     labelText,
     labelIcon,
@@ -80,7 +81,11 @@ function BookmarkTreeListItem(props) {
     <TreeItem
       label={
         <div className={classes.labelRoot} {...contextMenuProps}>
-          <Box clone color="inherit" className={classes.labelIcon}>
+          <Box
+            clone
+            color={theme.palette.grey[600]}
+            className={classes.labelIcon}
+          >
             {typeof labelIcon == "string" ? (
               <img
                 src={labelIcon}

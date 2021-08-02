@@ -5,6 +5,7 @@ import {
   Paper,
   Typography,
   Tooltip,
+  useTheme,
 } from "@material-ui/core";
 import { Folder } from "@material-ui/icons";
 import React from "react";
@@ -15,6 +16,7 @@ import HomeGreeting from "./HomeGreeting";
 import LayoutSwitcher from "./LayoutSwitcher";
 
 const GridLayout = () => {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const id = useSelector(selectors.selectedBookmark);
   const bookmarks = useSubscribeOneLevelBookmarks(id);
@@ -39,7 +41,9 @@ const GridLayout = () => {
               style={{ height: "100%", width: "auto" }}
             />
           ) : (
-            <Folder fontSize="large" />
+            <Box clone color={theme.palette.grey[600]}>
+              <Folder fontSize="large" />
+            </Box>
           );
           const isFolder = bookmark.url === undefined;
 
