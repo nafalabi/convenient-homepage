@@ -1,16 +1,16 @@
 import { Menu, MenuItem } from "@material-ui/core";
 import React, { useContext, useState } from "react";
-import useBookmarksActions from "./hooks/useBookmarksActions";
+import useBookmarksActions from "../hooks/useBookmarksActions";
 import {
   GlobalDialog,
   GlobalDialogContext,
-} from "../../components/GlobalDialog";
-import DialogEditBookmark from "./dialogs/edit";
-import DialogDeleteBookmark from "./dialogs/delete";
-import DialogAddBookmark from "./dialogs/addBookmark";
-import DialogAddBookmarkFolder from "./dialogs/addFolder";
+} from "../../../components/GlobalDialog";
+import DialogEditBookmark from "../dialogs/edit";
+import DialogDeleteBookmark from "../dialogs/delete";
+import DialogAddBookmark from "../dialogs/addBookmark";
+import DialogAddBookmarkFolder from "../dialogs/addFolder";
 import { useDispatch } from "react-redux";
-import { actions } from "./slice";
+import { actions } from "../slice";
 
 const SidebarContextMenu = ({ clickPosition, handleClose, clickedNodeId }) => {
   const dispatch = useDispatch();

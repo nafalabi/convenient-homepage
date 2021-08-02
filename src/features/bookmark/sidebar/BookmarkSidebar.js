@@ -3,45 +3,44 @@ import { Box } from "@material-ui/core";
 import { ExpandMore, ChevronRight, Bookmark } from "@material-ui/icons";
 import { TreeView } from "@material-ui/lab";
 import BookmarkTreeListItem from "./BookmarkTreeListItem";
-import useSubscribeBookmarks from "./hooks/useSubscribeBookmarks";
-import { useSelector } from "react-redux";
-import { selectors } from "./slice";
-import useSidebarContextMenu from "./hooks/useSidebarContextMenu";
+import useSubscribeBookmarks from "../hooks/useSubscribeBookmarks";
+import { useDispatch, useSelector } from "react-redux";
+import { selectors, actions } from "../slice";
+import useSidebarContextMenu from "../hooks/useSidebarContextMenu";
 import SidebarContextMenu from "./SidebarContextMenu";
 
 const BookmarkSidebar = () => {
+  const dispatch = useDispatch();
   const bookmarks = useSubscribeBookmarks();
   const selectedBookmark = useSelector(selectors.selectedBookmark);
   const { handleClick, handleClose, clickPosition, clickedNodeId } =
     useSidebarContextMenu();
 
   const mapItem = (arrayList) => {
-    return arrayList.map((bookmark) => {
-      const bookmarkDomain = bookmark.url ? new URL(bookmark.url).hostname : "";
-      const icon = bookmarkDomain ? (
-        `https://www.google.com/s2/favicons?domain=${bookmarkDomain}`
-      ) : (
-        <Bookmark />
-      );
+    return arrayList
+      .map((bookmark) => {
+        const type = bookmark.url ? "bookmark" : "folder";
+        if (type === "bookmark") return false;
 
-      const props = {
-        key: bookmark.id,
-        nodeId: String(bookmark.id),
-        labelText: bookmark.title,
-        labelIcon: icon,
-        ActionButton: null,
-      };
+        const props = {
+          key: bookmark.id,
+          nodeId: String(bookmark.id),
+          labelText: bookmark.title,
+          labelIcon: <Bookmark />,
+          ActionButton: null,
+        };
 
-      if (bookmark.children?.length > 0) {
-        return (
-          <BookmarkTreeListItem {...props}>
-            {bookmark.children && mapItem(bookmark.children)}
-          </BookmarkTreeListItem>
-        );
-      }
+        if (bookmark.children?.length > 0) {
+          return (
+            <BookmarkTreeListItem {...props}>
+              {bookmark.children && mapItem(bookmark.children)}
+            </BookmarkTreeListItem>
+          );
+        }
 
-      return <BookmarkTreeListItem {...props} />;
-    });
+        return <BookmarkTreeListItem {...props} />;
+      })
+      .filter((data) => data);
   };
 
   return (
@@ -52,7 +51,7 @@ const BookmarkSidebar = () => {
         // expanded={expandedNoteIds}
         selected={String(selectedBookmark)}
         // onNodeToggle={toggleExpandNode}
-        // onNodeSelect={(e, id) => dispatch(actions.selectNote(parseInt(id)))}
+        onNodeSelect={(e, id) => dispatch(actions.selectBookmark(String(id)))}
       >
         {mapItem(bookmarks)}
       </TreeView>

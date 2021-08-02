@@ -2,8 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "./slice";
 import PanelWithSidebar from "../../components/PanelWithSidebar";
-import { Box } from "@material-ui/core";
-import BookmarkSidebar from "./BookmarkSidebar";
+import BookmarkSidebar from "./sidebar/BookmarkSidebar";
 import BookmarkMain from "./BookmarkMain";
 import BookmarkBreadcrumb from "./BookmarkBreadcrumb";
 
@@ -17,9 +16,7 @@ const Bookmark = () => {
       toggle={() => dispatch(actions.toggleBookmark())}
       title="Bookmarks"
       ToolbarItemComponent={({ dialogRef }) => (
-        <Box>
-          <BookmarkBreadcrumb />
-        </Box>
+        <BookmarkBreadcrumb dialogRef={dialogRef} />
       )}
       SidebarComponent={({ dialogRef }) => (
         <BookmarkSidebar dialogRef={dialogRef} />
