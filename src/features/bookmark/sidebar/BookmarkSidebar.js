@@ -6,7 +6,7 @@ import BookmarkTreeListItem from "./BookmarkTreeListItem";
 import useSubscribeBookmarks from "../hooks/useSubscribeBookmarks";
 import { useDispatch, useSelector } from "react-redux";
 import { selectors, actions } from "../slice";
-import useSidebarContextMenu from "../hooks/useSidebarContextMenu";
+import useContextMenu from "../hooks/useContextMenu";
 import SidebarContextMenu from "./SidebarContextMenu";
 
 const BookmarkSidebar = () => {
@@ -14,7 +14,7 @@ const BookmarkSidebar = () => {
   const bookmarks = useSubscribeBookmarks();
   const selectedBookmark = useSelector(selectors.selectedBookmark);
   const { handleClick, handleClose, clickPosition, clickedNodeId } =
-    useSidebarContextMenu();
+    useContextMenu();
 
   const mapItem = (arrayList) => {
     return arrayList

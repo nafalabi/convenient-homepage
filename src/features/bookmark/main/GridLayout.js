@@ -10,16 +10,20 @@ import {
 import { Folder } from "@material-ui/icons";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import useContextMenu from "../hooks/useContextMenu";
 import useSubscribeOneLevelBookmarks from "../hooks/useSubscribeOneLevelBookmarks";
 import { selectors, actions } from "../slice";
 import HomeGreeting from "./HomeGreeting";
 import LayoutSwitcher from "./LayoutSwitcher";
+import ContextMenu from "./ContextMenu";
 
 const GridLayout = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const id = useSelector(selectors.selectedBookmark);
   const bookmarks = useSubscribeOneLevelBookmarks(id);
+  const { handleClick, handleClose, clickPosition, clickedNodeId } =
+    useContextMenu();
 
   return (
     <>
@@ -29,7 +33,12 @@ const GridLayout = () => {
         </Box>
       </Box>
       {parseInt(id) === 0 && <HomeGreeting />}
-      <Grid container spacing={2} justifyContent="flex-start">
+      <Grid
+        container
+        spacing={2}
+        justifyContent="flex-start"
+        onContextMenu={handleClick}
+      >
         {bookmarks.map((bookmark) => {
           const bookmarkDomain = bookmark.url
             ? new URL(bookmark.url).hostname
@@ -38,10 +47,14 @@ const GridLayout = () => {
             <img
               src={`https://www.google.com/s2/favicons?sz=64&domain=${bookmarkDomain}`}
               alt="favicon"
-              style={{ height: "100%", width: "auto" }}
+              style={{ height: "100%", width: "auto", pointerEvents: "none" }}
             />
           ) : (
-            <Box clone color={theme.palette.grey[600]}>
+            <Box
+              clone
+              color={theme.palette.grey[600]}
+              style={{ pointerEvents: "none" }}
+            >
               <Folder fontSize="large" />
             </Box>
           );
@@ -65,8 +78,9 @@ const GridLayout = () => {
                       alignItems="center"
                       width="100px"
                       height="80px"
+                      data={bookmark.id}
                     >
-                      <Box height="40px" width="40px">
+                      <Box height="36px" width="36px" data={bookmark.id}>
                         {icon}
                       </Box>
                       <Typography
@@ -78,6 +92,7 @@ const GridLayout = () => {
                           overflow: "hidden",
                           margin: "auto",
                         }}
+                        data={bookmark.id}
                       >
                         {bookmark.title}
                       </Typography>
@@ -89,6 +104,11 @@ const GridLayout = () => {
           );
         })}
       </Grid>
+      <ContextMenu
+        handleClose={handleClose}
+        clickPosition={clickPosition}
+        clickedNodeId={clickedNodeId}
+      />
     </>
   );
 };

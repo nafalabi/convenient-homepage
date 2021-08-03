@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const useSidebarContextMenu = () => {
+const useContextMenu = () => {
   const [clickedNodeId, setClickedNodeId] = useState(null); // folder or bookmark
   const [clickPosition, setClickPosition] = useState({
     mouseX: null,
@@ -13,6 +13,7 @@ const useSidebarContextMenu = () => {
       mouseY: event.clientY - 4,
     };
     const nodeId = event.target.getAttribute("data");
+    if (!nodeId) return;
     setClickedNodeId(nodeId);
     setClickPosition(clickedPosition);
   };
@@ -26,4 +27,4 @@ const useSidebarContextMenu = () => {
   return { handleClick, handleClose, clickPosition, clickedNodeId };
 };
 
-export default useSidebarContextMenu;
+export default useContextMenu;
