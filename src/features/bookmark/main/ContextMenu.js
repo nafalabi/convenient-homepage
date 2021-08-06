@@ -1,10 +1,6 @@
-import { Menu, MenuItem } from "@material-ui/core";
-import React, { useContext, useState } from "react";
+import { Dialog, Menu, MenuItem } from "@material-ui/core";
+import React, { useState } from "react";
 import useBookmarksActions from "../hooks/useBookmarksActions";
-import {
-  GlobalDialog,
-  GlobalDialogContext,
-} from "../../../components/GlobalDialog";
 import DialogEditBookmark from "../dialogs/edit";
 import DialogDeleteBookmark from "../dialogs/delete";
 import DialogAddBookmark from "../dialogs/addBookmark";
@@ -21,7 +17,7 @@ const ContextMenu = ({ clickPosition, handleClose, clickedNodeId }) => {
     editBookmark,
     deleteBookmark,
   } = useBookmarksActions(clickedNodeId);
-  const { setDialogOpen } = useContext(GlobalDialogContext);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [openedDialog, setOpenedDialog] = useState(-1);
   const openDialog = (type) => (e) => {
     setOpenedDialog(type);
@@ -32,7 +28,7 @@ const ContextMenu = ({ clickPosition, handleClose, clickedNodeId }) => {
   const deleteBookmarkSafely = async () => {
     await dispatch(actions.selectBookmark(bookmarkDetail.parentId));
     await deleteBookmark();
-  }
+  };
 
   return (
     <>
@@ -64,7 +60,7 @@ const ContextMenu = ({ clickPosition, handleClose, clickedNodeId }) => {
           </MenuItem>,
         ]}
       </Menu>
-      <GlobalDialog>
+      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
         {openedDialog === 0 && (
           <DialogEditBookmark
             action={editBookmark}
@@ -91,7 +87,7 @@ const ContextMenu = ({ clickPosition, handleClose, clickedNodeId }) => {
             handleClose={handleCloseDialog}
           />
         )}
-      </GlobalDialog>
+      </Dialog>
     </>
   );
 };

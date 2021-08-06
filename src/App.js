@@ -13,7 +13,6 @@ import {
   unstable_createMuiStrictModeTheme,
 } from "@material-ui/core";
 import Bookmark from "./features/bookmark/Bookmark";
-import { GlobalDialogProvider } from "./components/GlobalDialog";
 
 ImageAPI.getImageBase64().then((imageURI) => {
   store.dispatch(homepageActions.loadImage(imageURI));
@@ -27,15 +26,13 @@ function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <GlobalDialogProvider>
-          <CssBaseline />
-          <Homepage />
-          <Sidebar />
-          <Todo />
-          <Note />
-          <Bookmark />
-          <Settings />
-        </GlobalDialogProvider>
+        <CssBaseline />
+        <Homepage />
+        <Sidebar />
+        <Todo />
+        <Note />
+        <Bookmark />
+        <Settings />
       </ThemeProvider>
     </>
   );
