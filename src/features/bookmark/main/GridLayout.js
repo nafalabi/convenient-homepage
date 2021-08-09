@@ -68,6 +68,8 @@ const GridLayout = () => {
                   onClick={() => {
                     if (isFolder) {
                       dispatch(actions.selectBookmark(bookmark.id));
+                    } else {
+                      window.open(bookmark.url);
                     }
                   }}
                 >

@@ -53,6 +53,8 @@ const ListLayout = () => {
                 onClick={() => {
                   if (isFolder) {
                     dispatch(actions.selectBookmark(bookmark.id));
+                  } else {
+                    window.open(bookmark.url);
                   }
                 }}
               >
