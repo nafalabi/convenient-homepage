@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import { Home, NavigateNext } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { actions, selectors } from "./slice";
+import { actions, selectors } from "../slice";
 
 const StyledBreadcrumbs = withStyles((theme) => ({
   li: {

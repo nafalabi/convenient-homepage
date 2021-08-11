@@ -4,7 +4,6 @@ import {
   ListItemText,
   List,
   Tooltip,
-  Box,
 } from "@material-ui/core";
 import { Folder } from "@material-ui/icons";
 import React from "react";
@@ -14,7 +13,6 @@ import useSubscribeOneLevelBookmarks from "../hooks/useSubscribeOneLevelBookmark
 import { selectors, actions } from "../slice";
 import ContextMenu from "./ContextMenu";
 import HomeGreeting from "./HomeGreeting";
-import LayoutSwitcher from "./LayoutSwitcher";
 
 const ListLayout = () => {
   const dispatch = useDispatch();
@@ -25,9 +23,6 @@ const ListLayout = () => {
 
   return (
     <div>
-      <Box display="flex" justifyContent="flex-end" mb={1}>
-        <LayoutSwitcher />
-      </Box>
       {parseInt(id) === 0 && <HomeGreeting />}
       <List dense onContextMenu={handleClick}>
         {bookmarks.map((bookmark) => {

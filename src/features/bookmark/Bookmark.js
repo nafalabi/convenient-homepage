@@ -4,7 +4,7 @@ import { actions, selectors } from "./slice";
 import PanelWithSidebar from "../../components/PanelWithSidebar";
 import BookmarkSidebar from "./sidebar/BookmarkSidebar";
 import BookmarkMain from "./main/BookmarkMain";
-import BookmarkBreadcrumb from "./BookmarkBreadcrumb";
+import BookmarkToolbar from "./toolbar/BookmarkToolbar";
 
 const Bookmark = () => {
   const isOpen = useSelector(selectors.isOpen);
@@ -16,7 +16,7 @@ const Bookmark = () => {
       toggle={() => dispatch(actions.toggleBookmark())}
       title="Bookmarks"
       ToolbarItemComponent={({ dialogRef }) => (
-        <BookmarkBreadcrumb dialogRef={dialogRef} />
+        <BookmarkToolbar dialogRef={dialogRef} />
       )}
       SidebarComponent={({ dialogRef }) => (
         <BookmarkSidebar dialogRef={dialogRef} />

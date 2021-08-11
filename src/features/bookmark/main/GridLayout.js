@@ -14,7 +14,6 @@ import useContextMenu from "../hooks/useContextMenu";
 import useSubscribeOneLevelBookmarks from "../hooks/useSubscribeOneLevelBookmarks";
 import { selectors, actions } from "../slice";
 import HomeGreeting from "./HomeGreeting";
-import LayoutSwitcher from "./LayoutSwitcher";
 import ContextMenu from "./ContextMenu";
 
 const GridLayout = () => {
@@ -27,11 +26,6 @@ const GridLayout = () => {
 
   return (
     <>
-      <Box mb={2}>
-        <Box display="flex" justifyContent="flex-end" mb={1}>
-          <LayoutSwitcher />
-        </Box>
-      </Box>
       {parseInt(id) === 0 && <HomeGreeting />}
       <Grid
         container
