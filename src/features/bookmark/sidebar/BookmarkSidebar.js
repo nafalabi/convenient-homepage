@@ -8,11 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectors, actions } from "../slice";
 import useContextMenu from "../hooks/useContextMenu";
 import SidebarContextMenu from "./SidebarContextMenu";
+import { Droppable } from "react-beautiful-dnd";
 
 const BookmarkSidebar = () => {
   const dispatch = useDispatch();
   const bookmarks = useSubscribeBookmarks();
   const selectedBookmark = useSelector(selectors.selectedBookmark);
+  const expandedTreeNodeIds = useSelector(selectors.expandedTreeNodeIds);
   const { handleClick, handleClose, clickPosition, clickedNodeId } =
     useContextMenu();
 
@@ -30,15 +32,19 @@ const BookmarkSidebar = () => {
           ActionButton: null,
         };
 
-        if (bookmark.children?.length > 0) {
-          return (
-            <BookmarkTreeListItem {...props}>
-              {bookmark.children && mapItem(bookmark.children)}
-            </BookmarkTreeListItem>
-          );
-        }
-
-        return <BookmarkTreeListItem {...props} />;
+        return (
+          <Droppable key={bookmark.id} droppableId={`tree-${bookmark.id}`}>
+            {(provided, snapshot) => (
+              <BookmarkTreeListItem
+                {...props}
+                ref={provided.innerRef}
+                isDraggingOver={snapshot.isDraggingOver}
+              >
+                {bookmark.children?.length > 0 && mapItem(bookmark.children)}
+              </BookmarkTreeListItem>
+            )}
+          </Droppable>
+        );
       })
       .filter((data) => data);
   };
@@ -48,10 +54,15 @@ const BookmarkSidebar = () => {
       <TreeView
         defaultCollapseIcon={<ExpandMore />}
         defaultExpandIcon={<ChevronRight />}
-        // expanded={expandedNoteIds}
+        expanded={expandedTreeNodeIds}
         selected={String(selectedBookmark)}
-        // onNodeToggle={toggleExpandNode}
-        onNodeSelect={(e, id) => dispatch(actions.selectBookmark(String(id)))}
+        onNodeSelect={(e, id) => {
+          if (e.target.closest(".MuiTreeItem-iconContainer")) {
+            dispatch(actions.toggleExpandNode(String(id)));
+            return;
+          }
+          dispatch(actions.selectBookmark(String(id)));
+        }}
       >
         {mapItem(bookmarks)}
       </TreeView>

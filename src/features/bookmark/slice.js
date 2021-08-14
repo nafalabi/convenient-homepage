@@ -8,6 +8,7 @@ const initialState = {
   layout: {
     mode: "list", // possible values - grid, list
   },
+  expandedTreeNodeIds: [],
 };
 
 const slice = createSlice({
@@ -28,6 +29,18 @@ const slice = createSlice({
     },
     changeLayoutMode: (state, { payload: layoutMode }) => {
       state.layout.mode = layoutMode;
+    },
+    toggleExpandNode: (state, { payload: id }) => {
+      const expandedNode = state.expandedTreeNodeIds;
+      const indexInList = expandedNode.findIndex(
+        (el) => String(el) === String(id)
+      );
+
+      if (indexInList === -1) {
+        expandedNode.push(id);
+      } else {
+        expandedNode.splice(indexInList, 1);
+      }
     },
   },
 });
@@ -58,6 +71,7 @@ export const selectors = {
   selectedBookmark: ({ bookmark }) => bookmark.selectedBookmark,
   folderStack: ({ bookmark }) => bookmark.folderStack,
   layoutMode: ({ bookmark }) => bookmark.layout.mode,
+  expandedTreeNodeIds: ({ bookmark }) => bookmark.expandedTreeNodeIds,
 };
 
 export default slice.reducer;

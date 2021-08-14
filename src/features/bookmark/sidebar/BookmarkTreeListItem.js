@@ -1,6 +1,6 @@
-import React from "react";
+import React, { createRef, useEffect } from "react";
 import PropTypes from "prop-types";
-import { makeStyles, fade, useTheme } from "@material-ui/core/styles";
+import { makeStyles, alpha, useTheme } from "@material-ui/core/styles";
 import TreeItem from "@material-ui/lab/TreeItem";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
@@ -20,6 +20,9 @@ const useTreeItemStyles = makeStyles((theme) => ({
       {
         backgroundColor: "transparent!important",
       },
+    "&:last-child": {
+      marginBottom: theme.spacing(1),
+    },
   },
   content: {
     color: theme.palette.text.primary,
@@ -33,7 +36,7 @@ const useTreeItemStyles = makeStyles((theme) => ({
   group: {
     marginLeft: 14,
     paddingLeft: 0,
-    borderLeft: `1px dashed ${fade(theme.palette.text.primary, 0.4)}`,
+    borderLeft: `1px dashed ${alpha(theme.palette.text.primary, 0.4)}`,
   },
   expanded: {},
   selected: {},
@@ -62,23 +65,41 @@ const useTreeItemStyles = makeStyles((theme) => ({
   },
 }));
 
-function BookmarkTreeListItem(props) {
+const BookmarkTreeListItem = React.forwardRef((props, setDroppableRef) => {
   const classes = useTreeItemStyles();
   const theme = useTheme();
   const {
     labelText,
     labelIcon,
     ActionButton,
-    color,
-    bgColor,
     nodeId,
+    isDraggingOver,
     ...other
   } = props;
-
   const contextMenuProps = { data: nodeId };
+  const rootRef = createRef();
+
+  useEffect(() => {
+    if (rootRef.current) {
+      const rootEl = rootRef.current;
+      const el = rootEl.querySelector(".MuiTreeItem-label");
+      el.style.cssText = isDraggingOver
+        ? `background-color: ${theme.palette.grey[400]} !important`
+        : "background-color: initial";
+    }
+  }, [isDraggingOver, rootRef, theme]);
+
+  useEffect(() => {
+    const rootEl = rootRef.current;
+    const treeButtonEl = rootEl.querySelector(".MuiTreeItem-content");
+    setDroppableRef(treeButtonEl);
+  }, [rootRef, setDroppableRef]);
 
   return (
     <TreeItem
+      ref={(val) => {
+        rootRef.current = val;
+      }}
       label={
         <div className={classes.labelRoot} {...contextMenuProps}>
           <Box
@@ -108,10 +129,11 @@ function BookmarkTreeListItem(props) {
           <div className={classes.actionButton}>{ActionButton}</div>
         </div>
       }
-      style={{
-        "--tree-view-color": color,
-        "--tree-view-bg-color": bgColor,
-      }}
+      style={
+        {
+          // backgroundColor: isDraggingOver ? theme.palette.grey[400] : "initial",
+        }
+      }
       classes={{
         root: classes.root,
         content: classes.content,
@@ -125,7 +147,7 @@ function BookmarkTreeListItem(props) {
       {...other}
     />
   );
-}
+});
 
 BookmarkTreeListItem.propTypes = {
   bgColor: PropTypes.string,
@@ -133,6 +155,7 @@ BookmarkTreeListItem.propTypes = {
   labelIcon: PropTypes.any.isRequired,
   labelText: PropTypes.string.isRequired,
   ActionButton: PropTypes.any,
+  isDraggingOver: PropTypes.bool.isRequired,
 };
 
 export default BookmarkTreeListItem;
