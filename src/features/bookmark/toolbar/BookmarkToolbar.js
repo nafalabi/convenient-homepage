@@ -5,7 +5,7 @@ import LayoutSwitcher from "./LayoutSwitcher";
 
 const BookmarkToolbar = () => {
   return (
-    <Box display="flex" flexGrow={1}>
+    <Box display="flex" flexGrow={1} alignItems="center">
       <Box flexGrow={1}>
         <BookmarkBreadcrumb />
       </Box>
