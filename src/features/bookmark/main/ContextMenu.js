@@ -30,6 +30,8 @@ const ContextMenu = ({ clickPosition, handleClose, clickedNodeId }) => {
     await deleteBookmark();
   };
 
+  if (String(clickedNodeId) === "0") return null;
+
   return (
     <>
       <Menu

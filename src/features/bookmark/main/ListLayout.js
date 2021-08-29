@@ -15,17 +15,33 @@ import { selectors, actions } from "../slice";
 import ContextMenu from "./ContextMenu";
 import HomeGreeting from "./HomeGreeting";
 import { Droppable, Draggable } from "react-beautiful-dnd";
+import EmptyFolder from "./EmptyFolder";
+import { useRef } from "react";
+import { useEffect } from "react";
 
 const ListLayout = () => {
   const dispatch = useDispatch();
   const id = useSelector(selectors.selectedBookmark);
   const bookmarks = useSubscribeOneLevelBookmarks(id);
   const { handleClick, handleClose, clickPosition, clickedNodeId } =
-    useContextMenu();
+    useContextMenu(true);
+  const rootRef = useRef();
+
+  useEffect(() => {
+    const el = rootRef.current;
+    if (el) {
+      const rootContainer = el.parentElement;
+      rootContainer.setAttribute("data", id);
+      rootContainer.addEventListener("contextmenu", handleClick);
+      return () =>
+        rootContainer.removeEventListener("contextmenu", handleClick);
+    }
+  }, [rootRef, handleClick, id]);
 
   return (
-    <div>
+    <div ref={rootRef} data={id}>
       {parseInt(id) === 0 && <HomeGreeting />}
+      {bookmarks.length === 0 && <EmptyFolder />}
       <Droppable droppableId={`list-${id}`} isCombineEnabled={true}>
         {(provided, snapshot) => (
           <List dense onContextMenu={handleClick} ref={provided.innerRef}>

@@ -1,20 +1,20 @@
 import { useState } from "react";
 
-const useContextMenu = () => {
+const useContextMenu = (openMenuOnClickBlankArea = false) => {
   const [clickedNodeId, setClickedNodeId] = useState(null); // folder or bookmark
   const [clickPosition, setClickPosition] = useState({
     mouseX: null,
     mouseY: null,
   });
   const handleClick = (event) => {
-    console.log("clicked")
+    console.log("clicked");
     event.preventDefault();
     const clickedPosition = {
       mouseX: event.clientX - 2,
       mouseY: event.clientY - 4,
     };
     const nodeId = event.target.getAttribute("data");
-    if (!nodeId) return;
+    if (!nodeId && !openMenuOnClickBlankArea) return;
     setClickedNodeId(nodeId);
     setClickPosition(clickedPosition);
   };
