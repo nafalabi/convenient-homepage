@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  isOpen: false,
+  isOpen: true,
   selectedNote: 0,
   treeListRefreshRef: 0,
   noteIdOfOpenedActionMenu: 0,

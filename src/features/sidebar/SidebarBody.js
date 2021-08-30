@@ -13,7 +13,12 @@ import {
   styled,
 } from "@material-ui/core";
 import ListIcon from "@material-ui/icons/List";
-import { Notes, Search, Settings, Bookmark } from "@material-ui/icons";
+import {
+  Search,
+  Settings,
+  LibraryBooks,
+  CollectionsBookmark,
+} from "@material-ui/icons";
 import InputWithConfirmation from "../../components/InputWithConfirmation";
 
 const SidebarBodyRoot = styled("div")({
@@ -31,14 +36,15 @@ const SidebarBody = ({ ...props }) => {
       },
       {
         label: "Notes",
-        icon: <Notes />,
+        icon: <LibraryBooks />,
         onClick: () => dispatch(noteActions.toggleNote()),
       },
       {
         label: "Bookmarks",
-        icon: <Bookmark />,
+        icon: <CollectionsBookmark />,
         onClick: () => dispatch(bookmarkActions.toggleBookmark()),
-      },      {
+      },
+      {
         label: "Settings",
         icon: <Settings />,
         onClick: () => dispatch(settingsActions.toggleSettings()),

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { makeStyles, fade } from "@material-ui/core/styles";
+import { makeStyles, alpha } from "@material-ui/core/styles";
 import TreeItem from "@material-ui/lab/TreeItem";
 import Typography from "@material-ui/core/Typography";
 
@@ -31,7 +31,7 @@ const useTreeItemStyles = makeStyles((theme) => ({
   group: {
     marginLeft: 14,
     paddingLeft: 0,
-    borderLeft: `1px dashed ${fade(theme.palette.text.primary, 0.4)}`,
+    borderLeft: `1px dashed ${alpha(theme.palette.text.primary, 0.4)}`,
   },
   expanded: {},
   selected: {},
@@ -49,6 +49,7 @@ const useTreeItemStyles = makeStyles((theme) => ({
   },
   labelIcon: {
     marginRight: theme.spacing(1),
+    color: theme.palette.text.secondary,
   },
   labelText: {
     fontWeight: "inherit",
@@ -56,6 +57,11 @@ const useTreeItemStyles = makeStyles((theme) => ({
   },
   actionButton: {
     opacity: 0,
+  },
+  dotIconNote: {
+    flexGrow: 1,
+    fontSize: "0.5em!important",
+    borderBottom: `1px dashed ${alpha(theme.palette.text.primary, 0.4)}`,
   },
 }));
 
@@ -67,11 +73,19 @@ function NoteTreeListItem(props) {
     ActionButton,
     color,
     bgColor,
+    totalChildren,
     ...other
   } = props;
 
+  // Leading Icon, when set to undefined will use the default icon
+  // if has children show default icon, if not show dashed horizontal line
+  const leadingIcon =
+    totalChildren < 1 ? <div className={classes.dotIconNote} /> : undefined;
+
   return (
     <TreeItem
+      expandIcon={leadingIcon}
+      collapseIcon={leadingIcon}
       label={
         <div className={classes.labelRoot}>
           <LabelIcon color="inherit" className={classes.labelIcon} />

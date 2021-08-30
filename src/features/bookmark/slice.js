@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { getBookmarkDetails } from "./utils";
 
 const initialState = {
-  isOpen: true,
+  isOpen: false,
   selectedBookmark: 0,
   folderStack: [],
   layout: {

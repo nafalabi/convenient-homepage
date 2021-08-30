@@ -1,5 +1,10 @@
 import { Box, IconButton, LinearProgress } from "@material-ui/core";
-import { ChevronRight, ExpandMore, MoreVert, Notes } from "@material-ui/icons";
+import {
+  ChevronRight,
+  ExpandMore,
+  MoreVert,
+  Subject,
+} from "@material-ui/icons";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useFetchNoteList from "./hooks/useFetchNoteList";
@@ -18,7 +23,7 @@ const Sidebar = () => {
   const noteList = useFetchNoteList(treeListRefreshRef);
   const dispatch = useDispatch();
 
-  const toggleExpandNode = (e, ids) => {
+  const toggleExpandNode = async (e, ids) => {
     if (!e.target.closest(".MuiTreeItem-iconContainer")) return;
     const idToBeExpanded = ids.find((id) => !expandedNoteIds.includes(id));
     const idToBeShrinked = expandedNoteIds.find((id) => !ids.includes(id));
@@ -31,6 +36,10 @@ const Sidebar = () => {
     setExpandedNoteIds(ids);
     setTimeout(() => dispatch(actions.refreshTreeList()), 500);
   };
+
+  const selectNode = (e, id) =>
+    !e.target.closest(".MuiTreeItem-iconContainer") &&
+    dispatch(actions.selectNote(parseInt(id)));
 
   const mapList = (arrayList) => {
     return arrayList.map((note) => {
@@ -47,29 +56,18 @@ const Sidebar = () => {
         </IconButton>
       );
 
-      if (note.totalChildren > 0) {
-        return (
-          <NoteTreeListItem
-            key={note.noteid}
-            nodeId={String(note.noteid)}
-            labelText={note.notename}
-            labelIcon={Notes}
-            ActionButton={<ActionButton />}
-          >
-            {note.children && mapList(note.children)}
-            {!note.expanded && <LinearProgress />}
-          </NoteTreeListItem>
-        );
-      }
-
       return (
         <NoteTreeListItem
           key={note.noteid}
           nodeId={String(note.noteid)}
           labelText={note.notename}
-          labelIcon={Notes}
+          labelIcon={Subject}
           ActionButton={<ActionButton />}
-        />
+          totalChildren={note.totalChildren}
+        >
+          {note.children && mapList(note.children)}
+          {!note.expanded && <LinearProgress />}
+        </NoteTreeListItem>
       );
     });
   };
@@ -82,7 +80,7 @@ const Sidebar = () => {
         expanded={expandedNoteIds}
         selected={String(selectedNote)}
         onNodeToggle={toggleExpandNode}
-        onNodeSelect={(e, id) => dispatch(actions.selectNote(parseInt(id)))}
+        onNodeSelect={selectNode}
       >
         {mapList(noteList)}
         <Box ml={4} mr={4}>
