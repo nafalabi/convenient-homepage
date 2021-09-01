@@ -1,10 +1,5 @@
-import { Box, IconButton, LinearProgress } from "@material-ui/core";
-import {
-  ChevronRight,
-  ExpandMore,
-  MoreVert,
-  Subject,
-} from "@material-ui/icons";
+import { Box, LinearProgress } from "@material-ui/core";
+import { ChevronRight, ExpandMore, Subject } from "@material-ui/icons";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useFetchNoteList from "../hooks/useFetchNoteList";
@@ -14,7 +9,8 @@ import { db, Note } from "../../../app/storage/Dexie";
 import { TreeView } from "@material-ui/lab";
 import useFetchExpandedNoteIds from "../hooks/useFetchExpandedNoteIds";
 import NoteTreeListItem from "./NoteTreeListItem";
-import NoteTreeListActionMenu from "./NoteTreeListActionMenu";
+import NoteSidebarContextMenu from "./NoteSidebarContextMenu";
+import useContextMenu from "../hooks/useContextMenu";
 
 const Sidebar = () => {
   const treeListRefreshRef = useSelector(selectors.treeListRefreshRef);
@@ -22,6 +18,13 @@ const Sidebar = () => {
   const [expandedNoteIds, setExpandedNoteIds] = useFetchExpandedNoteIds();
   const noteList = useFetchNoteList(treeListRefreshRef);
   const dispatch = useDispatch();
+
+  const {
+    clickPosition,
+    clickedNodeId,
+    handleCloseContextMenu,
+    onContextMenu,
+  } = useContextMenu(false);
 
   const toggleExpandNode = async (e, ids) => {
     if (!e.target.closest(".MuiTreeItem-iconContainer")) return;
@@ -43,26 +46,12 @@ const Sidebar = () => {
 
   const mapList = (arrayList) => {
     return arrayList.map((note) => {
-      const ActionButton = () => (
-        <IconButton
-          size="small"
-          onClick={(e) => {
-            e.stopPropagation();
-            dispatch(actions.openNoteListActionMenu(note.noteid));
-          }}
-          id={"list-action-" + note.noteid}
-        >
-          <MoreVert />
-        </IconButton>
-      );
-
       return (
         <NoteTreeListItem
           key={note.noteid}
           nodeId={String(note.noteid)}
           labelText={note.notename}
           labelIcon={Subject}
-          ActionButton={<ActionButton />}
           totalChildren={note.totalChildren}
         >
           {note.children && mapList(note.children)}
@@ -73,7 +62,7 @@ const Sidebar = () => {
   };
 
   return (
-    <Box pb={4}>
+    <Box pb={4} onContextMenu={onContextMenu}>
       <TreeView
         defaultCollapseIcon={<ExpandMore />}
         defaultExpandIcon={<ChevronRight />}
@@ -104,7 +93,11 @@ const Sidebar = () => {
         </Box>
       </TreeView>
 
-      <NoteTreeListActionMenu />
+      <NoteSidebarContextMenu
+        handleClose={handleCloseContextMenu}
+        clickPosition={clickPosition}
+        clickedNodeId={clickedNodeId}
+      />
     </Box>
   );
 };

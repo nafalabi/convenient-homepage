@@ -4,13 +4,13 @@ import { db } from "../../../app/storage/Dexie";
 const useFetchNoteData = (noteid) => {
   const [noteData, setNoteData] = useState(null);
   useEffect(() => {
-    setNoteData(null);
-    db.note
-      .where({ noteid })
-      .first()
-      .then((data) => {
-        setNoteData(data);
-      });
+    if (noteid !== null)
+      db.note
+        .where({ noteid: parseInt(noteid) })
+        .first()
+        .then((data) => {
+          setNoteData(data);
+        });
   }, [noteid, setNoteData]);
 
   return noteData;

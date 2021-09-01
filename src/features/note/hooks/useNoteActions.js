@@ -128,11 +128,19 @@ const useNoteActions = (noteData) => {
     [dispatch]
   );
 
+  const deleteNote = () => {
+    db.note.where("parentnoteid").equals(noteData.noteid).delete();
+    db.note.delete(noteData.noteid);
+    dispatch(actions.closeNoteListActionMenu());
+    dispatch(actions.refreshTreeList());
+  };
+
   return {
     updateNoteName,
     updateNoteData,
     onSearchLink,
     addSubNote,
+    deleteNote,
     uploadImage,
     touched,
     isSaving,

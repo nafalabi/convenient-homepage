@@ -43,9 +43,6 @@ const useTreeItemStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     padding: theme.spacing(0.5, 0),
-    "&:hover $actionButton": {
-      opacity: 1,
-    },
   },
   labelIcon: {
     marginRight: theme.spacing(1),
@@ -55,15 +52,12 @@ const useTreeItemStyles = makeStyles((theme) => ({
     fontWeight: "inherit",
     flexGrow: 1,
   },
-  actionButton: {
-    opacity: 0,
-  },
-  dotIconNote: {
-    flexGrow: 1,
-    fontSize: "0.5em!important",
-    borderBottom: `1px dashed ${alpha(theme.palette.text.primary, 0.4)}`,
-    marginLeft: "-8px",
-  },
+  // dotIconNote: {
+  //   // flexGrow: 1,
+  //   // fontSize: "0.5em!important",
+  //   // borderBottom: `1px dashed ${alpha(theme.palette.text.primary, 0.4)}`,
+  //   // marginLeft: "-8px",
+  // },
 }));
 
 function NoteTreeListItem(props) {
@@ -71,29 +65,32 @@ function NoteTreeListItem(props) {
   const {
     labelText,
     labelIcon: LabelIcon,
-    ActionButton,
     color,
     bgColor,
     totalChildren,
+    nodeId,
     ...other
   } = props;
+  const contextMenuProps = { data: nodeId };
 
   // Leading Icon, when set to undefined will use the default icon
   // if has children show default icon, if not show dashed horizontal line
-  const leadingIcon =
-    totalChildren < 1 ? <div className={classes.dotIconNote} /> : undefined;
+  const leadingIcon = totalChildren < 1 ? <div /> : undefined;
 
   return (
     <TreeItem
       expandIcon={leadingIcon}
       collapseIcon={leadingIcon}
       label={
-        <div className={classes.labelRoot}>
+        <div className={classes.labelRoot} {...contextMenuProps}>
           <LabelIcon color="inherit" className={classes.labelIcon} />
-          <Typography variant="body2" className={classes.labelText}>
+          <Typography
+            variant="body2"
+            className={classes.labelText}
+            {...contextMenuProps}
+          >
             {labelText}
           </Typography>
-          <div className={classes.actionButton}>{ActionButton}</div>
         </div>
       }
       style={{
@@ -108,6 +105,8 @@ function NoteTreeListItem(props) {
         group: classes.group,
         label: classes.label,
       }}
+      nodeId={nodeId}
+      {...contextMenuProps}
       {...other}
     />
   );
@@ -118,7 +117,6 @@ NoteTreeListItem.propTypes = {
   color: PropTypes.string,
   labelIcon: PropTypes.elementType.isRequired,
   labelText: PropTypes.string.isRequired,
-  ActionButton: PropTypes.any,
 };
 
 export default NoteTreeListItem;
