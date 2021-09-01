@@ -2,8 +2,8 @@ import { Box, Menu, MenuItem, Typography } from "@material-ui/core";
 import { Add, Delete } from "@material-ui/icons";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { db, Note } from "../../app/storage/Dexie";
-import { actions, selectors } from "./slice";
+import { db, Note } from "../../../app/storage/Dexie";
+import { actions, selectors } from "../slice";
 
 const NoteTreeListActionMenu = () => {
   const dispatch = useDispatch();

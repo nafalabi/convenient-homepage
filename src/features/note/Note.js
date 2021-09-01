@@ -3,8 +3,8 @@ import { Home } from "@material-ui/icons";
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PanelWithSidebar from "../../components/PanelWithSidebar";
-import NoteMain from "./NoteMain";
-import NoteSidebar from "./NoteSidebar";
+import NoteMain from "./main/NoteMain";
+import NoteSidebar from "./sidebar/NoteSidebar";
 import { actions, selectors } from "./slice";
 
 const Note = () => {

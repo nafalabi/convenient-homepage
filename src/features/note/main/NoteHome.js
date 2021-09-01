@@ -10,8 +10,8 @@ import { Notes } from "@material-ui/icons";
 import { useLiveQuery } from "dexie-react-hooks";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { db } from "../../app/storage/Dexie";
-import { actions } from "./slice";
+import { db } from "../../../app/storage/Dexie";
+import { actions } from "../slice";
 
 const useStyles = makeStyles({
   multiLineEllipsis: {

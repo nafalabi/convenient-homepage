@@ -7,12 +7,12 @@ import {
 } from "@material-ui/icons";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useFetchNoteList from "./hooks/useFetchNoteList";
-import { actions, selectors } from "./slice";
-import InputWithConfirmation from "../../components/InputWithConfirmation";
-import { db, Note } from "../../app/storage/Dexie";
+import useFetchNoteList from "../hooks/useFetchNoteList";
+import { actions, selectors } from "../slice";
+import InputWithConfirmation from "../../../components/InputWithConfirmation";
+import { db, Note } from "../../../app/storage/Dexie";
 import { TreeView } from "@material-ui/lab";
-import useFetchExpandedNoteIds from "./hooks/useFetchExpandedNoteIds";
+import useFetchExpandedNoteIds from "../hooks/useFetchExpandedNoteIds";
 import NoteTreeListItem from "./NoteTreeListItem";
 import NoteTreeListActionMenu from "./NoteTreeListActionMenu";
 

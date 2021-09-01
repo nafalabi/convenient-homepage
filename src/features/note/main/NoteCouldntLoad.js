@@ -2,7 +2,7 @@ import { Box, Button, Typography } from "@material-ui/core";
 import { Home } from "@material-ui/icons";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { actions } from "./slice";
+import { actions } from "../slice";
 
 const NoteCouldntLoad = () => {
   const dispatch = useDispatch();

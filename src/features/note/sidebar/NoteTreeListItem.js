@@ -62,6 +62,7 @@ const useTreeItemStyles = makeStyles((theme) => ({
     flexGrow: 1,
     fontSize: "0.5em!important",
     borderBottom: `1px dashed ${alpha(theme.palette.text.primary, 0.4)}`,
+    marginLeft: "-8px",
   },
 }));
 

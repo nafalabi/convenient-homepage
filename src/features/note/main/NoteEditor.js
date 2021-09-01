@@ -8,8 +8,8 @@ import {
 import { Skeleton } from "@material-ui/lab";
 import React from "react";
 import Editor from "rich-markdown-editor";
-import useFetchNoteData from "./hooks/useFetchNoteData";
-import useNoteActions from "./hooks/useNoteActions";
+import useFetchNoteData from "../hooks/useFetchNoteData";
+import useNoteActions from "../hooks/useNoteActions";
 import NoteCouldntLoad from "./NoteCouldntLoad";
 
 const useStyles = makeStyles({
