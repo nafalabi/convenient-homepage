@@ -90,6 +90,7 @@ const useNoteActions = (noteData) => {
       try {
         const newNote = new Note();
         newNote.notename = notename;
+        newNote.notecontent = `# ${notename}\n\n\\\n`;
         newNote.firstlevel = 0;
         newNote.parentnoteid = noteData.noteid;
         noteid = await newNote.save();

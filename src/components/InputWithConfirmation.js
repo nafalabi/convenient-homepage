@@ -40,12 +40,12 @@ const InputWithConfirmation = ({
         endAdornment={
           focus || realValue ? (
             <>
-              <InputAdornment>
+              <InputAdornment position="end">
                 <IconButton size="small" onClick={doConfirm}>
                   <CheckIcon fontSize="small" />
                 </IconButton>
               </InputAdornment>
-              <InputAdornment>
+              <InputAdornment position="end">
                 <IconButton size="small" onClick={resetState}>
                   <CloseIcon fontSize="small" />
                 </IconButton>

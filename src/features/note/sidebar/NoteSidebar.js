@@ -40,9 +40,10 @@ const Sidebar = () => {
     setTimeout(() => dispatch(actions.refreshTreeList()), 500);
   };
 
-  const selectNode = (e, id) =>
+  const selectNode = (e, id) => {
     !e.target.closest(".MuiTreeItem-iconContainer") &&
-    dispatch(actions.selectNote(parseInt(id)));
+      dispatch(actions.selectNote(parseInt(id)));
+  };
 
   const mapList = (arrayList) => {
     return arrayList.map((note) => {
@@ -72,11 +73,12 @@ const Sidebar = () => {
         onNodeSelect={selectNode}
       >
         {mapList(noteList)}
-        <Box ml={4} mr={4}>
+        <Box ml={4} mr={1} mt={1}>
           <InputWithConfirmation
             onConfirm={(value) => {
               const newNote = new Note();
               newNote.notename = value;
+              newNote.notecontent = `# ${value}\n\n\\\n`;
               newNote.firstlevel = 1;
               newNote
                 .save()
@@ -87,7 +89,7 @@ const Sidebar = () => {
                   dispatch(actions.refreshTreeList());
                 });
             }}
-            inputProps={{ style: { fontSize: 13 } }}
+            inputProps={{ style: { fontSize: 14 } }}
             placeholder="Add New Note"
           />
         </Box>

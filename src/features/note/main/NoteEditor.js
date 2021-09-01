@@ -1,10 +1,4 @@
-import {
-  Box,
-  Divider,
-  makeStyles,
-  TextField,
-  Typography,
-} from "@material-ui/core";
+import { Box, makeStyles, Typography } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import React from "react";
 import Editor from "rich-markdown-editor";
@@ -43,7 +37,6 @@ const NoteEditor = ({ selectedNote }) => {
   const classes = useStyles();
   const noteData = useFetchNoteData(selectedNote);
   const {
-    updateNoteName,
     updateNoteData,
     onSearchLink,
     addSubNote,
@@ -57,46 +50,11 @@ const NoteEditor = ({ selectedNote }) => {
 
   return (
     <Box ml={1} onKeyDown={(e) => e.stopPropagation()}>
-      <Box mb={2} ml={1}>
-        {noteData ? (
-          <TextField
-            fullWidth
-            label="Note Name"
-            defaultValue={noteData?.notename}
-            key={noteData?.notename}
-            onBlur={updateNoteName}
-            onKeyDown={(e) => {
-              e.stopPropagation();
-              switch (e.key) {
-                case "Enter":
-                  updateNoteName(e);
-                  break;
-                case "Escape":
-                  e.target.value = noteData.notename;
-                  e.target.blur();
-                  break;
-                default:
-                  break;
-              }
-            }}
-          />
-        ) : (
-          <>
-            <Skeleton />
-          </>
-        )}
-      </Box>
-
-      <Box mb={1} ml={-4} mr={-3}>
-        <Divider />
-      </Box>
-
       <Box ml={1} mb={2}>
         {noteData ? (
           <Editor
-            // readOnly={true}
             defaultValue={noteData.notecontent}
-            key={selectedNote}
+            key={noteData?.noteid}
             onChange={updateNoteData}
             onSearchLink={onSearchLink}
             onCreateLink={addSubNote}
