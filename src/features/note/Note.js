@@ -1,19 +1,14 @@
-import { Box, IconButton } from "@material-ui/core";
-import { Home } from "@material-ui/icons";
-import React, { useCallback } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PanelWithSidebar from "../../components/PanelWithSidebar";
 import NoteMain from "./main/NoteMain";
 import NoteSidebar from "./sidebar/NoteSidebar";
 import { actions, selectors } from "./slice";
+import NoteToolbar from "./toolbar/NoteToolbar";
 
 const Note = () => {
-  const isOpen = useSelector(selectors.isOpen);
   const dispatch = useDispatch();
-
-  const goToHome = useCallback(() => {
-    dispatch(actions.selectNote(0));
-  }, [dispatch]);
+  const isOpen = useSelector(selectors.isOpen);
 
   return (
     <PanelWithSidebar
@@ -21,11 +16,7 @@ const Note = () => {
       toggle={() => dispatch(actions.toggleNote())}
       title="Note"
       ToolbarItemComponent={({ dialogRef }) => (
-        <Box marginLeft="auto">
-          <IconButton color="inherit" onClick={goToHome}>
-            <Home />
-          </IconButton>
-        </Box>
+        <NoteToolbar dialogRef={dialogRef} />
       )}
       SidebarComponent={({ dialogRef }) => (
         <NoteSidebar dialogRef={dialogRef} />
