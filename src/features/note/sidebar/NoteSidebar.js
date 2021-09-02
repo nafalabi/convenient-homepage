@@ -11,6 +11,7 @@ import useFetchExpandedNoteIds from "../hooks/useFetchExpandedNoteIds";
 import NoteTreeListItem from "./NoteTreeListItem";
 import NoteSidebarContextMenu from "./NoteSidebarContextMenu";
 import useContextMenu from "../hooks/useContextMenu";
+import NoteContent from "../../../app/storage/Dexie/NoteContent";
 
 const Sidebar = () => {
   const treeListRefreshRef = useSelector(selectors.treeListRefreshRef);
@@ -62,6 +63,22 @@ const Sidebar = () => {
     });
   };
 
+  const addNewNote = async (value) => {
+    // Saving note
+    const newNote = new Note();
+    newNote.notename = value;
+    newNote.firstlevel = 1;
+    const noteid = await newNote.save().catch((e) => {
+      console.log(e);
+    });
+    // Saving note content
+    const newNoteContent = new NoteContent();
+    newNoteContent.noteid = noteid;
+    newNoteContent.notecontent = `# ${value}\n\n\\\n`;
+    await newNoteContent.save();
+    dispatch(actions.refreshTreeList());
+  };
+
   return (
     <Box pb={4} onContextMenu={onContextMenu}>
       <TreeView
@@ -75,20 +92,7 @@ const Sidebar = () => {
         {mapList(noteList)}
         <Box ml={4} mr={1} mt={1}>
           <InputWithConfirmation
-            onConfirm={(value) => {
-              const newNote = new Note();
-              newNote.notename = value;
-              newNote.notecontent = `# ${value}\n\n\\\n`;
-              newNote.firstlevel = 1;
-              newNote
-                .save()
-                .catch((e) => {
-                  console.log(e);
-                })
-                .then((a) => {
-                  dispatch(actions.refreshTreeList());
-                });
-            }}
+            onConfirm={addNewNote}
             inputProps={{ style: { fontSize: 14 } }}
             placeholder="Add New Note"
           />

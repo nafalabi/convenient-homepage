@@ -1,10 +1,11 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { db, Note } from "../../../app/storage/Dexie";
+import NoteContent from "../../../app/storage/Dexie/NoteContent";
 import useDebouncedCallback from "../../../hooks/useDebounceCallback";
 import { actions } from "../slice";
 
-const useNoteActions = (noteData) => {
+const useNoteActions = (noteDetail) => {
   const dispatch = useDispatch();
   const [touched, setTouched] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -13,8 +14,8 @@ const useNoteActions = (noteData) => {
     (e) => {
       const { value } = e.target;
       if (!value) return;
-      noteData.notename = value;
-      noteData
+      noteDetail.notename = value;
+      noteDetail
         .save()
         .catch((e) => {
           console.log(e);
@@ -23,7 +24,7 @@ const useNoteActions = (noteData) => {
           dispatch(actions.refreshTreeList());
         });
     },
-    [noteData, dispatch]
+    [noteDetail, dispatch]
   );
 
   const updateNoteData = useCallback(
@@ -33,15 +34,17 @@ const useNoteActions = (noteData) => {
       setTimeout(async () => {
         try {
           const data = getData();
-          noteData.notecontent = data;
-          await noteData.save();
+          const noteContent = new NoteContent();
+          noteContent.noteid = noteDetail.noteid;
+          noteContent.notecontent = data;
+          await noteContent.save();
         } catch (error) {
           console.log(error);
         }
         setIsSaving(false);
       }, 300);
     }, 1000),
-    [noteData, touched, isSaving, setTouched, setIsSaving]
+    [noteDetail, touched, isSaving, setTouched, setIsSaving]
   );
 
   const onSearchLink = useCallback(async (term) => {
@@ -78,7 +81,7 @@ const useNoteActions = (noteData) => {
         if (
           (await db.note
             .where(["parentnoteid", "notename"])
-            .equals([noteData.noteid, notename])
+            .equals([noteDetail.noteid, notename])
             .count()) === 0
         ) {
           break;
@@ -90,10 +93,13 @@ const useNoteActions = (noteData) => {
       try {
         const newNote = new Note();
         newNote.notename = notename;
-        newNote.notecontent = `# ${notename}\n\n\\\n`;
         newNote.firstlevel = 0;
-        newNote.parentnoteid = noteData.noteid;
+        newNote.parentnoteid = noteDetail.noteid;
         noteid = await newNote.save();
+        const newNoteContent = new NoteContent();
+        newNoteContent.noteid = noteid;
+        newNoteContent.notecontent = `# ${notename}\n\n\\\n`;
+        await newNoteContent.save();
       } catch (error) {
         console.log(error);
       }
@@ -103,7 +109,7 @@ const useNoteActions = (noteData) => {
 
       return `/note?id=${noteid}`;
     },
-    [noteData, dispatch]
+    [noteDetail, dispatch]
   );
 
   const uploadImage = useCallback(async (file) => {
@@ -130,8 +136,8 @@ const useNoteActions = (noteData) => {
   );
 
   const deleteNote = () => {
-    db.note.where("parentnoteid").equals(noteData.noteid).delete();
-    db.note.delete(noteData.noteid);
+    // db.note.where("parentnoteid").equals(noteDetail.noteid).delete();
+    db.note.delete(noteDetail.noteid);
     dispatch(actions.closeNoteListActionMenu());
     dispatch(actions.refreshTreeList());
   };

@@ -8,7 +8,11 @@ const useFetchNoteData = (noteid) => {
       db.note
         .where({ noteid: parseInt(noteid) })
         .first()
-        .then((data) => {
+        .then(async (data) => {
+          const noteContent = await db.notecontent
+            .where({ noteid: parseInt(data.noteid) })
+            .first();
+          data.notecontent = noteContent.notecontent;
           setNoteData(data);
         });
   }, [noteid, setNoteData]);
