@@ -6,6 +6,7 @@ const initialState = {
   selectedNote: 0,
   treeListRefreshRef: 0,
   noteStack: [], // for breadcrumb
+  editable: true,
 };
 
 const slice = createSlice({
@@ -23,6 +24,9 @@ const slice = createSlice({
     },
     replaceNoteStack: (state, { payload: newStack }) => {
       state.noteStack = newStack;
+    },
+    toggleEditable: (state) => {
+      state.editable = !state.editable;
     },
   },
 });
@@ -60,6 +64,7 @@ export const selectors = {
   selectedNote: ({ note }) => note.selectedNote,
   treeListRefreshRef: ({ note }) => note.treeListRefreshRef,
   noteStack: ({ note }) => note.noteStack,
+  editable: ({ note }) => note.editable,
 };
 
 export default slice.reducer;

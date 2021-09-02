@@ -1,9 +1,11 @@
 import { Box, makeStyles, Typography } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import React from "react";
+import { useSelector } from "react-redux";
 import Editor from "rich-markdown-editor";
 import useFetchNoteData from "../hooks/useFetchNoteData";
 import useNoteActions from "../hooks/useNoteActions";
+import { selectors } from "../slice";
 import NoteCouldntLoad from "./NoteCouldntLoad";
 
 const useStyles = makeStyles({
@@ -35,6 +37,7 @@ const useStyles = makeStyles({
 
 const NoteEditor = ({ selectedNote }) => {
   const classes = useStyles();
+  const editable = useSelector(selectors.editable);
   const noteData = useFetchNoteData(selectedNote);
   const {
     updateNoteData,
@@ -61,6 +64,7 @@ const NoteEditor = ({ selectedNote }) => {
             onClickLink={onClickLink}
             uploadImage={uploadImage}
             autoFocus
+            readOnly={!editable}
           />
         ) : (
           <>
