@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useSnackbar } from "notistack";
 import { db, Note } from "../../../app/storage/Dexie";
 import NoteContent from "../../../app/storage/Dexie/NoteContent";
 import useDebouncedCallback from "../../../hooks/useDebounceCallback";
@@ -7,6 +8,7 @@ import { actions } from "../slice";
 
 const useNoteActions = (noteDetail) => {
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const [touched, setTouched] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -127,20 +129,39 @@ const useNoteActions = (noteDetail) => {
       const match = href.match(/\/note\?id=(\d+)/);
       if (match) {
         const noteid = parseInt(match[1]);
+        const noteData = await db.note.where({ noteid }).first();
+        if (noteData === undefined) {
+          enqueueSnackbar("The page doesn't exist", {
+            variant: "error",
+          });
+          return;
+        }
         dispatch(actions.selectNote(noteid));
       } else {
         window.open(href, "_blank").focus();
       }
     },
-    [dispatch]
+    [dispatch, enqueueSnackbar]
   );
 
-  const deleteNote = () => {
+  const deleteNote = useCallback(async () => {
     // db.note.where("parentnoteid").equals(noteDetail.noteid).delete();
-    db.note.delete(noteDetail.noteid);
+    const totalChildren = await db.note
+      .where("parentnoteid")
+      .equals(noteDetail.noteid)
+      .count();
+
+    if (totalChildren > 0) {
+      enqueueSnackbar("Couldn't delete, the note still has children", {
+        variant: "error",
+      });
+      return;
+    }
+
+    await db.note.delete(noteDetail.noteid);
     dispatch(actions.closeNoteListActionMenu());
     dispatch(actions.refreshTreeList());
-  };
+  }, [dispatch, noteDetail, enqueueSnackbar]);
 
   return {
     updateNoteName,

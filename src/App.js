@@ -13,6 +13,7 @@ import {
   unstable_createMuiStrictModeTheme,
 } from "@material-ui/core";
 import Bookmark from "./features/bookmark/Bookmark";
+import CustomSnackbarProvider from "./components/CustomSnackbarProvider";
 
 ImageAPI.getImageBase64().then((imageURI) => {
   store.dispatch(homepageActions.loadImage(imageURI));
@@ -26,13 +27,15 @@ function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Homepage />
-        <Sidebar />
-        <Todo />
-        <Note />
-        <Bookmark />
-        <Settings />
+        <CustomSnackbarProvider>
+          <CssBaseline />
+          <Homepage />
+          <Sidebar />
+          <Todo />
+          <Note />
+          <Bookmark />
+          <Settings />
+        </CustomSnackbarProvider>
       </ThemeProvider>
     </>
   );
