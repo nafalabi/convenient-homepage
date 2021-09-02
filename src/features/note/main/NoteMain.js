@@ -9,7 +9,7 @@ const NoteMain = ({ dialogRef }) => {
   const selectedNote = useSelector(selectors.selectedNote);
 
   useListenEventFromRef("keydown", dialogRef, (e) => {
-    console.log(e);
+    // console.log(e);
   });
 
   if (!selectedNote) return <NoteHome />;

@@ -1,76 +1,46 @@
-import {
-  Box,
-  Button,
-  Grid,
-  makeStyles,
-  Paper,
-  Typography,
-} from "@material-ui/core";
-import { Notes } from "@material-ui/icons";
-import { useLiveQuery } from "dexie-react-hooks";
+import { Box, makeStyles } from "@material-ui/core";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { db } from "../../../app/storage/Dexie";
-import { actions } from "../slice";
+import { useSelector } from "react-redux";
+import { selectors } from "../slice";
+import Editor from "rich-markdown-editor";
+import useNoteActions from "../hooks/useNoteActions";
 
 const useStyles = makeStyles({
-  multiLineEllipsis: {
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    display: "-webkit-box",
-    "-webkit-line-clamp": 2,
-    "-webkit-box-orient": "vertical",
+  "@global": {
+    "#block-menu-container": {
+      // The popover of "+" button for rich markdown editor
+      zIndex: 2000, // need to bring up otherwise will be blocked by the note panel/modal
+    },
+    "div[offset]": {
+      // similar as the above, to bring the covered element up
+      zIndex: 2000,
+    },
   },
 });
 
+const welcomeMessage = `# Welcome\n
+Organize everything in one place.\n
+This is the homepage, you can edit this page try anything here.\n
+But all changes will be discarded once you change page.\n
+Have fun!\n
+\\
+\\`;
+
 const NoteHome = () => {
-  const noteList =
-    useLiveQuery(async () => {
-      let notes = [];
-      await db.note
-        .where("firstlevel")
-        .equals(1)
-        .each((row) => {
-          delete row.notecontent;
-          notes.push(row);
-        });
-      return notes;
-    }, []) || [];
-  const classes = useStyles();
-  const dispatch = useDispatch();
+  useStyles();
+  const editable = useSelector(selectors.editable);
+  const { onClickLink, uploadImage } = useNoteActions();
 
   return (
     <Box>
-      <Typography variant="h4">Welcome</Typography>
-      <Box maxWidth="300px" lineHeight="1.5">
-        <Typography variant="subtitle1">
-          This is the homepage of Note
-        </Typography>
-        <Typography variant="body2">
-          Please select one of the note to get started, or create a new one.
-        </Typography>
-      </Box>
-      <Box mt={2}>
-        <Grid container spacing={2}>
-          {noteList.map((note) => (
-            <Grid item key={note.noteid}>
-              <Box clone width="100px" p={1} textAlign="center" display="block">
-                <Paper
-                  component={Button}
-                  onClick={() => dispatch(actions.selectNote(note.noteid))}
-                >
-                  <Notes fontSize="large" />
-                  <Typography
-                    variant="body2"
-                    className={classes.multiLineEllipsis}
-                  >
-                    {note.notename}
-                  </Typography>
-                </Paper>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
+      <Box ml={2} mb={2}>
+        <Editor
+          defaultValue={welcomeMessage}
+          onClickLink={onClickLink}
+          uploadImage={uploadImage}
+          autoFocus
+          readOnly={!editable}
+        />
       </Box>
     </Box>
   );
