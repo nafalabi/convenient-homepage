@@ -107,7 +107,6 @@ const useNoteActions = (noteDetail) => {
       }
 
       dispatch(actions.refreshTreeList());
-      dispatch(actions.closeNoteListActionMenu());
 
       return `/note?id=${noteid}`;
     },
@@ -159,7 +158,6 @@ const useNoteActions = (noteDetail) => {
     }
 
     await db.note.delete(noteDetail.noteid);
-    dispatch(actions.closeNoteListActionMenu());
     dispatch(actions.refreshTreeList());
   }, [dispatch, noteDetail, enqueueSnackbar]);
 
