@@ -21,8 +21,11 @@ import {
 import localData from "../../../../app/storage/localData";
 import Unsplash from "./Providers/Unsplash";
 import Pixabay from "./Providers/Pixabay";
+import { useDialog } from "./hooks/useDialog";
+import { DIALOG_TESTPROVIDER } from "./dialogs/TestImageProvider";
 
 const ImageProvider = () => {
+  const { openDialog } = useDialog();
   const [isSaved, setSaved] = useState(false);
 
   const formik = useFormik({
@@ -87,6 +90,15 @@ const ImageProvider = () => {
                   <Typography variant="body1">Changes saved</Typography>
                 </Box>
               )}
+              <Box mr={2}>
+                <Button
+                  variant="contained"
+                  color="default"
+                  onClick={() => openDialog(DIALOG_TESTPROVIDER)}
+                >
+                  Test
+                </Button>
+              </Box>
               <Button variant="contained" color="primary" type="submit">
                 Save
               </Button>

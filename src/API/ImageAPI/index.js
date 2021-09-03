@@ -8,23 +8,33 @@ import {
   BACKGROUND_PROVIDER_UNSPLASH,
 } from "../../constant";
 
-export const ImageAPI = {
-  getImageBase64: async function () {
+class ImageAPI {
+  apiProvider = {};
+  refreshInterval = 0;
+
+  constructor() {
     const { provider, refresh_interval } = localData.backgroundProvider();
 
-    let ApiProvider = {};
     switch (provider) {
       case BACKGROUND_PROVIDER_PIXABAY:
-        ApiProvider = new Pixabay();
+        this.apiProvider = new Pixabay();
         break;
       case BACKGROUND_PROVIDER_UNSPLASH:
-        ApiProvider = new Unsplash();
+        this.apiProvider = new Unsplash();
         break;
       default:
-        ApiProvider = new Unsplash();
+        this.apiProvider = new Unsplash();
         break;
     }
 
+    this.refreshInterval = refresh_interval;
+  }
+
+  getNewBackground = async () => {
+    return await this.apiProvider.getImageBase64();
+  };
+
+  getActiveBackground = async () => {
     const activeBackground = (
       await db.background
         .where("expireat")
@@ -35,16 +45,21 @@ export const ImageAPI = {
 
     if (activeBackground) return activeBackground.content;
 
-    const imageData = await ApiProvider.getImageBase64();
+    const imageData = await this.getNewBackground();
 
-    const newBackground = new Background();
-    newBackground.downloadtime = Math.floor(Date.now() / 1000);
-    newBackground.expireat = Math.floor(Date.now() / 1000) + refresh_interval;
-    newBackground.content = imageData;
-    newBackground.save();
+    this.storeAndSaveAsActive(imageData);
 
     return imageData;
-  },
-};
+  };
 
-export default ImageAPI;
+  storeAndSaveAsActive = async (imageData) => {
+    const newBackground = new Background();
+    newBackground.downloadtime = Math.floor(Date.now() / 1000);
+    newBackground.expireat =
+      Math.floor(Date.now() / 1000) + this.refreshInterval;
+    newBackground.content = imageData;
+    newBackground.save();
+  };
+}
+
+export default new ImageAPI();

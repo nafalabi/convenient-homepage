@@ -1,6 +1,6 @@
 import React from "react";
 import store from "./app/store";
-import { ImageAPI } from "./API";
+import ImageAPI from "./API/ImageAPI";
 import { actions as homepageActions } from "./features/homepage/slice";
 import Homepage from "./features/homepage/Homepage";
 import Sidebar from "./features/sidebar/Sidebar";
@@ -15,7 +15,7 @@ import {
 import Bookmark from "./features/bookmark/Bookmark";
 import CustomSnackbarProvider from "./components/CustomSnackbarProvider";
 
-ImageAPI.getImageBase64().then((imageURI) => {
+ImageAPI.getActiveBackground().then((imageURI) => {
   store.dispatch(homepageActions.loadImage(imageURI));
 });
 

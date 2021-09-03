@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { db } from "../../app/storage/Dexie";
 
 const initialState = {
-  isOpen: true,
+  isOpen: false,
   selectedNote: 0,
   treeListRefreshRef: 0,
   noteStack: [], // for breadcrumb
