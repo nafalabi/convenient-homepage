@@ -12,18 +12,19 @@ class ImageAPI {
   apiProvider = {};
   refreshInterval = 0;
 
-  constructor() {
-    const { provider, refresh_interval } = localData.backgroundProvider();
+  constructor(parametersGiven) {
+    const parameters = parametersGiven || localData.backgroundProvider();
+    const { provider, refresh_interval } = parameters;
 
     switch (provider) {
       case BACKGROUND_PROVIDER_PIXABAY:
-        this.apiProvider = new Pixabay();
+        this.apiProvider = new Pixabay(parameters);
         break;
       case BACKGROUND_PROVIDER_UNSPLASH:
-        this.apiProvider = new Unsplash();
+        this.apiProvider = new Unsplash(parameters);
         break;
       default:
-        this.apiProvider = new Unsplash();
+        this.apiProvider = new Unsplash(parameters);
         break;
     }
 
@@ -58,8 +59,8 @@ class ImageAPI {
     newBackground.expireat =
       Math.floor(Date.now() / 1000) + this.refreshInterval;
     newBackground.content = imageData;
-    newBackground.save();
+    await newBackground.save();
   };
 }
 
-export default new ImageAPI();
+export default ImageAPI;

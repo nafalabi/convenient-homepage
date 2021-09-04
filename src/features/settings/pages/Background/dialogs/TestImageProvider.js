@@ -16,7 +16,7 @@ export const DIALOG_TESTPROVIDER = 0;
 
 const DialogTestImageProvider = () => {
   const { enqueueSnackbar } = useSnackbar();
-  const { closeDialog } = useDialog();
+  const { closeDialog, args } = useDialog();
   const [imageData, setImageData] = useState(null);
   const [refreshReference, setRefreshReference] = useState(0);
 
@@ -30,16 +30,24 @@ const DialogTestImageProvider = () => {
       enqueueSnackbar("The image is not loaded yet", { variant: "error" });
       return;
     }
-    await ImageAPI.storeAndSaveAsActive(imageData);
+    const imageAPI = new ImageAPI(args);
+    await imageAPI.storeAndSaveAsActive(imageData);
     closeDialog();
   };
 
   useEffect(() => {
     (async () => {
-      const imageBase64 = await ImageAPI.getNewBackground();
+      const imageAPI = new ImageAPI(args);
+      const imageBase64 = await imageAPI.getNewBackground().catch(() => {
+        enqueueSnackbar(
+          "Failed to fetch the image, please check your configuration",
+          { variant: "error" }
+        );
+        return "";
+      });
       if (imageBase64 !== "") setImageData(imageBase64);
     })();
-  }, [refreshReference]);
+  }, [refreshReference, args, enqueueSnackbar]);
 
   return (
     <form

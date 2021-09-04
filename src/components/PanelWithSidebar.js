@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: "800px",
     minHeight: `calc(100vh - ${theme.spacing(6)}px)`,
     overflow: "hidden",
+    borderRadius: "0px",
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,

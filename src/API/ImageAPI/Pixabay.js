@@ -1,11 +1,16 @@
 import axios from "axios";
-import localData from "../../app/storage/localData";
 
 class Pixabay {
   apiUrl = "https://pixabay.com/api/?";
+  parameters = {};
+
+  constructor(parameters) {
+    this.parameters = parameters;
+  }
 
   generateUrl() {
-    let { pixabay_apikey, ...rawParams } = localData.backgroundProvider();
+    let { pixabay_apikey, ...rawParams } = this.parameters;
+    rawParams.pixabay_page = Math.floor(Math.random() * 11);
     const paramsString = Object.entries(rawParams).reduce(
       (stream, [key, value]) => {
         if (!key.includes("pixabay_")) return "";
@@ -19,7 +24,7 @@ class Pixabay {
   }
 
   async getImageBase64() {
-    let { pixabay_per_page } = localData.backgroundProvider();
+    let { pixabay_per_page } = this.parameters;
     const res = await axios.get(this.generateUrl());
     const random = Math.floor(Math.random() * pixabay_per_page);
     const imageStream = await axios({

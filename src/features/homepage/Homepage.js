@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Greeting from "./Greeeting";
-import { selectors } from "./slice";
-import { useSelector } from "react-redux";
+import { selectors, actions } from "./slice";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import ImageAPI from "../../API/ImageAPI";
 
 const HomepageRoot = styled.div`
   background-size: cover;
@@ -30,8 +31,16 @@ const HomepageRoot = styled.div`
 `;
 
 const Homepage = () => {
+  const dispatch = useDispatch();
   const imageURI = useSelector(selectors.imageURI);
   const isLoaded = useSelector(selectors.isLoaded);
+
+  useEffect(() => {
+    const imageAPI = new ImageAPI();
+    imageAPI.getActiveBackground().then((imageURI) => {
+      dispatch(actions.loadImage(imageURI));
+    });
+  }, [dispatch]);
 
   return (
     <HomepageRoot

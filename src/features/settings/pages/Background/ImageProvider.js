@@ -94,7 +94,7 @@ const ImageProvider = () => {
                 <Button
                   variant="contained"
                   color="default"
-                  onClick={() => openDialog(DIALOG_TESTPROVIDER)}
+                  onClick={() => openDialog(DIALOG_TESTPROVIDER, formik.values)}
                 >
                   Test
                 </Button>
