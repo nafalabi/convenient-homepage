@@ -1,4 +1,5 @@
 import backgroundProviderDefaults from "./defaultValues/backgroundProvider.json";
+import generalSettingsDefaults from "./defaultValues/generalSettings.json";
 
 const setOrGet = (key, value, defaultValue) => {
   if (value !== undefined) {
@@ -12,6 +13,8 @@ class LocalStorage {
   selectedTodoId = (value) => setOrGet("selectedTodoId", value);
   backgroundProvider = (value) =>
     setOrGet("backgroundProvider", value, backgroundProviderDefaults);
+  generalSettings = (value) =>
+    setOrGet("generalSettings", value, generalSettingsDefaults);
 }
 
 const localData = new LocalStorage();

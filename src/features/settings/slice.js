@@ -7,7 +7,7 @@ export const slice = createSlice({
   name: "settings",
   initialState: {
     isOpen: true,
-    page: PAGE_BACKGROUND,
+    page: PAGE_GENERAL,
   },
   reducers: {
     toggleSettings: (state) => {

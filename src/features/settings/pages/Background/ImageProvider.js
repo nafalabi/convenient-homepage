@@ -39,7 +39,7 @@ const ImageProvider = () => {
   });
 
   return (
-    <Accordion defaultExpanded={false}>
+    <Accordion defaultExpanded={true}>
       <AccordionSummary expandIcon={<ExpandMore />}>
         <Box flexBasis="10rem" flexShrink={0}>
           <Typography>Image Provider</Typography>
