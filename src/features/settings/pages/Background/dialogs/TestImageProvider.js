@@ -36,17 +36,18 @@ const DialogTestImageProvider = () => {
   };
 
   useEffect(() => {
-    (async () => {
-      const imageAPI = new ImageAPI(args);
-      const imageBase64 = await imageAPI.getNewBackground().catch(() => {
-        enqueueSnackbar(
-          "Failed to fetch the image, please check your configuration",
-          { variant: "error" }
-        );
-        return "";
-      });
-      if (imageBase64 !== "") setImageData(imageBase64);
-    })();
+    if (args != null)
+      (async () => {
+        const imageAPI = new ImageAPI(args);
+        const { imageBase64 } = await imageAPI.getNewBackground().catch(() => {
+          enqueueSnackbar(
+            "Failed to fetch the image, please check your configuration",
+            { variant: "error" }
+          );
+          return { imageBase64: "" };
+        });
+        if (imageBase64 !== "") setImageData(imageBase64);
+      })();
   }, [refreshReference, args, enqueueSnackbar]);
 
   return (

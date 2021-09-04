@@ -1,12 +1,15 @@
 import Pixabay from "./Pixabay";
 import Unsplash from "./Unsplash";
+import Bing from "./Bing";
 import localData from "../../app/storage/localData";
 import db from "../../app/storage/Dexie/db";
 import Background from "../../app/storage/Dexie/Background";
 import {
+  BACKGROUND_PROVIDER_BING,
   BACKGROUND_PROVIDER_PIXABAY,
   BACKGROUND_PROVIDER_UNSPLASH,
 } from "../../constant";
+import Axios from "axios";
 
 class ImageAPI {
   apiProvider = {};
@@ -23,6 +26,9 @@ class ImageAPI {
       case BACKGROUND_PROVIDER_UNSPLASH:
         this.apiProvider = new Unsplash(parameters);
         break;
+      case BACKGROUND_PROVIDER_BING:
+        this.apiProvider = new Bing(parameters);
+        break;
       default:
         this.apiProvider = new Unsplash(parameters);
         break;
@@ -32,7 +38,15 @@ class ImageAPI {
   }
 
   getNewBackground = async () => {
-    return await this.apiProvider.getImageBase64();
+    const imageUrl = await this.apiProvider.getUrl();
+    const response = await Axios({
+      method: "GET",
+      url: imageUrl,
+      responseType: "arraybuffer",
+    });
+    const imageBase64 = Buffer.from(response.data, "binary").toString("base64");
+    const url = response.request?.responseURL;
+    return { imageBase64, url };
   };
 
   getActiveBackground = async () => {
@@ -46,19 +60,19 @@ class ImageAPI {
 
     if (activeBackground) return activeBackground.content;
 
-    const imageData = await this.getNewBackground();
+    const { imageBase64 } = await this.getNewBackground();
 
-    this.storeAndSaveAsActive(imageData);
+    this.storeAndSaveAsActive(imageBase64);
 
-    return imageData;
+    return imageBase64;
   };
 
-  storeAndSaveAsActive = async (imageData) => {
+  storeAndSaveAsActive = async (imageBase64) => {
     const newBackground = new Background();
     newBackground.downloadtime = Math.floor(Date.now() / 1000);
     newBackground.expireat =
       Math.floor(Date.now() / 1000) + this.refreshInterval;
-    newBackground.content = imageData;
+    newBackground.content = imageBase64;
     await newBackground.save();
   };
 }

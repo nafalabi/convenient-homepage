@@ -21,6 +21,7 @@ import {
 import localData from "../../../../app/storage/localData";
 import Unsplash from "./Providers/Unsplash";
 import Pixabay from "./Providers/Pixabay";
+import Bing from "./Providers/Bing";
 import { useDialog } from "./hooks/useDialog";
 import { DIALOG_TESTPROVIDER } from "./dialogs/TestImageProvider";
 
@@ -72,6 +73,9 @@ const ImageProvider = () => {
             )}
             {formik.values.provider === BACKGROUND_PROVIDER_PIXABAY && (
               <Pixabay formik={formik} />
+            )}
+            {formik.values.provider === BACKGROUND_PROVIDER_BING && (
+              <Bing formik={formik} />
             )}
 
             <InlineFormControl label="Image refresh interval">
