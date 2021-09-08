@@ -52,7 +52,6 @@
     "customize-cra": "^1.0.0",
     "react-app-rewire-multiple-entry": "^2.2.1",
     "react-app-rewired": "^2.1.8",
-    "webpack-extension-manifest-plugin": "^0.7.0",
-    "webpack-extension-reloader": "^1.1.4"
+    "webpack-extension-manifest-plugin": "^0.7.0"
   }
 }

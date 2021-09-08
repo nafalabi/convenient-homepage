@@ -4,9 +4,8 @@ const {
   addWebpackPlugin,
 } = require("customize-cra");
 const CopyPlugin = require("copy-webpack-plugin");
-const ExtensionReloader = require("webpack-extension-reloader");
+// const ExtensionReloader = require("webpack-extension-reloader");
 const WebpackExtensionManifestPlugin = require("webpack-extension-manifest-plugin");
-const _ = require("./node_modules/lodash");
 
 const multipleEntry = require("react-app-rewire-multiple-entry")([
   {
@@ -50,50 +49,34 @@ const copyPlugin = new CopyPlugin({
   ],
 });
 
-// To enable the reloading extension
-const generateExtensionReloaderConfig = (config) => {
-  const clonedConfig = _.cloneDeep(config);
-  clonedConfig.output.filename = "";
-  const { entry } = multipleEntry.addMultiEntry(clonedConfig);
-  delete entry.main;
-  let background = "";
-  Object.entries(entry).forEach(([key, val]) => {
-    if (val.includes("src/background")) {
-      background = key;
-      delete entry[key];
-    }
-  });
-  const extensionPage = Object.keys(entry);
+const customeOverrideFuction = (config) => {
+  // Adding multiple entries
+  config = multipleEntry.addMultiEntry(config);
 
-  return addWebpackPlugin(
-    new ExtensionReloader({
-      port: 9090, // Which port use to create the server
-      reloadPage: true, // Force the reload of the page also
-      entries: {
-        // The entries used for the content/background scripts or extension pages
-        // contentScript: "content-script",
-        background: background,
-        extensionPage: extensionPage,
-      },
-    })
-  )(config);
-};
-
-// To modify the manifest.json file on compile time
-const extensionManifestPlugin = (config) => {
-  const clonedConfig = _.cloneDeep(config);
-  clonedConfig.output.filename = "";
-  const { entry } = multipleEntry.addMultiEntry(clonedConfig);
-  // Getting background script entry name
+  // Obtain background script
   let backgroundScript = [];
-  Object.entries(entry).forEach(([key, value]) => {
-    if (typeof value[0] == "string")
-      if (value[0].includes("src/background")) {
+  let background = "";
+  find_loop: for (const key in config.entry) {
+    const val = config.entry[key];
+    if (typeof val === "string")
+      if (val.includes("src/background")) {
         backgroundScript = `static/js/${key}.chunk.js`;
+        background = key;
+        break;
       }
-  });
+    if (typeof val === "object") {
+      for (const i in val) {
+        if (val[i].includes("src/background")) {
+          backgroundScript = `static/js/${key}.chunk.js`;
+          background = key;
+          break find_loop;
+        }
+      }
+    }
+  }
 
-  return addWebpackPlugin(
+  // Plugin to update manifest
+  config = addWebpackPlugin(
     new WebpackExtensionManifestPlugin({
       config: {
         base: require("./public/manifest.json"),
@@ -106,14 +89,36 @@ const extensionManifestPlugin = (config) => {
       },
     })
   )(config);
+
+  // Disabled for now
+  // // Extension Reloader
+  // if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+  //   let extensionPage = Object.keys(config.entry);
+  //   extensionPage = extensionPage.filter(
+  //     (value) => !(value === "main" || value === background)
+  //   );
+  //   config = addWebpackPlugin(
+  //     new ExtensionReloader({
+  //       // port: 9090, // Which port use to create the server
+  //       // reloadPage: true, // Force the reload of the page also
+  //       entries: {
+  //         // The entries used for the content/background scripts or extension pages
+  //         // contentScript: "content-script",
+  //         background: background,
+  //         extensionPage: extensionPage,
+  //       },
+  //     })
+  //   )(config);
+  // }
+
+  // set output file names to be the same regardless of the NODE_ENV
+  config.output.filename = "static/js/[name].js";
+  config.output.chunkFilename = "static/js/[name].chunk.js";
+
+  return config;
 };
 
 module.exports = {
-  webpack: override(
-    addWebpackPlugin(copyPlugin),
-    multipleEntry.addMultiEntry,
-    generateExtensionReloaderConfig,
-    extensionManifestPlugin
-  ),
+  webpack: override(addWebpackPlugin(copyPlugin), customeOverrideFuction),
   devServer: overrideDevServer(devServerConfig()),
 };
