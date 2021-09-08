@@ -24,8 +24,10 @@ import Pixabay from "./Providers/Pixabay";
 import Bing from "./Providers/Bing";
 import { useDialog } from "./hooks/useDialog";
 import { DIALOG_TESTPROVIDER } from "./dialogs/TestImageProvider";
+import { useSnackbar } from "notistack";
 
 const ImageProvider = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const { openDialog } = useDialog();
   const [isSaved, setSaved] = useState(false);
 
@@ -35,6 +37,9 @@ const ImageProvider = () => {
       setSaved(false);
       localData.backgroundProvider(values);
       setTimeout(() => setSaved(true), 200);
+      enqueueSnackbar("Image Provider Settings has been saved", {
+        variant: "success",
+      });
     },
   });
 
