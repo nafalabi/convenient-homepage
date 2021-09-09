@@ -51,7 +51,6 @@
     "copy-webpack-plugin": "^6.4.1",
     "customize-cra": "^1.0.0",
     "react-app-rewire-multiple-entry": "^2.2.1",
-    "react-app-rewired": "^2.1.8",
-    "webpack-extension-manifest-plugin": "^0.7.0"
+    "react-app-rewired": "^2.1.8"
   }
 }

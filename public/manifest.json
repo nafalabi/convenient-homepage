@@ -2,13 +2,13 @@
   "name": "Convenient Homepage",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "Manage your notes and link directly on your browser homepage",
+  "description": "Manage your notes and links directly on your browser homepage",
   "icons": {
     "192": "logo192.png"
   },
   "permissions": ["bookmarks", "https://*/*"],
   "background": {
-    "scripts": [],
+    "page": "background.html",
     "persistent": true
   },
   "browser_action": {

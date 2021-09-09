@@ -4,9 +4,8 @@ const {
   addWebpackPlugin,
 } = require("customize-cra");
 const CopyPlugin = require("copy-webpack-plugin");
-// const ExtensionReloader = require("webpack-extension-reloader");
-const WebpackExtensionManifestPlugin = require("webpack-extension-manifest-plugin");
 
+// Extension entries / pages
 const multipleEntry = require("react-app-rewire-multiple-entry")([
   {
     // points to the popup entry point
@@ -24,12 +23,13 @@ const multipleEntry = require("react-app-rewire-multiple-entry")([
   {
     // points to the options page entry point
     entry: "src/background/index.js",
-    // template: "public/index.html",
-    // outPath: "/index.html",
+    template: "public/background.html",
+    outPath: "/background.html",
   },
 ]);
 
-const devServerConfig = () => (config) => {
+// Custom function to override webpack dev server config
+const customOverrideDevServer = (config) => {
   return {
     ...config,
     // webpackDevService doesn't write the files to desk
@@ -42,74 +42,17 @@ const devServerConfig = () => (config) => {
   };
 };
 
-const copyPlugin = new CopyPlugin({
-  patterns: [
-    // copy assets
-    { from: "public", to: "" },
-  ],
-});
-
-const customeOverrideFuction = (config) => {
-  // Adding multiple entries
-  config = multipleEntry.addMultiEntry(config);
-
-  // Obtain background script
-  let backgroundScript = [];
-  let background = "";
-  find_loop: for (const key in config.entry) {
-    const val = config.entry[key];
-    if (typeof val === "string")
-      if (val.includes("src/background")) {
-        backgroundScript = `static/js/${key}.chunk.js`;
-        background = key;
-        break;
-      }
-    if (typeof val === "object") {
-      for (const i in val) {
-        if (val[i].includes("src/background")) {
-          backgroundScript = `static/js/${key}.chunk.js`;
-          background = key;
-          break find_loop;
-        }
-      }
-    }
-  }
-
-  // Plugin to update manifest
+// Custom function to override webpack config
+const customOverrideWebpack = (config) => {
+  // Copy all assets to output folder
   config = addWebpackPlugin(
-    new WebpackExtensionManifestPlugin({
-      config: {
-        base: require("./public/manifest.json"),
-        extend: {
-          background: {
-            scripts: [backgroundScript],
-            persistent: true,
-          },
-        },
-      },
+    new CopyPlugin({
+      patterns: [{ from: "public", to: "" }],
     })
   )(config);
 
-  // Disabled for now
-  // // Extension Reloader
-  // if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-  //   let extensionPage = Object.keys(config.entry);
-  //   extensionPage = extensionPage.filter(
-  //     (value) => !(value === "main" || value === background)
-  //   );
-  //   config = addWebpackPlugin(
-  //     new ExtensionReloader({
-  //       // port: 9090, // Which port use to create the server
-  //       // reloadPage: true, // Force the reload of the page also
-  //       entries: {
-  //         // The entries used for the content/background scripts or extension pages
-  //         // contentScript: "content-script",
-  //         background: background,
-  //         extensionPage: extensionPage,
-  //       },
-  //     })
-  //   )(config);
-  // }
+  // Adding multiple entries
+  config = multipleEntry.addMultiEntry(config);
 
   // set output file names to be the same regardless of the NODE_ENV
   config.output.filename = "static/js/[name].js";
@@ -119,6 +62,6 @@ const customeOverrideFuction = (config) => {
 };
 
 module.exports = {
-  webpack: override(addWebpackPlugin(copyPlugin), customeOverrideFuction),
-  devServer: overrideDevServer(devServerConfig()),
+  webpack: override(customOverrideWebpack),
+  devServer: overrideDevServer(customOverrideDevServer),
 };
