@@ -3,10 +3,10 @@ import {
   IconButton,
   Input,
   InputAdornment,
-} from "@material-ui/core";
+} from "@mui/material";
 import React, { useState } from "react";
-import CheckIcon from "@material-ui/icons/Check";
-import CloseIcon from "@material-ui/icons/Close";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
 
 const InputWithConfirmation = ({
   onConfirm,

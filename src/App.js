@@ -4,11 +4,8 @@ import Sidebar from "./features/sidebar/Sidebar";
 import Todo from "./features/todo/Todo";
 import Note from "./features/note/Note";
 import Settings from "./features/settings/Settings";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import {
-  ThemeProvider,
-  unstable_createMuiStrictModeTheme,
-} from "@material-ui/core";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider, StyledEngineProvider, unstable_createMuiStrictModeTheme } from "@mui/material";
 import Bookmark from "./features/bookmark/Bookmark";
 import CustomSnackbarProvider from "./components/CustomSnackbarProvider";
 
@@ -17,8 +14,8 @@ const theme = unstable_createMuiStrictModeTheme({
 });
 
 function App() {
-  return (
-    <>
+  return <>
+    <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <CustomSnackbarProvider>
           <CssBaseline />
@@ -30,8 +27,8 @@ function App() {
           <Settings />
         </CustomSnackbarProvider>
       </ThemeProvider>
-    </>
-  );
+    </StyledEngineProvider>
+  </>;
 }
 
 export default App;

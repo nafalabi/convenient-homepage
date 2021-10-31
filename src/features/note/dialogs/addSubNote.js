@@ -7,7 +7,7 @@ import {
   Button,
   Box,
   DialogContentText,
-} from "@material-ui/core";
+} from "@mui/material";
 import { useFormik } from "formik";
 
 const DialogAddSubNote = ({ action, handleClose, noteDetails }) => {

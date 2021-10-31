@@ -1,5 +1,6 @@
-import { Button, ButtonGroup, withStyles } from "@material-ui/core";
-import { Apps, Reorder } from "@material-ui/icons";
+import { Button, ButtonGroup } from "@mui/material";
+import withStyles from '@mui/styles/withStyles';
+import { Apps, Reorder } from "@mui/icons-material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "../slice";

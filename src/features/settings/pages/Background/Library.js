@@ -4,14 +4,14 @@ import {
   AccordionSummary,
   Box,
   Fab,
-  GridList,
-  GridListTile,
+  ImageList,
+  ImageListItem,
   styled,
   Tooltip,
   Typography,
-} from "@material-ui/core";
-import { Check, Delete, ExpandMore } from "@material-ui/icons";
-import { Pagination } from "@material-ui/lab";
+} from "@mui/material";
+import { Check, Delete, ExpandMore } from "@mui/icons-material";
+import { Pagination } from '@mui/material';
 import React, { useState } from "react";
 import localData from "../../../../app/storage/localData";
 import useSubscribeBackgroundImages from "./hooks/useSubscribeBackgroundImages";
@@ -57,7 +57,7 @@ const Library = () => {
 
             return (
               <Box width="100%">
-                <GridList cols={3}>
+                <ImageList cols={3}>
                   {images.map((background) => {
                     const { content, backgroundid } = background;
                     const deleteImage = () => background.delete();
@@ -72,7 +72,7 @@ const Library = () => {
 
                     return (
                       <HoverOverlay clone key={backgroundid}>
-                        <GridListTile>
+                        <ImageListItem>
                           {backgroundid === selectedBackgroundId && (
                             <Box position="absolute" zIndex={10}>
                               <Box m={1}>
@@ -108,11 +108,11 @@ const Library = () => {
                             }
                             draggable={false}
                           />
-                        </GridListTile>
+                        </ImageListItem>
                       </HoverOverlay>
                     );
                   })}
-                </GridList>
+                </ImageList>
                 <Box mt={1} width="100%" display="flex">
                   <Box clone margin="auto">
                     <Pagination

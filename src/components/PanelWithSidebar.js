@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@mui/material/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import {
   Dialog,
   Drawer,
@@ -8,7 +9,7 @@ import {
   Typography,
   Box,
   Divider,
-} from "@material-ui/core";
+} from "@mui/material";
 import { useCallback } from "react";
 import useDebouncedCallback from "../hooks/useDebounceCallback";
 
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   dialogPaper: {
     minWidth: "800px",
-    minHeight: `calc(100vh - ${theme.spacing(6)}px)`,
+    minHeight: `calc(100vh - ${theme.spacing(6)})`,
     overflow: "hidden",
     borderRadius: "0px",
   },

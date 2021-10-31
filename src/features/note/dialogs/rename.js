@@ -5,7 +5,7 @@ import {
   TextField,
   DialogActions,
   Button,
-} from "@material-ui/core";
+} from "@mui/material";
 import { useFormik } from "formik";
 
 const DialogRenameNote = ({ action, handleClose, noteDetails }) => {

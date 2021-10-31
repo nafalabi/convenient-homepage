@@ -1,5 +1,6 @@
-import { Box, makeStyles, Typography } from "@material-ui/core";
-import { Skeleton } from "@material-ui/lab";
+import { Box, Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import { Skeleton } from '@mui/material';
 import React from "react";
 import { useSelector } from "react-redux";
 import Editor from "rich-markdown-editor";

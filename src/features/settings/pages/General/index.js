@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Divider, Typography } from "@material-ui/core";
+import { Box, Divider, Typography } from "@mui/material";
 import UserDetails from "./UserDetail";
 
 const General = () => {

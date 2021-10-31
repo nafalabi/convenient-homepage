@@ -1,6 +1,8 @@
 import React from "react";
 import { SnackbarProvider } from "notistack";
-import { Button, makeStyles } from "@material-ui/core";
+import { Button } from "@mui/material";
+
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles({ label: { fontWeight: "bold" } });
 

@@ -1,5 +1,5 @@
-import { Box, Button, Typography } from "@material-ui/core";
-import { Home } from "@material-ui/icons";
+import { Box, Button, Typography } from "@mui/material";
+import { Home } from "@mui/icons-material";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { actions } from "../slice";

@@ -5,11 +5,11 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from "@material-ui/core";
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDialog } from "../hooks/useDialog";
 import ImageAPI from "../../../../../API/ImageAPI/index";
-import { Skeleton } from "@material-ui/lab";
+import { Skeleton } from '@mui/material';
 import { useSnackbar } from "notistack";
 
 export const DIALOG_TESTPROVIDER = 0;

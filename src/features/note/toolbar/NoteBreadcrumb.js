@@ -1,12 +1,7 @@
 import React from "react";
-import {
-  Breadcrumbs,
-  darken,
-  Link,
-  useTheme,
-  withStyles,
-} from "@material-ui/core";
-import { Home, NavigateNext } from "@material-ui/icons";
+import { Breadcrumbs, darken, Link, useTheme } from "@mui/material";
+import withStyles from '@mui/styles/withStyles';
+import { Home, NavigateNext } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "../slice";
 

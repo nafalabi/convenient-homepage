@@ -11,14 +11,14 @@ import {
   ListItemIcon,
   ListItemText,
   styled,
-} from "@material-ui/core";
-import ListIcon from "@material-ui/icons/List";
+} from "@mui/material";
+import ListIcon from "@mui/icons-material/List";
 import {
   Search,
   Settings,
   LibraryBooks,
   CollectionsBookmark,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import InputWithConfirmation from "../../components/InputWithConfirmation";
 
 const SidebarBodyRoot = styled("div")({

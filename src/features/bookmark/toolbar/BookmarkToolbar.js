@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import BookmarkBreadcrumb from "./BookmarkBreadcrumb";
 import LayoutSwitcher from "./LayoutSwitcher";
 

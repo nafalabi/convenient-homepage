@@ -6,12 +6,12 @@ import {
   Button,
   TextField,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import { useFormik } from "formik";
 import React from "react";
 import InlineFormControl from "../../../../components/InlineFormControl";
 import localData from "../../../../app/storage/localData";
-import { ExpandMore } from "@material-ui/icons";
+import { ExpandMore } from "@mui/icons-material";
 import { useSnackbar } from "notistack";
 
 const UserDetails = () => {

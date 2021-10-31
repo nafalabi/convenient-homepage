@@ -1,4 +1,4 @@
-import { Box, Checkbox, TextField } from "@material-ui/core";
+import { Box, Checkbox, TextField } from "@mui/material";
 import React from "react";
 import InlineFormControl from "../../../../../components/InlineFormControl";
 

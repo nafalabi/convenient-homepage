@@ -1,4 +1,4 @@
-import { Dialog, Menu, MenuItem } from "@material-ui/core";
+import { Dialog, Menu, MenuItem } from "@mui/material";
 import React, { useState } from "react";
 import DialogAddSubNote from "../dialogs/addSubNote";
 import DialogDeleteNote from "../dialogs/delete";

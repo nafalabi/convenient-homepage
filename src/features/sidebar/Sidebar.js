@@ -2,13 +2,9 @@ import React from "react";
 import { actions, selectors } from "./slice";
 import { useDispatch, useSelector } from "react-redux";
 import SidebarBody from "./SidebarBody";
-import {
-  IconButton,
-  styled,
-  SwipeableDrawer,
-  withStyles,
-} from "@material-ui/core";
-import { Menu } from "@material-ui/icons";
+import { IconButton, styled, SwipeableDrawer } from "@mui/material";
+import withStyles from '@mui/styles/withStyles';
+import { Menu } from "@mui/icons-material";
 
 const SidebarTogglerBtn = withStyles({
   root: {

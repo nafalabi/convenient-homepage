@@ -5,11 +5,11 @@ import {
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-} from "@material-ui/core";
+} from "@mui/material";
 import { useState } from "react";
-import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import DeleteIcon from "@material-ui/icons/Delete";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import DeleteIcon from "@mui/icons-material/Delete";
 import InputWithConfirmation from "../../../components/InputWithConfirmation";
 import { db } from "../../../app/storage/Dexie";
 

@@ -1,4 +1,5 @@
-import { FormControlLabel, makeStyles, Switch } from "@material-ui/core";
+import { FormControlLabel, Switch } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "../slice";

@@ -6,8 +6,8 @@ import {
   DialogActions,
   Button,
   Box,
-} from "@material-ui/core";
-import { Subject } from "@material-ui/icons";
+} from "@mui/material";
+import { Subject } from "@mui/icons-material";
 
 const DialogDeleteNote = ({ action, handleClose, noteDetails }) => {
   return (

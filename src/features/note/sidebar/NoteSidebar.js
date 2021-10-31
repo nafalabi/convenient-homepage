@@ -1,12 +1,12 @@
-import { Box, LinearProgress } from "@material-ui/core";
-import { ChevronRight, ExpandMore, Subject } from "@material-ui/icons";
+import { Box, LinearProgress } from "@mui/material";
+import { ChevronRight, ExpandMore, Subject } from "@mui/icons-material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useFetchNoteList from "../hooks/useFetchNoteList";
 import { actions, selectors } from "../slice";
 import InputWithConfirmation from "../../../components/InputWithConfirmation";
 import { db, Note } from "../../../app/storage/Dexie";
-import { TreeView } from "@material-ui/lab";
+import { TreeView } from "@mui/lab";
 import useFetchExpandedNoteIds from "../hooks/useFetchExpandedNoteIds";
 import NoteTreeListItem from "./NoteTreeListItem";
 import NoteSidebarContextMenu from "./NoteSidebarContextMenu";

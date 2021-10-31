@@ -4,8 +4,8 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-} from "@material-ui/core";
-import { Image, Settings } from "@material-ui/icons";
+} from "@mui/material";
+import { Image, Settings } from "@mui/icons-material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actions, PAGE_BACKGROUND, PAGE_GENERAL, selectors } from "./slice";

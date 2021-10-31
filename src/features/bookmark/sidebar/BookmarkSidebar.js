@@ -1,7 +1,7 @@
 import React from "react";
-import { Box } from "@material-ui/core";
-import { ExpandMore, ChevronRight, Folder } from "@material-ui/icons";
-import { TreeView } from "@material-ui/lab";
+import { Box } from "@mui/material";
+import { ExpandMore, ChevronRight, Folder } from "@mui/icons-material";
+import { TreeView } from "@mui/lab";
 import BookmarkTreeListItem from "./BookmarkTreeListItem";
 import useSubscribeBookmarks from "../hooks/useSubscribeBookmarks";
 import { useDispatch, useSelector } from "react-redux";

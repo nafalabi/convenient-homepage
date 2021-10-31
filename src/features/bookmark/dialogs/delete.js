@@ -5,8 +5,8 @@ import {
   DialogContentText,
   DialogActions,
   Button,
-} from "@material-ui/core";
-import { Bookmark } from "@material-ui/icons";
+} from "@mui/material";
+import { Bookmark } from "@mui/icons-material";
 
 const DialogDeleteBookmark = ({ action, handleClose, bookmarkDetail }) => {
   const bookmarkDomain = bookmarkDetail.url

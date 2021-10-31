@@ -1,16 +1,10 @@
-import {
-  IconButton,
-  ListItem,
-  ListItemIcon,
-  ListItemSecondaryAction,
-  ListItemText,
-  makeStyles,
-} from "@material-ui/core";
+import { IconButton, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import React from "react";
-import ListIcon from "@material-ui/icons/List";
+import ListIcon from "@mui/icons-material/List";
 import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "../slice";
-import { Delete } from "@material-ui/icons";
+import { Delete } from "@mui/icons-material";
 import { db } from "../../../app/storage/Dexie";
 
 const useStyle = makeStyles({

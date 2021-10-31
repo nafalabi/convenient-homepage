@@ -5,8 +5,8 @@ import {
   List,
   Tooltip,
   Box,
-} from "@material-ui/core";
-import { DragIndicator, Folder } from "@material-ui/icons";
+} from "@mui/material";
+import { DragIndicator, Folder } from "@mui/icons-material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useContextMenu from "../hooks/useContextMenu";

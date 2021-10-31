@@ -1,4 +1,4 @@
-import { Dialog, Menu, MenuItem } from "@material-ui/core";
+import { Dialog, Menu, MenuItem } from "@mui/material";
 import React, { useState } from "react";
 import useBookmarksActions from "../hooks/useBookmarksActions";
 import DialogEditBookmark from "../dialogs/edit";

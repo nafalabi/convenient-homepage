@@ -1,4 +1,4 @@
-import { Dialog } from "@material-ui/core";
+import { Dialog } from "@mui/material";
 import React from "react";
 import { useDialog } from "../hooks/useDialog";
 import DialogTestImageProvider, { DIALOG_TESTPROVIDER } from "./TestImageProvider";

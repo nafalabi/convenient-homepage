@@ -1,10 +1,11 @@
 import React, { createRef, useEffect } from "react";
 import PropTypes from "prop-types";
-import { makeStyles, alpha, useTheme } from "@material-ui/core/styles";
-import TreeItem from "@material-ui/lab/TreeItem";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import Tooltip from "@material-ui/core/Tooltip";
+import { alpha, useTheme } from "@mui/material/styles";
+import makeStyles from '@mui/styles/makeStyles';
+import TreeItem from "@mui/lab/TreeItem";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Tooltip from "@mui/material/Tooltip";
 
 const useTreeItemStyles = makeStyles((theme) => ({
   root: {
