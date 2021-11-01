@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { db } from "../../../app/storage/Dexie";
+import db from "../../../app/storage/dexie/db";
 
 const useFetchNoteList = (refreshReference = 0) => {
   const [noteList, setNoteList] = useState(null);

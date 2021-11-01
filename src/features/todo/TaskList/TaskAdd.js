@@ -4,7 +4,7 @@ import React from "react";
 import { useCallback } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { Task } from "../../../app/storage/Dexie";
+import Task from "../../../app/storage/dexie/Task";
 import InputWithConfirmation from "../../../components/InputWithConfirmation";
 import { selectors } from "../slice";
 

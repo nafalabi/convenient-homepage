@@ -1,8 +1,9 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
-import { db, Note } from "../../../app/storage/Dexie";
-import NoteContent from "../../../app/storage/Dexie/NoteContent";
+import db from "../../../app/storage/dexie/db";
+import Note from "../../../app/storage/dexie/Note";
+import NoteContent from "../../../app/storage/dexie/NoteContent";
 import useDebouncedCallback from "../../../hooks/useDebounceCallback";
 import { actions } from "../slice";
 

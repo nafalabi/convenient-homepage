@@ -1,5 +1,5 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "../../../app/storage/Dexie";
+import { db } from "../../../app/storage/dexie";
 
 const useSubscribeNote = (noteid) => {
   const note = useLiveQuery(() => {

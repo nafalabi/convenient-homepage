@@ -18,7 +18,7 @@ import {
   BACKGROUND_PROVIDER_PIXABAY,
   BACKGROUND_PROVIDER_UNSPLASH,
 } from "../../../../constant";
-import localData from "../../../../app/storage/localData";
+import localData from "../../../../app/storage/local-data";
 import Unsplash from "./Providers/Unsplash";
 import Pixabay from "./Providers/Pixabay";
 import Bing from "./Providers/Bing";

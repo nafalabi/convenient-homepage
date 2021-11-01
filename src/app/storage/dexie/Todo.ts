@@ -1,12 +1,17 @@
+import Task from "./Task";
 import db from "./db";
 
-const TodoSchema = db.todo.defineClass({
-  todoid: Number,
-  name: String,
-  tasks: Array,
-});
+export interface ITodo {
+  todoid?: number;
+  name?: string;
+  tasks?: Task[];
+}
 
-class Todo extends TodoSchema {
+class Todo implements ITodo {
+  todoid?: number;
+  name?: string;
+  tasks?: Task[];
+
   async save() {
     const todoid = await db.todo.put(this, this.todoid);
     this.todoid = todoid;

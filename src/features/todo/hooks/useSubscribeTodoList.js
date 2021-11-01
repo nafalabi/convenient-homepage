@@ -1,5 +1,5 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import db from "../../../app/storage/Dexie/db";
+import db from "../../../app/storage/dexie/db";
 
 const useSubscribeTodoList = () => {
   const todoList = useLiveQuery(() => {

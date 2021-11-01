@@ -1,21 +1,23 @@
 import Pixabay from "./Pixabay";
 import Unsplash from "./Unsplash";
 import Bing from "./Bing";
-import localData from "../../app/storage/localData";
-import db from "../../app/storage/Dexie/db";
-import Background from "../../app/storage/Dexie/Background";
+import localData from "../../app/storage/local-data";
+import db from "../../app/storage/dexie/db";
+import Background from "../../app/storage/dexie/Background";
 import {
   BACKGROUND_PROVIDER_BING,
   BACKGROUND_PROVIDER_PIXABAY,
   BACKGROUND_PROVIDER_UNSPLASH,
 } from "../../constant";
 import Axios from "axios";
+import { AbstractImageAPI } from "./type";
+import { IBackgroundProvider } from "../../app/storage/local-data/default-values/background-provider";
 
 class ImageAPI {
-  apiProvider = {};
+  apiProvider: AbstractImageAPI;
   refreshInterval = 0;
 
-  constructor(parametersGiven) {
+  constructor(parametersGiven: IBackgroundProvider) {
     const parameters = parametersGiven || localData.backgroundProvider();
     const { provider, refresh_interval } = parameters;
 
@@ -45,7 +47,7 @@ class ImageAPI {
       responseType: "arraybuffer",
     });
     const imageBase64 = Buffer.from(response.data, "binary").toString("base64");
-    const url = response.request?.responseURL;
+    const url: string = response.request?.responseURL;
     return { imageBase64, url };
   };
 
@@ -67,7 +69,7 @@ class ImageAPI {
     return imageBase64;
   };
 
-  storeAndSaveAsActive = async (imageBase64) => {
+  storeAndSaveAsActive = async (imageBase64: string) => {
     const newBackground = new Background();
     newBackground.downloadtime = Math.floor(Date.now() / 1000);
     newBackground.expireat =

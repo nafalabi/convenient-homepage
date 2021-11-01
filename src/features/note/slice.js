@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { db } from "../../app/storage/Dexie";
+import db from "../../app/storage/dexie/db";
 
 const initialState = {
   isOpen: true,

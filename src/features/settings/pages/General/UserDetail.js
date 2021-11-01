@@ -10,7 +10,7 @@ import {
 import { useFormik } from "formik";
 import React from "react";
 import InlineFormControl from "../../../../components/InlineFormControl";
-import localData from "../../../../app/storage/localData";
+import localData from "../../../../app/storage/local-data";
 import { ExpandMore } from "@mui/icons-material";
 import { useSnackbar } from "notistack";
 

@@ -1,18 +1,18 @@
 import axios from "axios";
+import { IBackgroundProvider } from "../../app/storage/local-data/default-values/background-provider";
+import { AbstractImageAPI } from "./type";
 
-class Bing {
+class Bing implements AbstractImageAPI {
   apiUrl = "https://www.bing.com/HPImageArchive.aspx?format=js&n=8"; // it only returns 8 max even if we requested for 100
-  parameters = {};
+  parameters: IBackgroundProvider;
 
-  constructor(parameters) {
+  constructor(parameters: IBackgroundProvider) {
     this.parameters = parameters;
   }
 
   async getUrl() {
     const imageIndex = this.parameters.bing_img_index || 0;
     const res = await axios.get(this.apiUrl + imageIndex);
-    console.log(res);
-    console.log(res.data);
     const uri = res.data.images[imageIndex].url;
     return "https://bing.com" + uri;
   }

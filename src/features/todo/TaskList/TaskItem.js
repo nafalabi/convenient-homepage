@@ -11,7 +11,7 @@ import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import InputWithConfirmation from "../../../components/InputWithConfirmation";
-import { db } from "../../../app/storage/Dexie";
+import db from "../../../app/storage/dexie/db";
 
 const TaskItem = ({ task }) => {
   const [isEditMode, setEditMode] = useState(false);

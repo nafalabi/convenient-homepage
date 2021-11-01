@@ -21,7 +21,7 @@ const multipleEntry = require("react-app-rewire-multiple-entry")([
     outPath: "/index.html",
   },
   {
-    // points to the options page entry point
+    // points to the background page entry point
     entry: "src/background/index.js",
     template: "public/background.html",
     outPath: "/background.html",

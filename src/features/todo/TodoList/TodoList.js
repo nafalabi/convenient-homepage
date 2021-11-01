@@ -2,7 +2,7 @@ import React from "react";
 import { Box, List, ListItem } from "@mui/material";
 import useSubscribeTodoList from "../hooks/useSubscribeTodoList";
 import InputWithConfirmation from "../../../components/InputWithConfirmation";
-import { Todo } from "../../../app/storage/Dexie";
+import Todo from "../../../app/storage/dexie/Todo";
 import TodoListItem from "./TodoListItem";
 
 const TodoList = () => {

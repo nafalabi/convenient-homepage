@@ -5,13 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import useFetchNoteList from "../hooks/useFetchNoteList";
 import { actions, selectors } from "../slice";
 import InputWithConfirmation from "../../../components/InputWithConfirmation";
-import { db, Note } from "../../../app/storage/Dexie";
+import Note from "../../../app/storage/dexie/Note";
+import db from "../../../app/storage/dexie/db";
 import { TreeView } from "@mui/lab";
 import useFetchExpandedNoteIds from "../hooks/useFetchExpandedNoteIds";
 import NoteTreeListItem from "./NoteTreeListItem";
 import NoteSidebarContextMenu from "./NoteSidebarContextMenu";
 import useContextMenu from "../hooks/useContextMenu";
-import NoteContent from "../../../app/storage/Dexie/NoteContent";
+import NoteContent from "../../../app/storage/dexie/NoteContent";
 
 const Sidebar = () => {
   const treeListRefreshRef = useSelector(selectors.treeListRefreshRef);

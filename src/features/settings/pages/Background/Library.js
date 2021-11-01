@@ -13,7 +13,7 @@ import {
 import { Check, Delete, ExpandMore } from "@mui/icons-material";
 import { Pagination } from '@mui/material';
 import React, { useState } from "react";
-import localData from "../../../../app/storage/localData";
+import localData from "../../../../app/storage/local-data";
 import useSubscribeBackgroundImages from "./hooks/useSubscribeBackgroundImages";
 import { actions as homepageActions } from "../../../homepage/slice";
 import { useDispatch } from "react-redux";
