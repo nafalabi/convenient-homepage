@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { ExpandMore } from "@mui/icons-material";
+import { ExpandMore, FactCheck, Save } from "@mui/icons-material";
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import InlineFormControl from "../../../../components/InlineFormControl";
@@ -101,12 +101,18 @@ const ImageProvider = () => {
               )}
               <Box mr={2}>
                 <Button
-                  variant="contained"
-                  onClick={() => openDialog(DIALOG_TESTPROVIDER, formik.values)}>
+                  onClick={() => openDialog(DIALOG_TESTPROVIDER, formik.values)}
+                  startIcon={<FactCheck />}
+                >
                   Test
                 </Button>
               </Box>
-              <Button variant="contained" color="primary" type="submit">
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                startIcon={<Save />}
+              >
                 Save
               </Button>
             </Box>

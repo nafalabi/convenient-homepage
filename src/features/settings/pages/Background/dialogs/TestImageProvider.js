@@ -9,7 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useDialog } from "../hooks/useDialog";
 import ImageAPI from "../../../../../API/ImageAPI/index";
-import { Skeleton } from '@mui/material';
+import { Skeleton } from "@mui/material";
 import { useSnackbar } from "notistack";
 
 export const DIALOG_TESTPROVIDER = 0;
@@ -51,33 +51,30 @@ const DialogTestImageProvider = () => {
   }, [refreshReference, args, enqueueSnackbar]);
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-      }}
-    >
+    <>
       <DialogTitle>Test Result</DialogTitle>
       <DialogContent>
-        <Box clone display="inline-flex">
-          <DialogContentText></DialogContentText>
-        </Box>
+        <DialogContentText></DialogContentText>
         <Box
-          style={{
+          component={(props) =>
+            imageData !== null ? (
+              <img
+                src={`data:image/png;base64,${imageData}`}
+                alt="test-result"
+                {...props}
+              />
+            ) : (
+              <Skeleton {...props} />
+            )
+          }
+          sx={{
             width: "100%",
-            minWidth: "910px",
             height: "auto",
             objectFit: "cover",
             aspectRatio: "16/9",
             transform: "scale(1)",
           }}
-          clone
-        >
-          {imageData !== null ? (
-            <img src={`data:image/png;base64,${imageData}`} alt="test-result" />
-          ) : (
-            <Skeleton />
-          )}
-        </Box>
+        />
       </DialogContent>
       <DialogActions>
         <Button variant="outlined" onClick={refreshImage}>
@@ -90,7 +87,7 @@ const DialogTestImageProvider = () => {
           Close
         </Button>
       </DialogActions>
-    </form>
+    </>
   );
 };
 

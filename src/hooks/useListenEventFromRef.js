@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 
 const useListenEventFromRef = (type, ref, callback) => {
-  const eventListener = useCallback(callback);
+  const eventListener = useCallback(callback, [callback]);
 
   useEffect(() => {
     const element = ref.current;

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import { styled } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
-import makeStyles from '@mui/styles/makeStyles';
 import {
   Dialog,
   Drawer,
@@ -13,41 +13,62 @@ import {
 import { useCallback } from "react";
 import useDebouncedCallback from "../hooks/useDebounceCallback";
 
-const MIN_WIDTH = 240;
+const PREFIX = "PanelWithSidebar";
+
+const MIN_WIDTH = 200;
+const DEFAULT_WIDTH = 240;
 const MAX_WIDTH = 600;
 
-const useStyles = makeStyles((theme) => ({
-  root: {
+const classes = {
+  root: `${PREFIX}-root`,
+  dialogPaper: `${PREFIX}-dialogPaper`,
+  appBar: `${PREFIX}-appBar`,
+  title: `${PREFIX}-title`,
+  drawer: `${PREFIX}-drawer`,
+  drawerPaper: `${PREFIX}-drawerPaper`,
+  drawerContainer: `${PREFIX}-drawerContainer`,
+  content: `${PREFIX}-content`,
+};
+
+const StyledDialog = styled(Dialog)(({ theme }) => ({
+  [`& .${classes.root}`]: {
     display: "flex",
     position: "relative",
     flexGrow: 1,
     overflow: "hidden",
   },
-  dialogPaper: {
+
+  [`& .${classes.dialogPaper}`]: {
     minWidth: "800px",
     minHeight: `calc(100vh - ${theme.spacing(6)})`,
     overflow: "hidden",
     borderRadius: "0px",
   },
-  appBar: {
+
+  [`& .${classes.appBar}`]: {
     zIndex: theme.zIndex.drawer + 1,
   },
-  title: {
-    width: MIN_WIDTH - theme.spacing(2),
+
+  [`& .${classes.title}`]: {
+    width: `calc(${DEFAULT_WIDTH}px - ${theme.spacing(2)})`,
   },
-  drawer: {
-    width: MIN_WIDTH,
+
+  [`& .${classes.drawer}`]: {
+    width: DEFAULT_WIDTH,
     flexShrink: 0,
   },
-  drawerPaper: {
+
+  [`& .${classes.drawerPaper}`]: {
     position: "absolute",
-    width: MIN_WIDTH,
+    width: DEFAULT_WIDTH,
     border: "none",
   },
-  drawerContainer: {
+
+  [`& .${classes.drawerContainer}`]: {
     overflow: "auto",
   },
-  content: {
+
+  [`& .${classes.content}`]: {
     flexGrow: 1,
     padding: theme.spacing(3),
     paddingTop: theme.spacing(2),
@@ -64,7 +85,6 @@ const PanelWithSidebar = ({
   ContentComponent,
   ToolbarItemComponent,
 }) => {
-  const classes = useStyles();
   const theme = useTheme();
   const dialogRef = useRef(null);
   const drawerRef = useRef(null);
@@ -100,7 +120,8 @@ const PanelWithSidebar = ({
         drawerBodyEl.style["width"] = `${newDrawerWidth}px`;
         // Set title width
         const titleEl = titleRef.current;
-        titleEl.style["width"] = `${newDrawerWidth - theme.spacing(2)}px`;
+        const reservedSpace = theme.spacing(2).replace(/\D/g, "");
+        titleEl.style["width"] = `${newDrawerWidth - reservedSpace}px`;
       }
     }, 10),
     [dragging]
@@ -142,7 +163,7 @@ const PanelWithSidebar = ({
   }, [onMouseMove, onTouchMove, onMouseUp]);
 
   return (
-    <Dialog
+    <StyledDialog
       ref={dialogRef}
       open={open}
       onClose={toggle}
@@ -202,7 +223,7 @@ const PanelWithSidebar = ({
           </main>
         </Box>
       </div>
-    </Dialog>
+    </StyledDialog>
   );
 };
 

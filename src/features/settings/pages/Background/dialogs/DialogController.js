@@ -6,7 +6,7 @@ import DialogTestImageProvider, { DIALOG_TESTPROVIDER } from "./TestImageProvide
 const DialogController = () => {
   const { open, dialogId, closeDialog } = useDialog();
   return (
-    <Dialog open={open} onClose={closeDialog} maxWidth="md">
+    <Dialog open={open} onClose={closeDialog} maxWidth="md" fullWidth>
       {dialogId === DIALOG_TESTPROVIDER && <DialogTestImageProvider />}
     </Dialog>
   );
