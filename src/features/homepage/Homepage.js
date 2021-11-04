@@ -3,7 +3,7 @@ import Greeting from "./Greeeting";
 import { selectors, actions } from "./slice";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import ImageAPI from "../../API/ImageAPI";
+import ImageAPI from "../../app/api/image-api";
 
 const HomepageRoot = styled.div`
   background-size: cover;

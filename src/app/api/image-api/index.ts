@@ -1,17 +1,17 @@
 import Pixabay from "./Pixabay";
 import Unsplash from "./Unsplash";
 import Bing from "./Bing";
-import localData from "../../app/storage/local-data";
-import db from "../../app/storage/dexie/db";
-import Background from "../../app/storage/dexie/Background";
+import localData from "../../storage/local-data";
+import db from "../../storage/dexie/db";
+import Background from "../../storage/dexie/Background";
 import {
   BACKGROUND_PROVIDER_BING,
   BACKGROUND_PROVIDER_PIXABAY,
   BACKGROUND_PROVIDER_UNSPLASH,
-} from "../../constant";
+} from "../../../constant";
 import Axios from "axios";
 import { AbstractImageAPI } from "./type";
-import { IBackgroundProvider } from "../../app/storage/local-data/default-values/background-provider";
+import { IBackgroundProvider } from "../../storage/local-data/default-values/background-provider";
 
 class ImageAPI {
   apiProvider: AbstractImageAPI;

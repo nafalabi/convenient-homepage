@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDialog } from "../hooks/useDialog";
-import ImageAPI from "../../../../../API/ImageAPI/index";
+import ImageAPI from "../../../../../app/api/image-api/index";
 import { Skeleton } from "@mui/material";
 import { useSnackbar } from "notistack";
 

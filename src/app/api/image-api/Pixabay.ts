@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IBackgroundProvider } from "../../app/storage/local-data/default-values/background-provider";
+import { IBackgroundProvider } from "../../storage/local-data/default-values/background-provider";
 import { AbstractImageAPI } from "./type";
 
 class Pixabay implements AbstractImageAPI {
