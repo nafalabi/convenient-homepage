@@ -11,7 +11,7 @@ import {
   createTheme,
 } from "@mui/material";
 import Bookmark from "./features/bookmark/Bookmark";
-import CustomSnackbarProvider from "./components/CustomSnackbarProvider";
+import CustomSnackbarProvider from "./components/NotifstackProvider";
 
 const theme = createTheme({
   typography: { button: { textTransform: "none" } },

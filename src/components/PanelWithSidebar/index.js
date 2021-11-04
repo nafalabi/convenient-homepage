@@ -11,7 +11,7 @@ import {
   Divider,
 } from "@mui/material";
 import { useCallback } from "react";
-import useDebouncedCallback from "../hooks/useDebounceCallback";
+import useDebouncedCallback from "../../hooks/useDebounceCallback";
 
 const PREFIX = "PanelWithSidebar";
 
