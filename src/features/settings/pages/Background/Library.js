@@ -11,14 +11,14 @@ import {
   Typography,
 } from "@mui/material";
 import { Check, Delete, ExpandMore } from "@mui/icons-material";
-import { Pagination } from '@mui/material';
+import { Pagination } from "@mui/material";
 import React, { useState } from "react";
 import localData from "../../../../app/storage/local-data";
 import useSubscribeBackgroundImages from "./hooks/useSubscribeBackgroundImages";
 import { actions as homepageActions } from "../../../homepage/slice";
 import { useDispatch } from "react-redux";
 
-const HoverOverlay = styled(Box)({
+const StyledImageListItem = styled(ImageListItem)({
   position: "relative",
   "&:hover:after": {
     content: "' '",
@@ -71,50 +71,46 @@ const Library = () => {
                     };
 
                     return (
-                      <HoverOverlay clone key={backgroundid}>
-                        <ImageListItem>
-                          {backgroundid === selectedBackgroundId && (
-                            <Box position="absolute" zIndex={10}>
-                              <Box m={1}>
-                                <Tooltip title="Delete">
-                                  <Fab
-                                    color="secondary"
-                                    size="small"
-                                    onClick={deleteImage}
-                                  >
-                                    <Delete />
-                                  </Fab>
-                                </Tooltip>
-                              </Box>
-                              <Box m={1}>
-                                <Tooltip title="Set as Background">
-                                  <Fab
-                                    color="primary"
-                                    size="small"
-                                    onClick={setAsBackground}
-                                  >
-                                    <Check />
-                                  </Fab>
-                                </Tooltip>
-                              </Box>
+                      <StyledImageListItem key={backgroundid}>
+                        {backgroundid === selectedBackgroundId && (
+                          <Box position="absolute" zIndex={10}>
+                            <Box m={1}>
+                              <Tooltip title="Delete">
+                                <Fab
+                                  color="secondary"
+                                  size="small"
+                                  onClick={deleteImage}
+                                >
+                                  <Delete />
+                                </Fab>
+                              </Tooltip>
                             </Box>
-                          )}
-                          <img
-                            src={"data:image/jpg;base64," + content}
-                            style={{ zIndex: 0, cursor: "pointer" }}
-                            alt="background"
-                            onClick={() =>
-                              setSelectedBackgroundId(backgroundid)
-                            }
-                            draggable={false}
-                          />
-                        </ImageListItem>
-                      </HoverOverlay>
+                            <Box m={1}>
+                              <Tooltip title="Set as Background">
+                                <Fab
+                                  color="primary"
+                                  size="small"
+                                  onClick={setAsBackground}
+                                >
+                                  <Check />
+                                </Fab>
+                              </Tooltip>
+                            </Box>
+                          </Box>
+                        )}
+                        <img
+                          src={"data:image/jpg;base64," + content}
+                          style={{ zIndex: 0, cursor: "pointer" }}
+                          alt="background"
+                          onClick={() => setSelectedBackgroundId(backgroundid)}
+                          draggable={false}
+                        />
+                      </StyledImageListItem>
                     );
                   })}
                 </ImageList>
                 <Box mt={1} width="100%" display="flex">
-                  <Box clone margin="auto">
+                  <Box margin="auto">
                     <Pagination
                       count={totalPage}
                       page={currentPage + 1}
