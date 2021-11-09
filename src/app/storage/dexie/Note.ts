@@ -1,21 +1,21 @@
 import db from "./db";
 
-export interface INote {
-  noteid?: number;
-  notename?: string;
-  firstlevel?: 0 | 1;
-  parentnoteid?: number;
-  expanded?: 0 | 1; // if the note is a parent note it can be expanded
-  index?: number;
-}
-
-class Note implements INote {
+class Note {
   noteid?: number;
   notename?: string;
   firstlevel?: 0 | 1;
   parentnoteid?: number;
   expanded?: 0 | 1;
-  index?: number;
+  order: number = 0;
+
+  async countChildren() {
+    if (!this.noteid) return 0;
+    return await db.note.where("parentnoteid").equals(this.noteid).count();
+  }
+
+  getChildrenAsCollection() {
+    return db.note.where("parentnoteid").equals(this.noteid ?? 0);
+  }
 
   async save() {
     try {

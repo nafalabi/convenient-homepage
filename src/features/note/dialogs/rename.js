@@ -14,7 +14,7 @@ const DialogRenameNote = ({ action, handleClose, noteDetails }) => {
       title: noteDetails?.notename,
     },
     onSubmit: async (values) => {
-      action({ target: { value: values.title } });
+      action(values.title);
       handleClose();
     },
   });

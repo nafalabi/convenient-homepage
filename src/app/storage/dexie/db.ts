@@ -1,13 +1,13 @@
 import Dexie from "dexie";
 import { IBackground } from "./Background";
-import { INote } from "./Note";
+import Note from "./Note";
 import { INoteContent } from "./NoteContent";
 import { ITask } from "./Task";
 import { ITodo } from "./Todo";
 
 export class DexieDB extends Dexie {
   background: Dexie.Table<IBackground, number>;
-  note: Dexie.Table<INote, number>;
+  note: Dexie.Table<Note, number>;
   notecontent: Dexie.Table<INoteContent, number>;
   task: Dexie.Table<ITask, number>;
   todo: Dexie.Table<ITodo, number>;
@@ -15,10 +15,10 @@ export class DexieDB extends Dexie {
   constructor() {
     super("convenient-homepage");
 
-    this.version(9).stores({
+    this.version(10).stores({
       todo: "++todoid",
       task: "++taskid, [todoid+completed]",
-      note: "++noteid, notename, firstlevel, parentnoteid, expanded, [parentnoteid+notename], index",
+      note: "++noteid, notename, firstlevel, parentnoteid, expanded, [parentnoteid+notename], order",
       notecontent: "&noteid",
       background: "++backgroundid, downloadtime, expireat",
     });
@@ -31,12 +31,12 @@ export class DexieDB extends Dexie {
   }
 }
 
-const dbInstance = new DexieDB();
+const dexieDB = new DexieDB();
 
-export default dbInstance;
+export default dexieDB;
 
 // for debug purpose only
 declare global {
   var db: DexieDB;
 }
-global.db = dbInstance;
+global.db = dexieDB;

@@ -13,9 +13,11 @@ import {
 import Bookmark from "./features/bookmark/Bookmark";
 import CustomSnackbarProvider from "./components/NotifstackProvider";
 
-const theme = createTheme({
-  typography: { button: { textTransform: "none" } },
-});
+// const theme = createTheme({
+//   typography: { button: { textTransform: "none" } },
+// });
+
+const theme = createTheme();
 
 function App() {
   return (

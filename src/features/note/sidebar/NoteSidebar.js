@@ -7,12 +7,13 @@ import { actions, selectors } from "../slice";
 import InputWithConfirmation from "../../../components/InputWithConfirmation";
 import Note from "../../../app/storage/dexie/Note";
 import db from "../../../app/storage/dexie/db";
-import { TreeView } from "@mui/lab";
+// import { TreeView } from "@mui/lab";
 import useFetchExpandedNoteIds from "../hooks/useFetchExpandedNoteIds";
 import NoteTreeListItem from "./NoteTreeListItem";
 import NoteSidebarContextMenu from "./NoteSidebarContextMenu";
 import useContextMenu from "../hooks/useContextMenu";
 import NoteContent from "../../../app/storage/dexie/NoteContent";
+import TreeViewDnd from "../../../components/TreeViewDnd";
 
 const Sidebar = () => {
   const treeListRefreshRef = useSelector(selectors.treeListRefreshRef);
@@ -47,23 +48,6 @@ const Sidebar = () => {
       dispatch(actions.selectNote(parseInt(id)));
   };
 
-  const mapList = (arrayList) => {
-    return arrayList.map((note) => {
-      return (
-        <NoteTreeListItem
-          key={note.noteid}
-          nodeId={String(note.noteid)}
-          labelText={note.notename}
-          labelIcon={Subject}
-          totalChildren={note.totalChildren}
-        >
-          {note.children && mapList(note.children)}
-          {!note.expanded && <LinearProgress />}
-        </NoteTreeListItem>
-      );
-    });
-  };
-
   const addNewNote = async (value) => {
     // Saving note
     const newNote = new Note();
@@ -75,30 +59,27 @@ const Sidebar = () => {
     // Saving note content
     const newNoteContent = new NoteContent();
     newNoteContent.noteid = noteid;
-    newNoteContent.notecontent = `# ${value}\n\n\\\n`;
+    newNoteContent.notecontent = `# ${value}\n\n\n`;
     await newNoteContent.save();
     dispatch(actions.refreshTreeList());
   };
 
   return (
     <Box pb={4} onContextMenu={onContextMenu}>
-      <TreeView
-        defaultCollapseIcon={<ExpandMore />}
-        defaultExpandIcon={<ChevronRight />}
+      <TreeViewDnd
+        list={noteList}
         expanded={expandedNoteIds}
         selected={String(selectedNote)}
         onNodeToggle={toggleExpandNode}
         onNodeSelect={selectNode}
-      >
-        {mapList(noteList)}
-        <Box ml={4} mr={1} mt={1}>
-          <InputWithConfirmation
-            onConfirm={addNewNote}
-            inputProps={{ style: { fontSize: 14 } }}
-            placeholder="Add New Note"
-          />
-        </Box>
-      </TreeView>
+      />
+      <Box ml={4} mr={1} mt={1}>
+        <InputWithConfirmation
+          onConfirm={addNewNote}
+          inputProps={{ style: { fontSize: 14 } }}
+          placeholder="Add New Note"
+        />
+      </Box>
 
       <NoteSidebarContextMenu
         handleClose={handleCloseContextMenu}

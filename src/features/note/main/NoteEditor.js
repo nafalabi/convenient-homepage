@@ -41,7 +41,7 @@ const NoteEditor = ({ selectedNote }) => {
   const editable = useSelector(selectors.editable);
   const noteData = useFetchNoteData(selectedNote);
   const {
-    updateNoteData,
+    updateNoteContent,
     onSearchLink,
     addSubNote,
     uploadImage,
@@ -59,7 +59,7 @@ const NoteEditor = ({ selectedNote }) => {
           <Editor
             defaultValue={noteData.notecontent}
             key={noteData?.noteid}
-            onChange={updateNoteData}
+            onChange={updateNoteContent}
             onSearchLink={onSearchLink}
             onCreateLink={addSubNote}
             onClickLink={onClickLink}
