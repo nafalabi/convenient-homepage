@@ -1,13 +1,6 @@
 import db from "./db";
 
-export interface ITask {
-  taskid?: number;
-  todoid?: number;
-  name?: string;
-  completed?: 0 | 1;
-}
-
-class Task implements ITask {
+class Task {
   taskid?: number;
   todoid?: number;
   name?: string;

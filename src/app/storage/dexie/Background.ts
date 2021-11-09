@@ -1,13 +1,6 @@
 import db from "./db";
 
-export interface IBackground {
-  backgroundid?: number;
-  downloadtime?: number;
-  expireat?: number;
-  content?: string;
-}
-
-class Background implements IBackground {
+class Background {
   backgroundid?: number;
   downloadtime?: number;
   expireat?: number;

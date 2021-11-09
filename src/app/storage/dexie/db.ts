@@ -1,16 +1,16 @@
 import Dexie from "dexie";
-import { IBackground } from "./Background";
+import Background from "./Background";
 import Note from "./Note";
-import { INoteContent } from "./NoteContent";
-import { ITask } from "./Task";
-import { ITodo } from "./Todo";
+import NoteContent from "./NoteContent";
+import Task from "./Task";
+import Todo from "./Todo";
 
 export class DexieDB extends Dexie {
-  background: Dexie.Table<IBackground, number>;
+  background: Dexie.Table<Background, number>;
   note: Dexie.Table<Note, number>;
-  notecontent: Dexie.Table<INoteContent, number>;
-  task: Dexie.Table<ITask, number>;
-  todo: Dexie.Table<ITodo, number>;
+  notecontent: Dexie.Table<NoteContent, number>;
+  task: Dexie.Table<Task, number>;
+  todo: Dexie.Table<Todo, number>;
 
   constructor() {
     super("convenient-homepage");

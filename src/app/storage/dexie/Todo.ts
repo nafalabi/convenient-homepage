@@ -1,13 +1,7 @@
 import Task from "./Task";
 import db from "./db";
 
-export interface ITodo {
-  todoid?: number;
-  name?: string;
-  tasks?: Task[];
-}
-
-class Todo implements ITodo {
+class Todo {
   todoid?: number;
   name?: string;
   tasks?: Task[];

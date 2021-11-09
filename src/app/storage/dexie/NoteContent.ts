@@ -1,11 +1,6 @@
 import db from "./db";
 
-export interface INoteContent {
-  noteid?: number;
-  notecontent?: string;
-}
-
-class NoteContent implements INoteContent {
+class NoteContent {
   noteid?: number;
   notecontent?: string;
 
