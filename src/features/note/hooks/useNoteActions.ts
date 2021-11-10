@@ -91,7 +91,7 @@ const useNoteActions = (noteDetail: Note) => {
       const match = href.match(/\/note\?id=(\d+)/);
       if (match) {
         const noteid = match[1];
-        const noteData = DexieAPI.note.findNoteById(noteid);
+        const noteData = await DexieAPI.note.findNoteById(noteid);
         if (noteData === undefined) {
           enqueueSnackbar("The page doesn't exist", {
             variant: "error",
@@ -108,7 +108,7 @@ const useNoteActions = (noteDetail: Note) => {
 
   const deleteNote = useCallback(async () => {
     try {
-      DexieAPI.note.deleteNote(noteDetail);
+      await DexieAPI.note.deleteNote(noteDetail);
       dispatch(actions.refreshTreeList());
     } catch (error) {
       const message = (error as Error).message;

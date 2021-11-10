@@ -1,6 +1,5 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { alpha } from "@mui/material/styles";
-import makeStyles from "@mui/styles/makeStyles";
 import Typography from "@mui/material/Typography";
 import {
   AdjustedTreeItemStyledProps,
@@ -88,6 +87,8 @@ function TreeNode(props: TreeNodeProps) {
     totalChildren,
     nodeId,
     isLastItem,
+    onNodeDrop,
+    nodeIndex,
     ...other
   } = props;
   const contextMenuProps = { data: nodeId };
@@ -104,8 +105,10 @@ function TreeNode(props: TreeNodeProps) {
         isNodeHovered: monitor.isOver({ shallow: true }),
       };
     },
-    hover: (item: TreeNodeDragItem, monitor: DropTargetMonitor) => {
-      console.log(item, nodeId);
+    drop: (item: TreeNodeDragItem, monitor) => {
+      const isHovered = monitor.isOver({ shallow: true });
+      if (onNodeDrop && isHovered)
+        onNodeDrop(item.id, nodeId, "INSIDE", nodeIndex);
     },
   });
 
@@ -118,8 +121,10 @@ function TreeNode(props: TreeNodeProps) {
           isBeforeNodeHovered: monitor.isOver({ shallow: true }),
         };
       },
-      hover: (item: TreeNodeDragItem, monitor: DropTargetMonitor) => {
-        console.log(item, nodeId);
+      drop: (item: TreeNodeDragItem, monitor) => {
+        const isHovered = monitor.isOver({ shallow: true });
+        if (onNodeDrop && isHovered)
+          onNodeDrop(item.id, nodeId, "BEFORE", nodeIndex);
       },
     });
 
@@ -131,8 +136,10 @@ function TreeNode(props: TreeNodeProps) {
         isAfterNodeHovered: monitor.isOver({ shallow: true }),
       };
     },
-    hover: (item: TreeNodeDragItem, monitor: DropTargetMonitor) => {
-      console.log(item, nodeId);
+    drop: (item: TreeNodeDragItem, monitor) => {
+      const isHovered = monitor.isOver({ shallow: true });
+      if (onNodeDrop && isHovered)
+        onNodeDrop(item.id, nodeId, "AFTER", nodeIndex);
     },
   });
 

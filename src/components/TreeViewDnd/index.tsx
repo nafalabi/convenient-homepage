@@ -7,7 +7,7 @@ import { ChevronRight, ExpandMore, Subject } from "@mui/icons-material";
 import { TreeView } from "@mui/lab";
 import TreeNode from "./TreeNode";
 
-const TreeViewDnd = (props: TreeViewProps) => {
+const TreeViewDnd = <T extends TreeViewProps>(props: T) => {
   const mapList = (arrayList: any[]) => {
     return arrayList.map((note, index) => {
       return (
@@ -17,7 +17,9 @@ const TreeViewDnd = (props: TreeViewProps) => {
           labelText={note.notename}
           labelIcon={Subject}
           totalChildren={note.totalChildren}
+          nodeIndex={index}
           isLastItem={index + 1 === arrayList.length}
+          onNodeDrop={props.onNodeDrop}
         >
           {note.children && mapList(note.children)}
           {!note.expanded && <LinearProgress />}

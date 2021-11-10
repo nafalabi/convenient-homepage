@@ -22,10 +22,10 @@ class DexieNoteAPI {
             row.children = children;
           }
 
-          result.push(row);
+          result[row.order] = row;
         }
       );
-      return result.sort((a, b) => a.order - b.order);
+      return result;
     };
     return map(dexieDB.note.where("firstlevel").equals(1));
   }
@@ -85,7 +85,10 @@ class DexieNoteAPI {
    * @returns list of note
    */
   async searchNote(term: string) {
-    return await db.note.where("notename").startsWithIgnoreCase(term).toArray();
+    return await dexieDB.note
+      .where("notename")
+      .startsWithIgnoreCase(term)
+      .toArray();
   }
 
   /**
@@ -95,16 +98,149 @@ class DexieNoteAPI {
    * @returns note id
    */
   async addSubNote(noteData: Note, notename: string) {
-    const newNote = new Note();
-    newNote.notename = notename;
-    newNote.firstlevel = 0;
-    newNote.parentnoteid = noteData.noteid;
-    const noteid = await newNote.save();
-    const newNoteContent = new NoteContent();
-    newNoteContent.noteid = noteid;
-    newNoteContent.notecontent = `# ${notename}\n\n\\\n`;
-    await newNoteContent.save();
-    return noteid;
+    return dexieDB.transaction(
+      "rw",
+      dexieDB.note,
+      dexieDB.notecontent,
+      async () => {
+        const order = await dexieDB.note
+          .where("parentnoteid")
+          .equals(noteData.noteid ?? 0)
+          .count();
+
+        const newNote = new Note();
+        newNote.notename = notename;
+        newNote.firstlevel = 0;
+        newNote.parentnoteid = noteData.noteid;
+        newNote.order = order;
+        const noteid = await newNote.save();
+
+        const newNoteContent = new NoteContent();
+        newNoteContent.noteid = noteid;
+        newNoteContent.notecontent = `# ${notename}\n\n\n`;
+        await newNoteContent.save();
+        return noteid;
+      }
+    );
+  }
+
+  /**
+   * Add new note
+   * @param notename new note name
+   * @returns note id
+   */
+  async addNewNote(notename: string) {
+    return dexieDB.transaction(
+      "rw",
+      dexieDB.note,
+      dexieDB.notecontent,
+      async () => {
+        const order = await dexieDB.note.where("firstlevel").equals(1).count();
+
+        const newNote = new Note();
+        newNote.notename = notename;
+        newNote.firstlevel = 1;
+        newNote.order = order;
+        const noteid = await newNote.save();
+
+        const newNoteContent = new NoteContent();
+        newNoteContent.noteid = noteid;
+        newNoteContent.notecontent = `# ${notename}\n\n\n`;
+        await newNoteContent.save();
+        return noteid;
+      }
+    );
+  }
+
+  /**
+   * Toggle expand note
+   * @param oldIds old list of id of expanded notes
+   * @param newIds new list of id of expanded notes
+   * @returns
+   */
+  async toggleExpandNote(oldIds: string[], newIds: string[]) {
+    const idToBeExpanded = newIds.find((id) => !oldIds.includes(id));
+    const idToBeShrinked = oldIds.find((id) => !newIds.includes(id));
+    if (idToBeExpanded) {
+      await dexieDB.note.update(parseInt(idToBeExpanded), { expanded: 1 });
+    }
+    if (idToBeShrinked) {
+      await dexieDB.note.update(parseInt(idToBeShrinked), { expanded: 0 });
+    }
+  }
+
+  /**
+   *
+   * @param noteid note that will be moved
+   * @param targetid destination
+   * @param targetType
+   */
+  async reorderNote(
+    noteid: string,
+    targetid: string,
+    targetType: "BEFORE" | "INSIDE" | "AFTER",
+    targetIndex: number
+  ) {
+    if (parseInt(noteid) === parseInt(targetid)) return;
+
+    await dexieDB
+      .transaction("rw", dexieDB.note, async () => {
+        const note = await this.findNoteById(String(noteid));
+        const targetNote = await this.findNoteById(String(targetid));
+
+        if (note === undefined || targetNote === undefined) return;
+
+        await dexieDB.note
+          .where("parentnoteid")
+          .equals(note.parentnoteid ?? 0)
+          .modify(async (row) => {
+            if (row.order > note.order) {
+              row.order -= 1;
+            }
+          });
+
+        const isTargetFirstLevel =
+          targetNote.parentnoteid === 0 ||
+          targetNote.parentnoteid === undefined;
+        const futureSiblingsCollection = isTargetFirstLevel
+          ? dexieDB.note.where("firstlevel").equals(1)
+          : dexieDB.note
+              .where("parentnoteid")
+              .equals(targetNote.parentnoteid ?? -1);
+
+        switch (targetType) {
+          case "BEFORE":
+            await futureSiblingsCollection.modify(async (row) => {
+              if (row.order >= targetIndex) row.order += 1;
+            });
+            note.order = targetIndex;
+            note.parentnoteid = isTargetFirstLevel
+              ? 0
+              : targetNote.parentnoteid;
+            note.firstlevel = isTargetFirstLevel ? 1 : 0;
+            break;
+          case "AFTER":
+            await futureSiblingsCollection.modify(async (row) => {
+              if (row.order > targetIndex) row.order += 1;
+            });
+            note.order = targetIndex + 1;
+            note.parentnoteid = isTargetFirstLevel
+              ? 0
+              : targetNote.parentnoteid;
+            note.firstlevel = isTargetFirstLevel ? 1 : 0;
+            break;
+          case "INSIDE":
+            note.order = await targetNote.countChildren();
+            note.parentnoteid = targetNote.noteid;
+            note.firstlevel = 0;
+            break;
+          default:
+            break;
+        }
+
+        await note.save();
+      })
+      .catch((e) => console.log(e));
   }
 
   /**
@@ -119,7 +255,15 @@ class DexieNoteAPI {
       throw Error("Couldn't delete, the note still has children");
     }
 
-    return await db.note.delete(noteData.noteid ?? 0);
+    await dexieDB.transaction(
+      "rw",
+      dexieDB.note,
+      dexieDB.notecontent,
+      async () => {
+        await dexieDB.notecontent.delete(noteData.noteid ?? 0);
+        await dexieDB.note.delete(noteData.noteid ?? 0);
+      }
+    );
   }
 
   /**
@@ -128,7 +272,7 @@ class DexieNoteAPI {
    * @returns a note
    */
   async findNoteById(noteid: string) {
-    return await db.note.where({ noteid: parseInt(noteid) }).first();
+    return await dexieDB.note.where({ noteid: parseInt(noteid) }).first();
   }
 }
 

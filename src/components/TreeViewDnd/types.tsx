@@ -22,6 +22,15 @@ export interface TreeViewProps {
    * Callback function that will be called upon selecting node
    */
   onNodeSelect: (e: SyntheticEvent, id: string) => void;
+  /**
+   * Callback function that will be called upon drag n droping a node
+   */
+  onNodeDrop?: (
+    id: string,
+    targetId: string,
+    targetType: "BEFORE" | "INSIDE" | "AFTER",
+    targetIndex: number
+  ) => void;
 }
 
 export interface TreeNodeProps extends TreeItemProps {
@@ -31,10 +40,17 @@ export interface TreeNodeProps extends TreeItemProps {
   labelText: string;
   totalChildren: number;
   isLastItem?: boolean;
+  nodeIndex: number;
+  onNodeDrop?: (
+    id: string,
+    targetId: string,
+    targetType: "BEFORE" | "INSIDE" | "AFTER",
+    targetIndex: number
+  ) => void;
 }
 
 export interface TreeNodeDragItem {
-  id: any;
+  id: string;
 }
 
 export interface AdjustedTreeItemStyledProps extends TreeItemProps {

@@ -1,19 +1,14 @@
-import { Box, LinearProgress } from "@mui/material";
-import { ChevronRight, ExpandMore, Subject } from "@mui/icons-material";
+import { Box } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useFetchNoteList from "../hooks/useFetchNoteList";
 import { actions, selectors } from "../slice";
 import InputWithConfirmation from "../../../components/InputWithConfirmation";
-import Note from "../../../app/storage/dexie/Note";
-import db from "../../../app/storage/dexie/db";
-// import { TreeView } from "@mui/lab";
 import useFetchExpandedNoteIds from "../hooks/useFetchExpandedNoteIds";
-import NoteTreeListItem from "./NoteTreeListItem";
 import NoteSidebarContextMenu from "./NoteSidebarContextMenu";
 import useContextMenu from "../hooks/useContextMenu";
-import NoteContent from "../../../app/storage/dexie/NoteContent";
 import TreeViewDnd from "../../../components/TreeViewDnd";
+import DexieAPI from "../../../app/api/dexie-api";
 
 const Sidebar = () => {
   const treeListRefreshRef = useSelector(selectors.treeListRefreshRef);
@@ -31,14 +26,7 @@ const Sidebar = () => {
 
   const toggleExpandNode = async (e, ids) => {
     if (!e.target.closest(".MuiTreeItem-iconContainer")) return;
-    const idToBeExpanded = ids.find((id) => !expandedNoteIds.includes(id));
-    const idToBeShrinked = expandedNoteIds.find((id) => !ids.includes(id));
-    if (idToBeExpanded) {
-      db.note.update(parseInt(idToBeExpanded), { expanded: 1 });
-    }
-    if (idToBeShrinked) {
-      db.note.update(parseInt(idToBeShrinked), { expanded: 0 });
-    }
+    DexieAPI.note.toggleExpandNote(expandedNoteIds, ids);
     setExpandedNoteIds(ids);
     setTimeout(() => dispatch(actions.refreshTreeList()), 500);
   };
@@ -48,19 +36,13 @@ const Sidebar = () => {
       dispatch(actions.selectNote(parseInt(id)));
   };
 
-  const addNewNote = async (value) => {
-    // Saving note
-    const newNote = new Note();
-    newNote.notename = value;
-    newNote.firstlevel = 1;
-    const noteid = await newNote.save().catch((e) => {
-      console.log(e);
-    });
-    // Saving note content
-    const newNoteContent = new NoteContent();
-    newNoteContent.noteid = noteid;
-    newNoteContent.notecontent = `# ${value}\n\n\n`;
-    await newNoteContent.save();
+  const addNewNote = async (notename) => {
+    await DexieAPI.note.addNewNote(notename);
+    dispatch(actions.refreshTreeList());
+  };
+
+  const onNodeDrop = async (id, targetId, targetType, targetIndex) => {
+    await DexieAPI.note.reorderNote(id, targetId, targetType, targetIndex);
     dispatch(actions.refreshTreeList());
   };
 
@@ -72,6 +54,7 @@ const Sidebar = () => {
         selected={String(selectedNote)}
         onNodeToggle={toggleExpandNode}
         onNodeSelect={selectNode}
+        onNodeDrop={onNodeDrop}
       />
       <Box ml={4} mr={1} mt={1}>
         <InputWithConfirmation

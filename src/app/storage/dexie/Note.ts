@@ -4,7 +4,7 @@ class Note {
   noteid?: number;
   notename?: string;
   firstlevel?: 0 | 1;
-  parentnoteid?: number;
+  parentnoteid?: number = 0;
   expanded?: 0 | 1;
   order: number = 0;
 

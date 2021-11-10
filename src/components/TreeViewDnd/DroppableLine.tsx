@@ -9,7 +9,7 @@ const DroppableLine = React.forwardRef<any, DroppableLineProps>(
         ref={ref}
         data-handler-id={props["data-handler-id"]}
         sx={{
-          padding: "3px 0 0 0",
+          padding: "4px 0 0 0",
           backgroundColor: props.isHovered ? "blue" : "transparent",
         }}
       />
