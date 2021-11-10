@@ -18,10 +18,10 @@ const DialogDeleteNote = ({ action, handleClose, noteDetails }) => {
         handleClose();
       }}
     >
-      <DialogTitle>Delete Bookmark</DialogTitle>
+      <DialogTitle>Delete Note</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Are you sure to delete this bookmark?
+          Are you sure to delete this note?
         </DialogContentText>
         <Box clone display="inline-flex">
           <DialogContentText>
