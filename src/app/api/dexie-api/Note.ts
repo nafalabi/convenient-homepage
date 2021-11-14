@@ -140,6 +140,7 @@ class DexieNoteAPI {
         const newNote = new Note();
         newNote.notename = notename;
         newNote.firstlevel = 1;
+        newNote.parentnoteid = 0;
         newNote.order = order;
         const noteid = await newNote.save();
 
@@ -189,6 +190,8 @@ class DexieNoteAPI {
         const targetNote = await this.findNoteById(String(targetid));
 
         if (note === undefined || targetNote === undefined) return;
+
+        if (await targetNote.isChildOf(note.noteid)) return;
 
         await dexieDB.note
           .where("parentnoteid")

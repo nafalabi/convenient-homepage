@@ -13,6 +13,36 @@ class Note {
     return await db.note.where("parentnoteid").equals(this.noteid).count();
   }
 
+  async isChildOf(id: number | undefined) {
+    if (id === undefined) return true;
+
+    let result = false;
+    let seqid = this.parentnoteid;
+
+    while (true) {
+      if (seqid === undefined || seqid === 0) {
+        result = false;
+        break;
+      }
+
+      if (seqid === id) {
+        result = true;
+        break;
+      }
+
+      const parent = await db.note.where({ noteid: seqid }).first();
+
+      if (parent === undefined) {
+        result = false;
+        break;
+      }
+
+      seqid = parent.parentnoteid;
+    }
+
+    return result;
+  }
+
   getChildrenAsCollection() {
     return db.note.where("parentnoteid").equals(this.noteid ?? 0);
   }
