@@ -172,7 +172,7 @@ function TreeNode(props: TreeNodeProps) {
           collapseIcon={leadingIcon}
           label={
             <div className={classes.labelRoot} {...contextMenuProps}>
-              <LabelIcon color="inherit" className={classes.labelIcon} />
+              <LabelIcon className={classes.labelIcon} />
               <Typography
                 variant="body2"
                 className={classes.labelText}

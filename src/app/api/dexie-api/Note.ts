@@ -1,4 +1,5 @@
 import { Collection } from "dexie";
+import { IconData } from "../../../components/IconPicker/types";
 import dexieDB from "../../storage/dexie/db";
 import Note from "../../storage/dexie/Note";
 import NoteContent from "../../storage/dexie/NoteContent";
@@ -276,6 +277,18 @@ class DexieNoteAPI {
    */
   async findNoteById(noteid: string) {
     return await dexieDB.note.where({ noteid: parseInt(noteid) }).first();
+  }
+
+  /**
+   * Update the icon of a note
+   * @param noteid note id to update
+   * @param iconData new icon data
+   * @returns void
+   */
+  async updateNoteIcon(note: Note, iconData: IconData) {
+    note.iconId = iconData?.iconId;
+    note.iconType = iconData?.iconType;
+    note.save();
   }
 }
 

@@ -5,6 +5,7 @@ import useDebouncedCallback from "../../../hooks/useDebounceCallback";
 import { actions } from "../slice";
 import DexieAPI from "../../../app/api/dexie-api";
 import Note from "../../../app/storage/dexie/Note";
+import { IconData } from "../../../components/IconPicker/types";
 
 const useNoteActions = (noteDetail: Note) => {
   const dispatch = useDispatch();
@@ -118,9 +119,22 @@ const useNoteActions = (noteDetail: Note) => {
     }
   }, [dispatch, noteDetail, enqueueSnackbar]);
 
+  const updateNoteIcon = useCallback(
+    async (iconData: IconData) => {
+      try {
+        await DexieAPI.note.updateNoteIcon(noteDetail, iconData);
+        dispatch(actions.refreshTreeList());
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [noteDetail, dispatch]
+  );
+
   return {
     updateNoteName,
     updateNoteContent,
+    updateNoteIcon,
     onSearchLink,
     addSubNote,
     deleteNote,

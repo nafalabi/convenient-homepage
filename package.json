@@ -20,6 +20,8 @@
     "axios": "^0.19.2",
     "dexie": "^3.2.0-rc.3",
     "dexie-react-hooks": "^1.0.7",
+    "emoji-mart": "^3.0.1",
+    "flexsearch": "^0.7.21",
     "formik": "^2.2.6",
     "moment": "^2.27.0",
     "notistack": "^2.0.3",
@@ -31,7 +33,7 @@
     "react-draggable": "^4.4.3",
     "react-redux": "^7.2.6",
     "react-scripts": "3.4.3",
-    "rich-markdown-editor": "^11.18.15",
+    "rich-markdown-editor": "^11.19.2",
     "styled-components": "^5.1.1",
     "typescript": "^4.4.4"
   },
@@ -57,6 +59,8 @@
     ]
   },
   "devDependencies": {
+    "@types/emoji-mart": "^3.0.8",
+    "@types/flexsearch": "^0.7.2",
     "copy-webpack-plugin": "^6.4.1",
     "customize-cra": "^1.0.0",
     "react-app-rewire-multiple-entry": "^2.2.1",

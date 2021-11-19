@@ -1,6 +1,7 @@
 import { Dialog, Menu, MenuItem } from "@mui/material";
 import React, { useState } from "react";
 import DialogAddSubNote from "../dialogs/addSubNote";
+import DialogChangeIcon from "../dialogs/changeIcon";
 import DialogDeleteNote from "../dialogs/delete";
 import DialogRenameNote from "../dialogs/rename";
 import useFetchNoteData from "../hooks/useFetchNoteData";
@@ -12,7 +13,7 @@ const NoteSidebarContextMenu = ({
   clickedNodeId,
 }) => {
   const noteDetails = useFetchNoteData(clickedNodeId);
-  const { updateNoteName, addSubNote, deleteNote } =
+  const { updateNoteName, addSubNote, deleteNote, updateNoteIcon } =
     useNoteActions(noteDetails);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [openedDialog, setOpenedDialog] = useState(-1);
@@ -45,6 +46,9 @@ const NoteSidebarContextMenu = ({
         <MenuItem dense onClick={openDialog(2)}>
           Rename Note
         </MenuItem>
+        <MenuItem dense onClick={openDialog(3)}>
+          Change Icon
+        </MenuItem>
       </Menu>
 
       <Dialog open={dialogOpen} onClose={handleCloseDialog}>
@@ -67,6 +71,13 @@ const NoteSidebarContextMenu = ({
             handleClose={handleCloseDialog}
             noteDetails={noteDetails}
             action={updateNoteName}
+          />
+        )}
+        {openedDialog === 3 && (
+          <DialogChangeIcon
+            handleClose={handleCloseDialog}
+            noteDetails={noteDetails}
+            action={updateNoteIcon}
           />
         )}
       </Dialog>

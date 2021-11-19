@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles';
-import { Skeleton } from '@mui/material';
+import makeStyles from "@mui/styles/makeStyles";
+import { Skeleton } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
 import Editor from "rich-markdown-editor";
@@ -8,18 +8,10 @@ import useFetchNoteData from "../hooks/useFetchNoteData";
 import useNoteActions from "../hooks/useNoteActions";
 import { selectors } from "../slice";
 import NoteCouldntLoad from "./NoteCouldntLoad";
+import styleOverride from "./style-override";
 
 const useStyles = makeStyles({
-  "@global": {
-    "#block-menu-container": {
-      // The popover of "+" button for rich markdown editor
-      zIndex: 2000, // need to bring up otherwise will be blocked by the note panel/modal
-    },
-    "div[offset]": {
-      // similar as the above, to bring the covered element up
-      zIndex: 2000,
-    },
-  },
+  ...styleOverride,
   statusBar: {
     position: "absolute",
     bottom: 0,

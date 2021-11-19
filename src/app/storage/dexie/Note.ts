@@ -1,3 +1,4 @@
+import { IconType } from "../../../constant";
 import db from "./db";
 
 class Note {
@@ -7,6 +8,8 @@ class Note {
   parentnoteid?: number = 0;
   expanded?: 0 | 1;
   order: number = 0;
+  iconId?: string = "Subject";
+  iconType?: IconType = IconType.MATERIAL_ICON;
 
   async countChildren() {
     if (!this.noteid) return 0;

@@ -36,7 +36,7 @@ export interface TreeViewProps {
 export interface TreeNodeProps extends TreeItemProps {
   bgColor?: string;
   color?: string;
-  labelIcon: FC & SvgIconComponent;
+  labelIcon: FC<{ className?: string }>;
   labelText: string;
   totalChildren: number;
   isLastItem?: boolean;

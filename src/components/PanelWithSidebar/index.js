@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { useCallback } from "react";
 import useDebouncedCallback from "../../hooks/useDebounceCallback";
+import { GlobalStyles } from "@mui/styled-engine";
 
 const PREFIX = "PanelWithSidebar";
 
@@ -21,6 +22,7 @@ const MAX_WIDTH = 600;
 
 const classes = {
   root: `${PREFIX}-root`,
+  dialogRoot: `${PREFIX}-dialogRoot`,
   dialogPaper: `${PREFIX}-dialogPaper`,
   appBar: `${PREFIX}-appBar`,
   title: `${PREFIX}-title`,
@@ -76,6 +78,16 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
     overflow: "auto",
   },
 }));
+
+const globalStyles = (
+  <GlobalStyles
+    styles={{
+      [`.${classes.dialogRoot}`]: {
+        zIndex: "800!important",
+      },
+    }}
+  />
+);
 
 const PanelWithSidebar = ({
   open,
@@ -163,67 +175,70 @@ const PanelWithSidebar = ({
   }, [onMouseMove, onTouchMove, onMouseUp]);
 
   return (
-    <StyledDialog
-      ref={dialogRef}
-      open={open}
-      onClose={toggle}
-      maxWidth="lg"
-      fullWidth={true}
-      classes={{ paper: classes.dialogPaper }}
-      disableEnforceFocus={true}
-    >
-      <div className={classes.root}>
-        <AppBar position="absolute" className={classes.appBar}>
-          <Toolbar>
-            <Typography
-              variant="h6"
-              ref={titleRef}
-              className={classes.title}
-              noWrap
+    <>
+      {globalStyles}
+      <StyledDialog
+        ref={dialogRef}
+        open={open}
+        onClose={toggle}
+        maxWidth="lg"
+        fullWidth={true}
+        classes={{ paper: classes.dialogPaper, root: classes.dialogRoot }}
+        disableEnforceFocus={true}
+      >
+        <div className={classes.root}>
+          <AppBar position="absolute" className={classes.appBar}>
+            <Toolbar>
+              <Typography
+                variant="h6"
+                ref={titleRef}
+                className={classes.title}
+                noWrap
+              >
+                {title}
+              </Typography>
+              <ToolbarItemComponent dialogRef={dialogRef} />
+            </Toolbar>
+          </AppBar>
+          <Box display="flex">
+            <Drawer
+              ref={drawerRef}
+              className={classes.drawer}
+              variant="permanent"
+              classes={{
+                paper: classes.drawerPaper,
+              }}
             >
-              {title}
-            </Typography>
-            <ToolbarItemComponent dialogRef={dialogRef} />
-          </Toolbar>
-        </AppBar>
-        <Box display="flex">
-          <Drawer
-            ref={drawerRef}
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper,
-            }}
+              <Toolbar />
+              <div className={classes.drawerContainer}>
+                <SidebarComponent dialogRef={dialogRef} />
+              </div>
+            </Drawer>
+            <Box
+              pl={1}
+              style={{ cursor: "w-resize" }}
+              onMouseDown={onMouseDown}
+              onTouchStart={onTouchStart}
+              onTouchEnd={onMouseUp}
+            >
+              <Divider orientation="vertical" />
+            </Box>
+          </Box>
+          <Box
+            flexGrow={1}
+            display="flex"
+            flexDirection="column"
+            overflow="hidden"
+            position="relative"
           >
             <Toolbar />
-            <div className={classes.drawerContainer}>
-              <SidebarComponent dialogRef={dialogRef} />
-            </div>
-          </Drawer>
-          <Box
-            pl={1}
-            style={{ cursor: "w-resize" }}
-            onMouseDown={onMouseDown}
-            onTouchStart={onTouchStart}
-            onTouchEnd={onMouseUp}
-          >
-            <Divider orientation="vertical" />
+            <main className={classes.content}>
+              <ContentComponent dialogRef={dialogRef} />
+            </main>
           </Box>
-        </Box>
-        <Box
-          flexGrow={1}
-          display="flex"
-          flexDirection="column"
-          overflow="hidden"
-          position="relative"
-        >
-          <Toolbar />
-          <main className={classes.content}>
-            <ContentComponent dialogRef={dialogRef} />
-          </main>
-        </Box>
-      </div>
-    </StyledDialog>
+        </div>
+      </StyledDialog>
+    </>
   );
 };
 
