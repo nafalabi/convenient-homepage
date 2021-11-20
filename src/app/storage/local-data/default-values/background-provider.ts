@@ -1,6 +1,6 @@
 export const STORAGE_KEY_BACKGROUND_PROVIDER = "backgroundProvider";
 
-export const backgroundProviderDefaults = {
+export const backgroundProviderDefaults: IBackgroundProvider = {
   provider: 0,
   refresh_interval: 3000,
 

@@ -17,8 +17,8 @@ class ImageAPI {
   apiProvider: AbstractImageAPI;
   refreshInterval = 0;
 
-  constructor(parametersGiven: IBackgroundProvider) {
-    const parameters = parametersGiven || localData.backgroundProvider();
+  constructor(parametersGiven?: IBackgroundProvider) {
+    const parameters = parametersGiven ?? localData.backgroundProvider();
     const { provider, refresh_interval } = parameters;
 
     switch (provider) {

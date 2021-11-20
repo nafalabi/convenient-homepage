@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, { useMemo } from "react";
 import moment from "moment";
-import me from "../../config/me.json";
-import styled from "styled-components";
+import styled from "@emotion/styled";
+import localData from "../../app/storage/local-data";
 
 const GreatingRoot = styled.div`
   position: fixed;
@@ -19,34 +19,35 @@ const GreatingRoot = styled.div`
   }
 `;
 
-export default class Greeting extends Component {
-  render() {
-    const curHour = parseInt(moment().format("HH"));
-    let greetingVal = "";
+const Greeting = () => {
+  const curHour = parseInt(moment().format("HH"));
+  let greetingVal = "";
+  const { name } = useMemo(() => localData.generalSettings(), []);
 
-    if (curHour >= 1 && curHour <= 5) {
-      greetingVal = "Night";
-    } else if (curHour >= 6 && curHour <= 11) {
-      greetingVal = "Morning";
-    } else if (curHour === 12) {
-      greetingVal = "Noon";
-    } else if (curHour >= 13 && curHour <= 16) {
-      greetingVal = "Afternoon";
-    } else if (curHour >= 17 && curHour <= 19) {
-      greetingVal = "Evening";
-    } else if (curHour >= 20 && curHour <= 24) {
-      greetingVal = "Night";
-    }
-
-    return (
-      <GreatingRoot>
-        <div className="greeting">
-          <h1>
-            Good {greetingVal}, {me.firstName}
-          </h1>
-          <h3>What is your main focus for today?</h3>
-        </div>
-      </GreatingRoot>
-    );
+  if (curHour >= 0 && curHour <= 5) {
+    greetingVal = "Night";
+  } else if (curHour >= 6 && curHour <= 11) {
+    greetingVal = "Morning";
+  } else if (curHour === 12) {
+    greetingVal = "Noon";
+  } else if (curHour >= 13 && curHour <= 16) {
+    greetingVal = "Afternoon";
+  } else if (curHour >= 17 && curHour <= 19) {
+    greetingVal = "Evening";
+  } else if (curHour >= 20 && curHour <= 24) {
+    greetingVal = "Night";
   }
-}
+
+  return (
+    <GreatingRoot>
+      <div className="greeting">
+        <h1>
+          Good {greetingVal}, {name}
+        </h1>
+        <h3>What is your main focus for today?</h3>
+      </div>
+    </GreatingRoot>
+  );
+};
+
+export default Greeting;

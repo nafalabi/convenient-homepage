@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Greeting from "./Greeeting";
 import { selectors, actions } from "./slice";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 import ImageAPI from "../../app/api/image-api";
 
 const HomepageRoot = styled.div`
@@ -30,7 +30,7 @@ const HomepageRoot = styled.div`
   }
 `;
 
-const Homepage = () => {
+const Homepage = (props: { alreadySetup: boolean }) => {
   const dispatch = useDispatch();
   const imageURI = useSelector(selectors.imageURI);
   const isLoaded = useSelector(selectors.isLoaded);
@@ -49,7 +49,7 @@ const Homepage = () => {
         opacity: isLoaded ? 1 : 0,
       }}
     >
-      <Greeting />
+      {props.alreadySetup && <Greeting />}
     </HomepageRoot>
   );
 };
