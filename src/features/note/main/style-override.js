@@ -1,4 +1,4 @@
-export default {
+const styleOverride = {
   "@global": {
     "#block-menu-container": {
       // The popover of "+" button for rich markdown editor
@@ -13,3 +13,5 @@ export default {
     },
   },
 };
+
+export default styleOverride;

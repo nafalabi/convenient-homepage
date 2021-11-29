@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
-import useDebouncedCallback from "../../../hooks/useDebounceCallback";
+import debounce from "@mui/utils/debounce";
 import { actions } from "../slice";
 import DexieAPI from "../../../app/api/dexie-api";
 import Note from "../../../app/storage/dexie/Note";
@@ -24,8 +24,9 @@ const useNoteActions = (noteDetail: Note) => {
     [noteDetail, dispatch]
   );
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const updateNoteContent = useCallback(
-    useDebouncedCallback((getData: () => string) => {
+    debounce((getData: () => string) => {
       !touched && setTouched(true);
       !isSaving && setIsSaving(true);
       setTimeout(async () => {

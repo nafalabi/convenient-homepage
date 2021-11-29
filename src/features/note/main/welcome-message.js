@@ -1,4 +1,4 @@
-export default `# Welcome
+const welcomeMessage = `# Welcome
 
 Organize everything in one place.
 
@@ -37,3 +37,5 @@ Have fun!
 \
 
 `;
+
+export default welcomeMessage;

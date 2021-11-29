@@ -10,8 +10,8 @@ import {
   Box,
   Divider,
 } from "@mui/material";
+import debounce from "@mui/utils/debounce";
 import { useCallback } from "react";
-import useDebouncedCallback from "../../hooks/useDebounceCallback";
 import { GlobalStyles } from "@mui/styled-engine";
 
 const PREFIX = "PanelWithSidebar";
@@ -108,8 +108,9 @@ const PanelWithSidebar = ({
     setDragging(true);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const onMove = useCallback(
-    useDebouncedCallback((clientX) => {
+    debounce((clientX) => {
       if (!drawerRef.current) return;
       const drawerWidth = drawerRef.current.clientWidth;
 
