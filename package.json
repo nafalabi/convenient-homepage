@@ -12,9 +12,9 @@
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.0.5",
-    "@mui/lab": "^5.0.0-alpha.53",
-    "@mui/material": "^5.0.6",
-    "@mui/styles": "^5.0.2",
+    "@mui/lab": "^5.0.0-alpha.57",
+    "@mui/material": "^5.2.1",
+    "@mui/styles": "^5.2.1",
     "@reduxjs/toolkit": "^1.6.2",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -63,5 +63,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "packageManager": "yarn@3.1.1"
 }

@@ -13,7 +13,7 @@ import {
   useForkRef,
   unsupportedProp
 } from "@mui/material/utils";
-import { unstable_composeClasses as composeClasses } from "@mui/core";
+import { unstable_composeClasses as composeClasses } from "@mui/base";
 import TreeViewContext from "@mui/lab/TreeView/TreeViewContext";
 import {
   DescendantProvider,
