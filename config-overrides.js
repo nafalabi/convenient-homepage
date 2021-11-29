@@ -22,7 +22,7 @@ const customOverrideWebpack = (config, env) => {
   // Adding entries
   config.entry = {
     popup: paths.appSrc + "/popup",
-    options: paths.appIndexJs,
+    options: paths.appSrc + "/options",
     background: paths.appSrc + "/background",
   };
 
