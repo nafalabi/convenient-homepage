@@ -2,6 +2,8 @@ const paths = require("react-scripts/config/paths");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ManifestPlugin = require("webpack-manifest-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const prebuildScript = require("./prebuild-script");
+const postbuildScript = require("./postbuild-script");
 
 const customOverrideDevServer = (configFunction) => {
   return function (proxy, allowedHost) {
@@ -110,6 +112,28 @@ const customOverrideWebpack = (config, env) => {
   config.plugins = replacePlugin(config.plugins, (name) =>
     /ReactRefreshPlugin/i.test(name)
   );
+
+  // Add prebuild and postbuild script
+  config.plugins.push({
+    apply: (compiler) => {
+      compiler.hooks.afterEnvironment.tap("PreBuildScript", (compilation) => {
+        try {
+          prebuildScript(isEnvProduction);
+          process.stdout.write("Success running pre-build script\n");
+        } catch (error) {
+          process.stderr.write(`Error running pre-build script: ${error}\n`);
+        }
+      });
+      compiler.hooks.afterEmit.tap("PostBuildScript", (compilation) => {
+        try {
+          postbuildScript(isEnvProduction);
+          process.stdout.write("Success running post-build script\n");
+        } catch (error) {
+          process.stderr.write(`Error running post-build script: ${error}\n`);
+        }
+      });
+    },
+  });
 
   return config;
 };

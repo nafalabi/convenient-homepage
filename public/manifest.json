@@ -6,7 +6,7 @@
   "icons": {
     "192": "logo192.png"
   },
-  "permissions": ["bookmarks", "https://*/*"],
+  "permissions": ["bookmarks", "https://*/*", "identity"],
   "background": {
     "page": "background.html",
     "persistent": true
@@ -15,5 +15,10 @@
     "default_icon": "logo192.png",
     "default_popup": "popup.html"
   },
-  "options_page": "index.html"
+  "options_page": "index.html",
+  "oauth2": {
+    "client_id": "",
+    "scopes": [""]
+  },
+  "key": ""
 }
