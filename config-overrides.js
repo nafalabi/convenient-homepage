@@ -1,67 +1,137 @@
-const {
-  override,
-  overrideDevServer,
-  addWebpackPlugin,
-} = require("customize-cra");
-const CopyPlugin = require("copy-webpack-plugin");
+const paths = require("react-scripts/config/paths");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ManifestPlugin = require("webpack-manifest-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-// Extension entries / pages
-const multipleEntry = require("react-app-rewire-multiple-entry")([
-  {
-    // points to the popup entry point
-    name: "popup",
-    entry: "src/popup/index.js",
-    template: "public/popup.html",
-    outPath: "/popup.html",
-  },
-  {
-    // points to the options page entry point
-    entry: "src/index.js",
-    template: "public/index.html",
-    outPath: "/index.html",
-  },
-  {
-    // points to the background page entry point
-    entry: "src/background/index.js",
-    template: "public/background.html",
-    outPath: "/background.html",
-  },
-]);
+const customOverrideDevServer = (configFunction) => {
+  return function (proxy, allowedHost) {
+    const config = configFunction(proxy, allowedHost);
+    config.writeToDisk = true;
+    config.inline = false;
+    config.hot = false;
 
-// Custom function to override webpack dev server config
-const customOverrideDevServer = (config) => {
-  return {
-    ...config,
-    // webpackDevService doesn't write the files to desk
-    // so we need to tell it to do so so we can load the
-    // extension with chrome
-    writeToDisk: true,
-    inline: false,
-    hot: false,
-    liveReload: false,
+    return config;
   };
 };
 
-// Custom function to override webpack config
-const customOverrideWebpack = (config) => {
-  // Copy all assets to output folder
-  config = addWebpackPlugin(
-    new CopyPlugin({
-      patterns: [{ from: "public", to: "" }],
-    })
-  )(config);
+const customOverrideWebpack = (config, env) => {
+  const isEnvProduction = env === "production";
 
-  // Adding multiple entries
-  config = multipleEntry.addMultiEntry(config);
+  // Adding entries
+  config.entry = {
+    popup: paths.appSrc + "/popup",
+    options: paths.appIndexJs,
+    background: paths.appSrc + "/background",
+  };
 
-  // set output file names to be the same regardless of the NODE_ENV
+  // Change output filename template to get rid of hash there
   config.output.filename = "static/js/[name].js";
-  config.output.chunkFilename = "static/js/[name].chunk.js";
+  // Disable built-in SplitChunksPlugin
+  config.optimization.splitChunks = {
+    cacheGroups: { default: false },
+  };
+  // Disable runtime chunk addition for each entry point
+  config.optimization.runtimeChunk = false;
+
+  // Shared minify options to be used in HtmlWebpackPlugin constructor
+  const minifyOpts = {
+    removeComments: true,
+    collapseWhitespace: true,
+    removeRedundantAttributes: true,
+    useShortDoctype: true,
+    removeEmptyAttributes: true,
+    removeStyleLinkTypeAttributes: true,
+    keepClosingSlash: true,
+    minifyJS: true,
+    minifyCSS: true,
+    minifyURLs: true,
+  };
+
+  // Custom HtmlWebpackPlugin instance for index (popup) page
+  const indexHtmlPlugin = new HtmlWebpackPlugin({
+    inject: true,
+    chunks: ["popup"],
+    template: paths.appPublic + "/popup.html",
+    filename: "popup.html",
+    minify: isEnvProduction && minifyOpts,
+  });
+  // Replace original HtmlWebpackPlugin instance in config.plugins with the above one
+  config.plugins = replacePlugin(
+    config.plugins,
+    (name) => /HtmlWebpackPlugin/i.test(name),
+    indexHtmlPlugin
+  );
+
+  // Extra HtmlWebpackPlugin instance for options page
+  const optionsHtmlPlugin = new HtmlWebpackPlugin({
+    inject: true,
+    chunks: ["options"],
+    template: paths.appHtml,
+    filename: "index.html",
+    minify: isEnvProduction && minifyOpts,
+  });
+  // Add the above HtmlWebpackPlugin instance into config.plugins
+  // Note: you may remove/comment the next line if you don't need an options page
+  config.plugins.push(optionsHtmlPlugin);
+
+  // Custom ManifestPlugin instance to cast asset-manifest.json back to old plain format
+  const manifestPlugin = new ManifestPlugin({
+    fileName: "asset-manifest.json",
+  });
+  // Replace original ManifestPlugin instance in config.plugins with the above one
+  config.plugins = replacePlugin(
+    config.plugins,
+    (name) => /ManifestPlugin/i.test(name),
+    manifestPlugin
+  );
+
+  // Custom MiniCssExtractPlugin instance to get rid of hash in filename template
+  const miniCssExtractPlugin = new MiniCssExtractPlugin({
+    filename: "static/css/[name].css",
+  });
+  // Replace original MiniCssExtractPlugin instance in config.plugins with the above one
+  config.plugins = replacePlugin(
+    config.plugins,
+    (name) => /MiniCssExtractPlugin/i.test(name),
+    miniCssExtractPlugin
+  );
+
+  // Remove GenerateSW plugin from config.plugins to disable service worker generation
+  config.plugins = replacePlugin(config.plugins, (name) =>
+    /GenerateSW/i.test(name)
+  );
+
+  // Remove HMR plugin from config.plugins to disable the Hot Module
+  config.plugins = replacePlugin(config.plugins, (name) =>
+    /HotModuleReplacementPlugin/i.test(name)
+  );
+
+  // Remove fast refresh plugin
+  config.plugins = replacePlugin(config.plugins, (name) =>
+    /ReactRefreshPlugin/i.test(name)
+  );
 
   return config;
 };
 
 module.exports = {
-  webpack: override(customOverrideWebpack),
-  devServer: overrideDevServer(customOverrideDevServer),
+  webpack: customOverrideWebpack,
+  devServer: customOverrideDevServer,
 };
+
+// Utility function to replace/remove specific plugin in a webpack config
+function replacePlugin(plugins, nameMatcher, newPlugin) {
+  const i = plugins.findIndex((plugin) => {
+    return (
+      plugin.constructor &&
+      plugin.constructor.name &&
+      nameMatcher(plugin.constructor.name)
+    );
+  });
+  return i > -1
+    ? plugins
+        .slice(0, i)
+        .concat(newPlugin || [])
+        .concat(plugins.slice(i + 1))
+    : plugins;
+}
