@@ -5,9 +5,7 @@ import localData from "../../storage/local-data";
 import db from "../../storage/dexie/db";
 import Background from "../../storage/dexie/Background";
 import {
-  BACKGROUND_PROVIDER_BING,
-  BACKGROUND_PROVIDER_PIXABAY,
-  BACKGROUND_PROVIDER_UNSPLASH,
+  ImageProvider,
 } from "../../../constant";
 import Axios from "axios";
 import { AbstractImageAPI } from "./type";
@@ -22,13 +20,13 @@ class ImageAPI {
     const { provider, refresh_interval } = parameters;
 
     switch (provider) {
-      case BACKGROUND_PROVIDER_PIXABAY:
+      case ImageProvider.PIXABAY:
         this.apiProvider = new Pixabay(parameters);
         break;
-      case BACKGROUND_PROVIDER_UNSPLASH:
+      case ImageProvider.UNSPLASH:
         this.apiProvider = new Unsplash(parameters);
         break;
-      case BACKGROUND_PROVIDER_BING:
+      case ImageProvider.BING:
         this.apiProvider = new Bing(parameters);
         break;
       default:

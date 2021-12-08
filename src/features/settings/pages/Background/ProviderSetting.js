@@ -13,11 +13,7 @@ import { ExpandMore, FactCheck, Save } from "@mui/icons-material";
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import InlineFormControl from "../../../../components/InlineFormControl";
-import {
-  BACKGROUND_PROVIDER_BING,
-  BACKGROUND_PROVIDER_PIXABAY,
-  BACKGROUND_PROVIDER_UNSPLASH,
-} from "../../../../constant";
+import { ImageProvider } from "../../../../constant";
 import localData from "../../../../app/storage/local-data";
 import Unsplash from "./Providers/Unsplash";
 import Pixabay from "./Providers/Pixabay";
@@ -26,7 +22,7 @@ import { useDialog } from "./hooks/useDialog";
 import { DIALOG_TESTPROVIDER } from "./dialogs/TestImageProvider";
 import { useSnackbar } from "notistack";
 
-const ImageProvider = () => {
+const ProviderSetting = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { openDialog } = useDialog();
   const [isSaved, setSaved] = useState(false);
@@ -65,21 +61,19 @@ const ImageProvider = () => {
                 onChange={formik.handleChange}
                 fullWidth
               >
-                <MenuItem value={BACKGROUND_PROVIDER_UNSPLASH}>
-                  Unsplash
-                </MenuItem>
-                <MenuItem value={BACKGROUND_PROVIDER_PIXABAY}>Pixabay</MenuItem>
-                <MenuItem value={BACKGROUND_PROVIDER_BING}>Bing</MenuItem>
+                <MenuItem value={ImageProvider.UNSPLASH}>Unsplash</MenuItem>
+                <MenuItem value={ImageProvider.PIXABAY}>Pixabay</MenuItem>
+                <MenuItem value={ImageProvider.BING}>Bing</MenuItem>
               </Select>
             </InlineFormControl>
 
-            {formik.values.provider === BACKGROUND_PROVIDER_UNSPLASH && (
+            {formik.values.provider === ImageProvider.UNSPLASH && (
               <Unsplash formik={formik} />
             )}
-            {formik.values.provider === BACKGROUND_PROVIDER_PIXABAY && (
+            {formik.values.provider === ImageProvider.PIXABAY && (
               <Pixabay formik={formik} />
             )}
-            {formik.values.provider === BACKGROUND_PROVIDER_BING && (
+            {formik.values.provider === ImageProvider.BING && (
               <Bing formik={formik} />
             )}
 
@@ -123,4 +117,4 @@ const ImageProvider = () => {
   );
 };
 
-export default ImageProvider;
+export default ProviderSetting;

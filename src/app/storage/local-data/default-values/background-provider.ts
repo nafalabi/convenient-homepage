@@ -1,3 +1,5 @@
+import { ImageProvider } from "../../../../constant";
+
 export const STORAGE_KEY_BACKGROUND_PROVIDER = "backgroundProvider";
 
 export const backgroundProviderDefaults: IBackgroundProvider = {
@@ -21,7 +23,7 @@ export const backgroundProviderDefaults: IBackgroundProvider = {
 };
 
 export interface IBackgroundProvider {
-  provider: number;
+  provider: ImageProvider;
   refresh_interval: number;
 
   unsplash_keyword: string;

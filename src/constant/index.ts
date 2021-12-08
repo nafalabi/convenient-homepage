@@ -1,6 +1,8 @@
-export const BACKGROUND_PROVIDER_UNSPLASH = 0;
-export const BACKGROUND_PROVIDER_PIXABAY = 1;
-export const BACKGROUND_PROVIDER_BING = 2;
+export enum ImageProvider {
+  UNSPLASH = 0,
+  PIXABAY = 1,
+  BING,
+}
 
 export enum IconType {
   EMOJI = 0,

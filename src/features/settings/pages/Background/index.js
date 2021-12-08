@@ -2,7 +2,7 @@ import { Box, Divider, Typography } from "@mui/material";
 import React from "react";
 import DialogController from "./dialogs/DialogController";
 import { DialogProvider } from "./hooks/useDialog";
-import ImageProvider from "./ImageProvider";
+import ProviderSetting from "./ProviderSetting";
 import Library from "./Library";
 
 const Background = () => {
@@ -14,7 +14,7 @@ const Background = () => {
           <Divider />
         </Box>
 
-        <ImageProvider />
+        <ProviderSetting />
         <Library />
 
         <DialogController />
