@@ -6,7 +6,6 @@ const retrieveBackground = async () => {
   const imageApi = new ImageAPI(backgroundSettings);
 
   const newBackground = await imageApi.getNewBackground();
-	console.log(newBackground);
   imageApi.storeAndSaveAsActive(newBackground.imageBase64);
 };
 
