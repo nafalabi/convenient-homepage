@@ -1,12 +1,12 @@
 import axios from "axios";
-import { IBackgroundProvider } from "../../storage/local-data/default-values/background-provider";
+import { IBackgroundSettings } from "../../storage/app-data/backgroundSettings";
 import { AbstractImageAPI } from "./type";
 
 class Pixabay implements AbstractImageAPI {
   apiUrl = "https://pixabay.com/api/?";
-  parameters: IBackgroundProvider;
+  parameters: IBackgroundSettings;
 
-  constructor(parameters: IBackgroundProvider) {
+  constructor(parameters: IBackgroundSettings) {
     this.parameters = parameters;
   }
 

@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import PanelWithSidebar from "../../components/PanelWithSidebar";
 import SettingsMain from "./SettingsMain";
 import SettingsSidebar from "./SettingsSidebar";
-import { actions, selectors } from "./slice";
+import { actions } from "./slice";
 
 const Settings = () => {
-  const isOpen = useSelector(selectors.isOpen);
+  const isOpen = useSelector(({ settings }) => settings.isOpen);
   const dispatch = useDispatch();
 
   return (

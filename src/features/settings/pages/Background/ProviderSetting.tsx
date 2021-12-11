@@ -14,25 +14,30 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import InlineFormControl from "../../../../components/InlineFormControl";
 import { ImageProvider } from "../../../../constant";
-import localData from "../../../../app/storage/local-data";
 import Unsplash from "./Providers/Unsplash";
 import Pixabay from "./Providers/Pixabay";
 import Bing from "./Providers/Bing";
 import { useDialog } from "./hooks/useDialog";
 import { DIALOG_TESTPROVIDER } from "./dialogs/TestImageProvider";
 import { useSnackbar } from "notistack";
+import { useSelector } from "react-redux";
+import appData from "../../../../app/storage/app-data";
 
 const ProviderSetting = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { openDialog } = useDialog();
   const [isSaved, setSaved] = useState(false);
+  const settingValues = useSelector(
+    ({ settings }) => settings.backgroundSettings
+  );
 
   const formik = useFormik({
-    initialValues: localData.backgroundProvider(),
-    onSubmit: (values) => {
+    enableReinitialize: true,
+    initialValues: settingValues,
+    onSubmit: async (values) => {
       setSaved(false);
-      localData.backgroundProvider(values);
-      setTimeout(() => setSaved(true), 200);
+      await appData.backgroundSettings(values);
+      setSaved(true);
       enqueueSnackbar("Image Provider Settings has been saved", {
         variant: "success",
       });

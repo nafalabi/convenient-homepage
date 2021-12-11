@@ -18,11 +18,11 @@ import CustomSnackbarProvider from "./components/NotifstackProvider";
 import localData from "./app/storage/local-data";
 import FirstSetupScreen from "./features/first-setup";
 
-// const theme = createTheme({
-//   typography: { button: { textTransform: "none" } },
-// });
-
-const theme = createTheme();
+const theme = createTheme({
+  palette: {
+    mode: "light",
+  },
+});
 
 function App() {
   const [alreadySetup, setSetupStatus] = useState<boolean>(

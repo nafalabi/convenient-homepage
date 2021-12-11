@@ -1,22 +1,21 @@
 import Pixabay from "./Pixabay";
 import Unsplash from "./Unsplash";
 import Bing from "./Bing";
-import localData from "../../storage/local-data";
 import db from "../../storage/dexie/db";
 import Background from "../../storage/dexie/Background";
-import {
-  ImageProvider,
-} from "../../../constant";
-import Axios from "axios";
+import { ImageProvider } from "../../../constant";
 import { AbstractImageAPI } from "./type";
-import { IBackgroundProvider } from "../../storage/local-data/default-values/background-provider";
+import {
+  backgroundSettingsDefault,
+  IBackgroundSettings,
+} from "../../storage/app-data/backgroundSettings";
 
 class ImageAPI {
   apiProvider: AbstractImageAPI;
   refreshInterval = 0;
 
-  constructor(parametersGiven?: IBackgroundProvider) {
-    const parameters = parametersGiven ?? localData.backgroundProvider();
+  constructor(parametersGiven: IBackgroundSettings) {
+    const parameters = parametersGiven;
     const { provider, refresh_interval } = parameters;
 
     switch (provider) {
@@ -39,16 +38,16 @@ class ImageAPI {
 
   getNewBackground = async () => {
     const imageUrl = await this.apiProvider.getUrl();
-    const response = await Axios({
-      method: "GET",
-      url: imageUrl,
-      responseType: "arraybuffer",
-    });
-    const imageBase64 = Buffer.from(response.data, "binary").toString("base64");
-    const url: string = response.request?.responseURL;
-    return { imageBase64, url };
+
+    const arraybuffer = await (await fetch(imageUrl)).arrayBuffer();
+    const imageBase64 = Buffer.from(arraybuffer).toString("base64");
+
+    return { imageBase64 };
   };
 
+  /**
+   * Deprecated, replaced by dexie useLiveQuery + service worker
+   */
   getActiveBackground = async () => {
     const activeBackground = (
       await db.background
@@ -78,3 +77,8 @@ class ImageAPI {
 }
 
 export default ImageAPI;
+
+declare global {
+  var imgapi: ImageAPI;
+}
+global.imgapi = new ImageAPI(backgroundSettingsDefault);

@@ -1,5 +1,5 @@
 /**
- * This file here is to satisfy react-scripts (CRA) only, so it doesn't throw an error
+ * This file is here to only satisfy react-scripts (CRA) so it doesn't throw an error
  * 
  * there are three entry points
  *  - options

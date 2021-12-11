@@ -10,17 +10,20 @@ import {
 import { useFormik } from "formik";
 import React from "react";
 import InlineFormControl from "../../../../components/InlineFormControl";
-import localData from "../../../../app/storage/local-data";
 import { ExpandMore } from "@mui/icons-material";
 import { useSnackbar } from "notistack";
+import { useSelector } from "react-redux";
+import appData from "../../../../app/storage/app-data";
 
 const UserDetails = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const settingValues = useSelector(({ settings }) => settings.generalSettings);
 
   const formik = useFormik({
-    initialValues: localData.generalSettings(),
-    onSubmit: (values) => {
-      localData.generalSettings(values);
+    enableReinitialize: true,
+    initialValues: settingValues,
+    onSubmit: async (values) => {
+      await appData.generalSettings(values);
       enqueueSnackbar("User Details has been saved", { variant: "success" });
     },
   });

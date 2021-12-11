@@ -1,8 +1,9 @@
 import { TextField } from "@mui/material";
 import React from "react";
 import InlineFormControl from "../../../../../components/InlineFormControl";
+import { FormikBackgroundSettings } from "../types";
 
-const Bing = ({ formik }) => {
+const Bing = ({ formik }: { formik: FormikBackgroundSettings }) => {
   return (
     <InlineFormControl label="Image Index">
       <TextField
@@ -11,8 +12,6 @@ const Bing = ({ formik }) => {
         onChange={formik.handleChange}
         fullWidth
         type="number"
-        max="7"
-        min="0"
         required
       />
     </InlineFormControl>

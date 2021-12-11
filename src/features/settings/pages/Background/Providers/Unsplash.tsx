@@ -1,8 +1,9 @@
 import { TextField } from "@mui/material";
 import React from "react";
 import InlineFormControl from "../../../../../components/InlineFormControl";
+import { FormikBackgroundSettings } from "../types";
 
-const Unsplash = ({ formik }) => {
+const Unsplash = ({ formik }: { formik: FormikBackgroundSettings }) => {
   return (
     <>
       <InlineFormControl label="Keyword">

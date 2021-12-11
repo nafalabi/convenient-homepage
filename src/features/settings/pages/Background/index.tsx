@@ -1,11 +1,19 @@
 import { Box, Divider, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import DialogController from "./dialogs/DialogController";
 import { DialogProvider } from "./hooks/useDialog";
 import ProviderSetting from "./ProviderSetting";
 import Library from "./Library";
+import { useDispatch } from "react-redux";
+import { actions } from "../../slice";
 
 const Background = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(actions.fetchBackgroundSettings());
+  }, [dispatch]);
+
   return (
     <DialogProvider>
       <Box>

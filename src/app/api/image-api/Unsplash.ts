@@ -1,11 +1,11 @@
-import { IBackgroundProvider } from "../../storage/local-data/default-values/background-provider";
+import { IBackgroundSettings } from "../../storage/app-data/backgroundSettings";
 import { AbstractImageAPI } from "./type";
 
 class Unsplash implements AbstractImageAPI {
   apiUrl = "https://source.unsplash.com/";
-  parameters: IBackgroundProvider;
+  parameters: IBackgroundSettings;
 
-  constructor(parameters: IBackgroundProvider) {
+  constructor(parameters: IBackgroundSettings) {
     this.parameters = parameters;
   }
 

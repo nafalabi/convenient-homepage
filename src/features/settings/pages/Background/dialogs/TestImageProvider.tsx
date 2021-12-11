@@ -11,13 +11,14 @@ import { useDialog } from "../hooks/useDialog";
 import ImageAPI from "../../../../../app/api/image-api/index";
 import { Skeleton } from "@mui/material";
 import { useSnackbar } from "notistack";
+import { backgroundSettingsDefault } from "../../../../../app/storage/app-data/backgroundSettings";
 
 export const DIALOG_TESTPROVIDER = 0;
 
 const DialogTestImageProvider = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { closeDialog, args } = useDialog();
-  const [imageData, setImageData] = useState(null);
+  const [imageData, setImageData] = useState<string | null>(null);
   const [refreshReference, setRefreshReference] = useState(0);
 
   const refreshImage = () => {
@@ -30,7 +31,7 @@ const DialogTestImageProvider = () => {
       enqueueSnackbar("The image is not loaded yet", { variant: "error" });
       return;
     }
-    const imageAPI = new ImageAPI(args);
+    const imageAPI = new ImageAPI(args || backgroundSettingsDefault);
     await imageAPI.storeAndSaveAsActive(imageData);
     closeDialog();
   };

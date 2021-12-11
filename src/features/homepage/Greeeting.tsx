@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
+import React from "react";
 import moment from "moment";
 import styled from "@emotion/styled";
-import localData from "../../app/storage/local-data";
+import { useSelector } from "react-redux";
 
 const GreatingRoot = styled.div`
   position: fixed;
@@ -22,7 +22,7 @@ const GreatingRoot = styled.div`
 const Greeting = () => {
   const curHour = parseInt(moment().format("HH"));
   let greetingVal = "";
-  const { name } = useMemo(() => localData.generalSettings(), []);
+  const username = useSelector(({ homepage }) => homepage.username);
 
   if (curHour >= 0 && curHour <= 5) {
     greetingVal = "Night";
@@ -42,7 +42,7 @@ const Greeting = () => {
     <GreatingRoot>
       <div className="greeting">
         <h1>
-          Good {greetingVal}, {name}
+          Good {greetingVal}, {username}
         </h1>
         <h3>What is your main focus for today?</h3>
       </div>

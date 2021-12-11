@@ -6,7 +6,7 @@ import noteReducer from "../../../features/note/slice";
 import bookmarkReducer from "../../../features/bookmark/slice";
 import settingsReducer from "../../../features/settings/slice";
 
-export default configureStore({
+const store = configureStore({
   reducer: {
     homepage: homepageReducer,
     sidebar: sidebarReducer,
@@ -16,3 +16,13 @@ export default configureStore({
     settings: settingsReducer,
   },
 });
+
+export default store;
+
+// Type definitions
+
+export type RootState = ReturnType<typeof store.getState>;
+
+declare module "react-redux" {
+  interface DefaultRootState extends RootState {}
+}

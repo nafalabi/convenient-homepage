@@ -8,7 +8,7 @@ const clearBackground = async () => {
     .below(now - threshold)
     .primaryKeys();
   await dexieDB.background.bulkDelete(ids);
-  // console.info(`Background images cleared, ids: ${JSON.stringify(ids)}`);
+  console.info(`Background images cleared, ids: ${JSON.stringify(ids)}`);
 };
 
 export default clearBackground;

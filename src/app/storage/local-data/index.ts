@@ -1,13 +1,3 @@
-import {
-  backgroundProviderDefaults,
-  STORAGE_KEY_BACKGROUND_PROVIDER,
-  IBackgroundProvider,
-} from "./default-values/background-provider";
-import {
-  generalSettingsDefaults,
-  IGeneralSettings,
-  STORAGE_KEY_GENERAL_SETTINGS,
-} from "./default-values/general-settings";
 const STORAGE_KEY_ALREADY_SETUP = "alreadySetup";
 
 class LocalData {
@@ -22,22 +12,6 @@ class LocalData {
 
   alreadyFirstSetup(value?: boolean) {
     return this._setOrGet(STORAGE_KEY_ALREADY_SETUP, value, false);
-  }
-
-  backgroundProvider(value?: IBackgroundProvider) {
-    return this._setOrGet(
-      STORAGE_KEY_BACKGROUND_PROVIDER,
-      value,
-      backgroundProviderDefaults
-    );
-  }
-
-  generalSettings(value?: IGeneralSettings) {
-    return this._setOrGet(
-      STORAGE_KEY_GENERAL_SETTINGS,
-      value,
-      generalSettingsDefaults
-    );
   }
 }
 

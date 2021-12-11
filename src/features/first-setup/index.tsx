@@ -4,6 +4,7 @@ import { IconButton, Paper, TextField, Typography } from "@mui/material";
 import forestBackground from "./forest_background.svg";
 import { ArrowForward } from "@mui/icons-material";
 import localData from "../../app/storage/local-data";
+import appData from "../../app/storage/app-data";
 
 const RootDiv = styled("div")({
   display: "flex",
@@ -31,11 +32,11 @@ const FirstSetupScreen = (props: { onSetup: () => void }) => {
     setTimeout(() => setShow(true), 0);
   }, []);
 
-  const onSubmit = (e: SyntheticEvent) => {
+  const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    const generalSettingData = localData.generalSettings();
+    const generalSettingData = await appData.generalSettings();
     generalSettingData.name = name;
-    localData.generalSettings(generalSettingData);
+    appData.generalSettings(generalSettingData);
     localData.alreadyFirstSetup(true);
     setShow(false);
     setTimeout(() => props.onSetup(), 1000);

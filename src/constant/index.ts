@@ -1,7 +1,7 @@
 export enum ImageProvider {
   UNSPLASH = 0,
   PIXABAY = 1,
-  BING,
+  BING = 2,
 }
 
 export enum IconType {

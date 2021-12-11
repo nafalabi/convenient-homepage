@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import Greeting from "./Greeeting";
-import { selectors, actions } from "./slice";
+import { actions } from "./slice";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "@emotion/styled";
-import ImageAPI from "../../app/api/image-api";
+import { useLiveQuery } from "dexie-react-hooks";
+import dexieDB from "../../app/storage/dexie/db";
 
 const HomepageRoot = styled.div`
   background-size: cover;
@@ -32,21 +33,29 @@ const HomepageRoot = styled.div`
 
 const Homepage = (props: { alreadySetup: boolean }) => {
   const dispatch = useDispatch();
-  const imageURI = useSelector(selectors.imageURI);
-  const isLoaded = useSelector(selectors.isLoaded);
+  const initialized = useSelector(({ homepage }) => homepage.initialized);
+
+  const imageURI = useLiveQuery<string, string>(
+    async () => {
+      const background = await dexieDB.background
+        .orderBy("expireat")
+        .reverse()
+        .first();
+      return background?.content ?? "";
+    },
+    [initialized],
+    ""
+  );
 
   useEffect(() => {
-    const imageAPI = new ImageAPI();
-    imageAPI.getActiveBackground().then((imageURI) => {
-      dispatch(actions.loadImage(imageURI));
-    });
+    dispatch(actions.initialize());
   }, [dispatch]);
 
   return (
     <HomepageRoot
       style={{
         backgroundImage: `url('data:image/jpg;base64,${imageURI}')`,
-        opacity: isLoaded ? 1 : 0,
+        opacity: initialized && imageURI !== "" ? 1 : 0,
       }}
     >
       {props.alreadySetup && <Greeting />}

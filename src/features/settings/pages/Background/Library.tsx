@@ -13,10 +13,9 @@ import {
 import { Check, Delete, ExpandMore } from "@mui/icons-material";
 import { Pagination } from "@mui/material";
 import React, { useState } from "react";
-import localData from "../../../../app/storage/local-data";
 import useSubscribeBackgroundImages from "./hooks/useSubscribeBackgroundImages";
-import { actions as homepageActions } from "../../../homepage/slice";
-import { useDispatch } from "react-redux";
+import appData from "../../../../app/storage/app-data";
+import Background from "../../../../app/storage/dexie/Background";
 
 const StyledImageListItem = styled(ImageListItem)({
   position: "relative",
@@ -33,11 +32,18 @@ const StyledImageListItem = styled(ImageListItem)({
 });
 
 const Library = () => {
-  const dispatch = useDispatch();
-  const [showingCount] = useState(9);
+  const [showingImage] = useState(9);
   const [currentPage, setCurrentPage] = useState(0);
-  const queryResult = useSubscribeBackgroundImages(showingCount, currentPage);
+  const queryResult = useSubscribeBackgroundImages(showingImage, currentPage);
   const [selectedBackgroundId, setSelectedBackgroundId] = useState(0);
+
+  const deleteImage = (image: Background) => () => image.delete();
+
+  const setAsBackground = (image: Background) => async () => {
+    const { refresh_interval } = await appData.backgroundSettings();
+    image.expireat = Math.floor(Date.now() / 1000) + refresh_interval;
+    image.save();
+  };
 
   return (
     <Accordion defaultExpanded={true}>
@@ -53,22 +59,13 @@ const Library = () => {
         {queryResult &&
           (() => {
             const { total, images } = queryResult;
-            const totalPage = Math.ceil(total / showingCount);
+            const totalPage = Math.ceil(total / showingImage);
 
             return (
               <Box width="100%">
                 <ImageList cols={3}>
                   {images.map((background) => {
                     const { content, backgroundid } = background;
-                    const deleteImage = () => background.delete();
-                    const setAsBackground = () => {
-                      const { refresh_interval } =
-                        localData.backgroundProvider();
-                      background.expireat =
-                        Math.floor(Date.now() / 1000) + refresh_interval;
-                      background.save();
-                      dispatch(homepageActions.loadImage(content));
-                    };
 
                     return (
                       <StyledImageListItem key={backgroundid}>
@@ -79,7 +76,7 @@ const Library = () => {
                                 <Fab
                                   color="secondary"
                                   size="small"
-                                  onClick={deleteImage}
+                                  onClick={deleteImage(background)}
                                 >
                                   <Delete />
                                 </Fab>
@@ -90,7 +87,7 @@ const Library = () => {
                                 <Fab
                                   color="primary"
                                   size="small"
-                                  onClick={setAsBackground}
+                                  onClick={setAsBackground(background)}
                                 >
                                   <Check />
                                 </Fab>
@@ -102,7 +99,9 @@ const Library = () => {
                           src={"data:image/jpg;base64," + content}
                           style={{ zIndex: 0, cursor: "pointer" }}
                           alt="background"
-                          onClick={() => setSelectedBackgroundId(backgroundid)}
+                          onClick={() =>
+                            setSelectedBackgroundId(backgroundid ?? 0)
+                          }
                           draggable={false}
                         />
                       </StyledImageListItem>
