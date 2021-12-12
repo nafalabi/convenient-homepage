@@ -3,7 +3,7 @@ import store from "./app/storage/redux/store";
 import { Provider } from "react-redux";
 import React, { useState } from "react";
 import Homepage from "./features/homepage/Homepage";
-import Sidebar from "./features/sidebar/Sidebar";
+import Drawer from "./features/drawer/Drawer";
 import Todo from "./features/todo/Todo";
 import Note from "./features/note/Note";
 import Settings from "./features/settings/Settings";
@@ -42,7 +42,7 @@ function App() {
               )}
               {alreadySetup && (
                 <>
-                  <Sidebar />
+                  <Drawer />
                   <Todo />
                   <Note />
                   <Bookmark />

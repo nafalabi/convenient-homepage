@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useDispatch } from "react-redux";
-import { actions as sidebarActions } from "./slice";
+import { actions as drawerActions } from "./slice";
 import { actions as todoActions } from "../todo/slice";
 import { actions as noteActions } from "../note/slice";
 import { actions as bookmarkActions } from "../bookmark/slice";
@@ -21,11 +21,11 @@ import {
 } from "@mui/icons-material";
 import InputWithConfirmation from "../../components/InputWithConfirmation";
 
-const SidebarBodyRoot = styled("div")({
+const DrawerBodyRoot = styled("div")({
   width: 250,
 });
 
-const SidebarBody = ({ ...props }) => {
+const DrawerBody = ({ ...props }) => {
   const dispatch = useDispatch();
   const items = useMemo(
     () => [
@@ -54,7 +54,7 @@ const SidebarBody = ({ ...props }) => {
   );
 
   return (
-    <SidebarBodyRoot {...props}>
+    <DrawerBodyRoot {...props}>
       <List>
         <ListItem>
           <InputWithConfirmation
@@ -67,10 +67,10 @@ const SidebarBody = ({ ...props }) => {
         {items.map(({ label, icon, onClick }, index) => (
           <ListItem
             button
-            key={`sidebar-item-${index}`}
+            key={`drawer-item-${index}`}
             onClick={() => {
               onClick();
-              dispatch(sidebarActions.toggleSidebar());
+              dispatch(drawerActions.toggleDrawer());
             }}
           >
             <ListItemIcon>{icon}</ListItemIcon>
@@ -78,8 +78,8 @@ const SidebarBody = ({ ...props }) => {
           </ListItem>
         ))}
       </List>
-    </SidebarBodyRoot>
+    </DrawerBodyRoot>
   );
 };
 
-export default SidebarBody;
+export default DrawerBody;

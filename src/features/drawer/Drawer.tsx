@@ -1,12 +1,12 @@
 import React from "react";
-import { actions, selectors } from "./slice";
+import { actions } from "./slice";
 import { useDispatch, useSelector } from "react-redux";
-import SidebarBody from "./SidebarBody";
+import DrawerBody from "./DrawerBody";
 import { IconButton, styled, SwipeableDrawer } from "@mui/material";
-import withStyles from '@mui/styles/withStyles';
+import withStyles from "@mui/styles/withStyles";
 import { Menu } from "@mui/icons-material";
 
-const SidebarTogglerBtn = withStyles({
+const DrawerTogglerBtn = withStyles({
   root: {
     position: "fixed",
     top: "0.5rem",
@@ -18,31 +18,31 @@ const SidebarTogglerBtn = withStyles({
   },
 })(IconButton);
 
-const SidebarRoot = styled("div")({});
+const DrawerRoot = styled("div")({});
 
-const Sidebar = () => {
+const Drawer = () => {
   const dispatch = useDispatch();
-  const isOpen = useSelector(selectors.isOpen);
+  const isOpen = useSelector(({ drawer }) => drawer.isOpen);
 
   return (
-    <SidebarRoot>
-      <SidebarTogglerBtn
-        onClick={() => dispatch(actions.toggleSidebar())}
+    <DrawerRoot>
+      <DrawerTogglerBtn
+        onClick={() => dispatch(actions.toggleDrawer())}
         color="inherit"
         size="small"
       >
         <Menu fontSize="large" />
-      </SidebarTogglerBtn>
+      </DrawerTogglerBtn>
       <SwipeableDrawer
         anchor="left"
         open={isOpen}
-        onClose={() => dispatch(actions.toggleSidebar())}
-        onOpen={() => dispatch(actions.toggleSidebar())}
+        onClose={() => dispatch(actions.toggleDrawer())}
+        onOpen={() => dispatch(actions.toggleDrawer())}
       >
-        <SidebarBody />
+        <DrawerBody />
       </SwipeableDrawer>
-    </SidebarRoot>
+    </DrawerRoot>
   );
 };
 
-export default Sidebar;
+export default Drawer;
