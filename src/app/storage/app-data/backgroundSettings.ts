@@ -41,7 +41,7 @@ export const backgroundSettingsDefault: IBackgroundSettings = {
   bing_img_index: 0,
 };
 
-const STORAGE_KEY = "backgroundSettings";
+export const STORAGE_KEY = "backgroundSettings";
 
 /**
  * Background settings

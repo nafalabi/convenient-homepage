@@ -1,43 +1,44 @@
-import appData from "./app/storage/app-data";
-import clearBackground from "./service-worker/clearBackground";
-import retrieveBackground from "./service-worker/retrieveBackground";
+import alarms from "./service-worker/alarms";
+import storage from "./service-worker/storage";
 
-enum AvailableAlarms {
-  CLEAR_BACKGROUND = "clear-background",
-  RETRIEVE_NEW_BACKGROUND = "retrieve-background",
-}
-
+// Alarm listener
 chrome.alarms.onAlarm.addListener((alarm) => {
   switch (alarm.name) {
-    case AvailableAlarms.CLEAR_BACKGROUND:
-      clearBackground();
+    case alarms.clearBackground.name:
+      alarms.clearBackground.action();
       break;
-    case AvailableAlarms.RETRIEVE_NEW_BACKGROUND:
-      retrieveBackground();
+    case alarms.retrieveBackground.name:
+      alarms.retrieveBackground.action();
       break;
     default:
       break;
   }
 });
 
+// Storage changes listener
+chrome.storage.onChanged.addListener((changes, areaName) => {
+  const keys = Object.keys(changes);
+
+  for (const key of keys) {
+    const { newValue } = changes[key];
+
+    switch (key) {
+      case storage.backgroundSettings.key:
+        storage.backgroundSettings.handleOnChange(newValue);
+        break;
+      default:
+        break;
+    }
+  }
+});
+
+// Initialization
 chrome.runtime.onInstalled.addListener(async () => {
-  const backgroundSettings = await appData.backgroundSettings();
-
-  // Get initial background image
-  retrieveBackground();
-
-  await chrome.alarms.clearAll();
-
   // Define periodic task to clear old background images
-  chrome.alarms.create(AvailableAlarms.CLEAR_BACKGROUND, {
-    // Todo: make it dynamic from the settings
-    periodInMinutes: 30,
-  });
+  await alarms.clearBackground.registerAlarm();
 
   // Define periodic task to retrieve new background image
-  chrome.alarms.create(AvailableAlarms.RETRIEVE_NEW_BACKGROUND, {
-    periodInMinutes: backgroundSettings.refresh_interval / 60,
-  });
+  await alarms.retrieveBackground.registerAlarm();
 
   console.log("installed");
 });
