@@ -36,7 +36,7 @@ chrome.runtime.onInstalled.addListener(async () => {
 
   // Define periodic task to retrieve new background image
   chrome.alarms.create(AvailableAlarms.RETRIEVE_NEW_BACKGROUND, {
-    periodInMinutes: backgroundSettings.refresh_interval,
+    periodInMinutes: backgroundSettings.refresh_interval / 60,
   });
 
   console.log("installed");
