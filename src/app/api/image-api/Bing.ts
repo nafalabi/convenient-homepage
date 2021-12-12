@@ -1,4 +1,3 @@
-import axios from "axios";
 import { IBackgroundSettings } from "../../storage/app-data/backgroundSettings";
 import { AbstractImageAPI } from "./type";
 
@@ -12,8 +11,8 @@ class Bing implements AbstractImageAPI {
 
   async getUrl() {
     const imageIndex = this.parameters.bing_img_index || 0;
-    const res = await axios.get(this.apiUrl + imageIndex);
-    const uri = res.data.images[imageIndex].url;
+    const res = await (await fetch(this.apiUrl + imageIndex)).json();
+    const uri = res.images[imageIndex].url;
     return "https://bing.com" + uri;
   }
 }

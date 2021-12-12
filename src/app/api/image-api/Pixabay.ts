@@ -1,4 +1,3 @@
-import axios from "axios";
 import { IBackgroundSettings } from "../../storage/app-data/backgroundSettings";
 import { AbstractImageAPI } from "./type";
 
@@ -26,9 +25,9 @@ class Pixabay implements AbstractImageAPI {
       ""
     );
     const fullUrl = `${this.apiUrl}key=${pixabay_apikey}&${paramsString}`;
-    const res = await axios.get(fullUrl);
+    const res = await (await fetch(fullUrl)).json();
     const random = Math.floor(Math.random() * pixabay_per_page);
-    return res.data.hits[random].largeImageURL;
+    return res.hits[random].largeImageURL;
   }
 }
 
