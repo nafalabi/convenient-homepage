@@ -1,7 +1,6 @@
 import React, { useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { actions as drawerActions } from "./slice";
-import { actions as todoActions } from "../todo/slice";
 import { actions as noteActions } from "../note/slice";
 import { actions as bookmarkActions } from "../bookmark/slice";
 import { actions as settingsActions } from "../settings/slice";
@@ -12,7 +11,6 @@ import {
   ListItemText,
   styled,
 } from "@mui/material";
-import ListIcon from "@mui/icons-material/List";
 import {
   Search,
   Settings,
@@ -29,11 +27,6 @@ const DrawerBody = ({ ...props }) => {
   const dispatch = useDispatch();
   const items = useMemo(
     () => [
-      {
-        label: "Todo List",
-        icon: <ListIcon />,
-        onClick: () => dispatch(todoActions.toggleTodo()),
-      },
       {
         label: "Notes",
         icon: <LibraryBooks />,

@@ -4,7 +4,6 @@ import { Provider } from "react-redux";
 import React, { useState } from "react";
 import Homepage from "./features/homepage/Homepage";
 import Drawer from "./features/drawer/Drawer";
-import Todo from "./features/todo/Todo";
 import Note from "./features/note/Note";
 import Settings from "./features/settings/Settings";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -43,7 +42,6 @@ function App() {
               {alreadySetup && (
                 <>
                   <Drawer />
-                  <Todo />
                   <Note />
                   <Bookmark />
                   <Settings />
