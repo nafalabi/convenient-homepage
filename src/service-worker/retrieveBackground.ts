@@ -7,6 +7,7 @@ const retrieveBackground = async () => {
 
   const newBackground = await imageApi.getNewBackground();
   imageApi.storeAndSaveAsActive(newBackground.imageBase64);
+  console.info("Background retrieved", new Date().toLocaleString());
 };
 
 export default retrieveBackground;
