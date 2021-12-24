@@ -1,3 +1,4 @@
+import appData from "../../app/storage/app-data";
 import dexieDB from "../../app/storage/dexie/db";
 
 const ALARM_NAME = "clear-background";
@@ -7,11 +8,28 @@ const clearBackground = {
 
   action: async function () {
     const now = Math.floor(Date.now() / 1000);
-    const threshold = 60 * 60 * 24 * 30; // 30 days
+    const { background_lifetime, background_lifetime_unit } =
+      await appData.backgroundSettings();
+
+    let lifetime = 60 * 60 * 24 * 5; // default 5 days
+
+    switch (background_lifetime_unit) {
+      case "weeks":
+        lifetime = background_lifetime * 60 * 60 * 24 * 7;
+        break;
+      case "days":
+        lifetime = background_lifetime * 60 * 60 * 24;
+        break;
+      case "hours":
+        lifetime = background_lifetime * 60 * 60;
+        break;
+      default:
+        break;
+    }
 
     const ids = await dexieDB.background
       .where("expireat")
-      .below(now - threshold)
+      .below(now - lifetime)
       .primaryKeys();
     await dexieDB.background.bulkDelete(ids);
 
@@ -27,7 +45,7 @@ const clearBackground = {
 
     chrome.alarms.create(ALARM_NAME, {
       // Todo: make it dynamic from the settings
-      periodInMinutes: 30,
+      periodInMinutes: 5,
     });
   },
 };

@@ -3,10 +3,14 @@ import setOrGet from "./abstract";
 
 export type BackgroundRefreshIntervalUnit = "days" | "hours" | "minutes";
 
+export type BackgroundLifetimeUnit = "weeks" | "days" | "hours";
+
 export interface IBackgroundSettings {
   provider: ImageProvider;
   refresh_interval: number;
   refresh_interval_unit: BackgroundRefreshIntervalUnit;
+  background_lifetime: number;
+  background_lifetime_unit: BackgroundLifetimeUnit;
 
   unsplash_keyword: string;
   unsplash_dimension: string;
@@ -28,6 +32,8 @@ export const backgroundSettingsDefault: IBackgroundSettings = {
   provider: ImageProvider.UNSPLASH,
   refresh_interval: 2,
   refresh_interval_unit: "hours",
+  background_lifetime: 5,
+  background_lifetime_unit: "days",
 
   unsplash_keyword: "nature",
   unsplash_dimension: "1600x900",

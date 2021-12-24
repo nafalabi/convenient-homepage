@@ -10,8 +10,8 @@ import {
   Typography,
 } from "@mui/material";
 import { ExpandMore, FactCheck, Save } from "@mui/icons-material";
-import React, { useState } from "react";
-import { useFormik } from "formik";
+import React from "react";
+import { FormikProps } from "formik";
 import InlineFormControl from "../../../../components/InlineFormControl";
 import { ImageProvider } from "../../../../constant";
 import Unsplash from "./Providers/Unsplash";
@@ -19,30 +19,14 @@ import Pixabay from "./Providers/Pixabay";
 import Bing from "./Providers/Bing";
 import { useDialog } from "./hooks/useDialog";
 import { DIALOG_TESTPROVIDER } from "./dialogs/TestImageProvider";
-import { useSnackbar } from "notistack";
-import { useSelector } from "react-redux";
-import appData from "../../../../app/storage/app-data";
+import { IBackgroundSettings } from "../../../../app/storage/app-data/backgroundSettings";
 
-const ProviderSetting = () => {
-  const { enqueueSnackbar } = useSnackbar();
+type props = {
+  formik: FormikProps<IBackgroundSettings>;
+};
+
+const ProviderSetting = ({ formik }: props) => {
   const { openDialog } = useDialog();
-  const [isSaved, setSaved] = useState(false);
-  const settingValues = useSelector(
-    ({ settings }) => settings.backgroundSettings
-  );
-
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues: settingValues,
-    onSubmit: async (values) => {
-      setSaved(false);
-      await appData.backgroundSettings(values);
-      setSaved(true);
-      enqueueSnackbar("Image Provider Settings has been saved", {
-        variant: "success",
-      });
-    },
-  });
 
   return (
     <Accordion defaultExpanded={true}>
@@ -106,11 +90,6 @@ const ProviderSetting = () => {
             </InlineFormControl>
 
             <Box alignSelf="flex-end" mt={1} display="flex" alignItems="center">
-              {isSaved && (
-                <Box color="text.secondary" mr={2}>
-                  <Typography variant="body1">Changes saved</Typography>
-                </Box>
-              )}
               <Box mr={2}>
                 <Button
                   onClick={() => openDialog(DIALOG_TESTPROVIDER, formik.values)}

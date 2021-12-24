@@ -8,6 +8,8 @@ const backgroundSettings = {
     // reset the alarm
     await chrome.alarms.clear(alarms.retrieveBackground.name);
     await alarms.retrieveBackground.registerAlarm(false);
+    await chrome.alarms.clear(alarms.clearBackground.name);
+    await alarms.clearBackground.registerAlarm();
   },
 };
 
