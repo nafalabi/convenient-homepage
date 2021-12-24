@@ -83,13 +83,26 @@ const ProviderSetting = () => {
             )}
 
             <InlineFormControl label="Image refresh interval">
-              <TextField
-                name="refresh_interval"
-                value={formik.values.refresh_interval}
-                onChange={formik.handleChange}
-                fullWidth
-                type="number"
-              />
+              <>
+                <TextField
+                  name="refresh_interval"
+                  value={formik.values.refresh_interval}
+                  onChange={formik.handleChange}
+                  type="number"
+                  sx={{ width: 100 }}
+                />
+                <Box sx={{ width: 10 }} />
+                <Select
+                  name="refresh_interval_unit"
+                  value={formik.values.refresh_interval_unit}
+                  onChange={formik.handleChange}
+                  sx={{ width: 150 }}
+                >
+                  <MenuItem value="days">Days</MenuItem>
+                  <MenuItem value="hours">Hours</MenuItem>
+                  <MenuItem value="minutes">Minutes</MenuItem>
+                </Select>
+              </>
             </InlineFormControl>
 
             <Box alignSelf="flex-end" mt={1} display="flex" alignItems="center">

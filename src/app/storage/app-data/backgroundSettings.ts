@@ -1,9 +1,12 @@
 import { ImageProvider } from "../../../constant";
 import setOrGet from "./abstract";
 
+export type BackgroundRefreshIntervalUnit = "days" | "hours" | "minutes";
+
 export interface IBackgroundSettings {
   provider: ImageProvider;
   refresh_interval: number;
+  refresh_interval_unit: BackgroundRefreshIntervalUnit;
 
   unsplash_keyword: string;
   unsplash_dimension: string;
@@ -23,7 +26,8 @@ export interface IBackgroundSettings {
 
 export const backgroundSettingsDefault: IBackgroundSettings = {
   provider: ImageProvider.UNSPLASH,
-  refresh_interval: 3000,
+  refresh_interval: 2,
+  refresh_interval_unit: "hours",
 
   unsplash_keyword: "nature",
   unsplash_dimension: "1600x900",

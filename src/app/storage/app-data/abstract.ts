@@ -7,7 +7,10 @@ async function setOrGet<T = any>(
     if (value === undefined) {
       chrome.storage.sync.get(key, (valObj) => {
         const val = valObj[key];
-        resolve(val ?? defaultValue);
+        defaultValue instanceof Object
+          ? // to prevent any newly added defaultValue property to become undefined
+            resolve({ ...defaultValue, ...(val ?? {}) })
+          : resolve(val ?? defaultValue);
       });
     } else {
       chrome.storage.sync.set({ [key]: value }, () => {

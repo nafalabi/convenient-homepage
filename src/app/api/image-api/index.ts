@@ -12,28 +12,25 @@ import {
 
 class ImageAPI {
   apiProvider: AbstractImageAPI;
-  refreshInterval = 0;
+  parameters: IBackgroundSettings;
 
   constructor(parametersGiven: IBackgroundSettings) {
-    const parameters = parametersGiven;
-    const { provider, refresh_interval } = parameters;
-
-    switch (provider) {
+    switch (parametersGiven.provider) {
       case ImageProvider.PIXABAY:
-        this.apiProvider = new Pixabay(parameters);
+        this.apiProvider = new Pixabay(parametersGiven);
         break;
       case ImageProvider.UNSPLASH:
-        this.apiProvider = new Unsplash(parameters);
+        this.apiProvider = new Unsplash(parametersGiven);
         break;
       case ImageProvider.BING:
-        this.apiProvider = new Bing(parameters);
+        this.apiProvider = new Bing(parametersGiven);
         break;
       default:
-        this.apiProvider = new Unsplash(parameters);
+        this.apiProvider = new Unsplash(parametersGiven);
         break;
     }
 
-    this.refreshInterval = refresh_interval;
+    this.parameters = parametersGiven;
   }
 
   getNewBackground = async () => {
@@ -67,10 +64,26 @@ class ImageAPI {
   };
 
   storeAndSaveAsActive = async (imageBase64: string) => {
+    const { refresh_interval, refresh_interval_unit } = this.parameters;
+    let expireInSec = 60 * 60; // default 1 hour
+
+    switch (refresh_interval_unit) {
+      case "days":
+        expireInSec = refresh_interval * 24 * 60 * 60;
+        break;
+      case "hours":
+        expireInSec = refresh_interval * 60 * 60;
+        break;
+      case "minutes":
+        expireInSec = refresh_interval * 60;
+        break;
+      default:
+        break;
+    }
+
     const newBackground = new Background();
     newBackground.downloadtime = Math.floor(Date.now() / 1000);
-    newBackground.expireat =
-      Math.floor(Date.now() / 1000) + this.refreshInterval;
+    newBackground.expireat = Math.floor(Date.now() / 1000) + expireInSec;
     newBackground.content = imageBase64;
     await newBackground.save();
   };

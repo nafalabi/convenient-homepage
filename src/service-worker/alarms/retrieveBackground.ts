@@ -25,8 +25,24 @@ const retrieveBackground = {
 
     const backgroundSettings = await appData.backgroundSettings();
 
+    let period = 1440; // Default 1 day
+
+    switch (backgroundSettings.refresh_interval_unit) {
+      case "days":
+        period = backgroundSettings.refresh_interval * 24 * 60;
+        break;
+      case "hours":
+        period = backgroundSettings.refresh_interval * 60;
+        break;
+      case "minutes":
+        period = backgroundSettings.refresh_interval;
+        break;
+      default:
+        break;
+    }
+
     chrome.alarms.create(ALARM_NAME, {
-      periodInMinutes: backgroundSettings.refresh_interval / 60,
+      periodInMinutes: period,
     });
   },
 };
