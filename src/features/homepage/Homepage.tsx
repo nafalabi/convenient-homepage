@@ -22,7 +22,8 @@ const HomepageRoot = styled.div`
 
   &::before {
     content: " ";
-    background-color: rgba($color: #000, $alpha: 0.2);
+    background-color: #000;
+    opacity: 0.2;
     height: 100vh;
     width: 100vw;
     position: fixed;
@@ -58,7 +59,11 @@ const Homepage = (props: { alreadySetup: boolean }) => {
         opacity: initialized && imageURI !== "" ? 1 : 0,
       }}
     >
-      {props.alreadySetup && <Greeting />}
+      {props.alreadySetup && (
+        <>
+          <Greeting />
+        </>
+      )}
     </HomepageRoot>
   );
 };

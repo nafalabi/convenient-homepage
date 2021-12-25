@@ -17,6 +17,9 @@ import CustomSnackbarProvider from "./components/NotifstackProvider";
 import localData from "./app/storage/local-data";
 import FirstSetupScreen from "./features/first-setup";
 
+import "@fontsource/montserrat";
+import "@fontsource/roboto";
+
 const theme = createTheme({
   palette: {
     mode: "light",
