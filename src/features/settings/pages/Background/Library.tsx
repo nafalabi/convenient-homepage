@@ -16,6 +16,7 @@ import React, { useState } from "react";
 import useSubscribeBackgroundImages from "./hooks/useSubscribeBackgroundImages";
 import appData from "../../../../app/storage/app-data";
 import Background from "../../../../app/storage/dexie/Background";
+import ImageAPI from "../../../../app/api/image-api";
 
 const StyledImageListItem = styled(ImageListItem)({
   position: "relative",
@@ -40,9 +41,9 @@ const Library = () => {
   const deleteImage = (image: Background) => () => image.delete();
 
   const setAsBackground = (image: Background) => async () => {
-    const { refresh_interval } = await appData.backgroundSettings();
-    image.expireat = Math.floor(Date.now() / 1000) + refresh_interval;
-    image.save();
+    const settings = await appData.backgroundSettings();
+    const imageAPI = new ImageAPI(settings);
+    imageAPI.setAsActive(image);
   };
 
   return (

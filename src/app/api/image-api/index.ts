@@ -42,28 +42,7 @@ class ImageAPI {
     return { imageBase64 };
   };
 
-  /**
-   * Deprecated, replaced by dexie useLiveQuery + service worker
-   */
-  getActiveBackground = async () => {
-    const activeBackground = (
-      await db.background
-        .where("expireat")
-        .above(Date.now() / 1000)
-        .reverse()
-        .sortBy("expireat")
-    )[0];
-
-    if (activeBackground) return activeBackground.content;
-
-    const { imageBase64 } = await this.getNewBackground();
-
-    this.storeAndSaveAsActive(imageBase64);
-
-    return imageBase64;
-  };
-
-  storeAndSaveAsActive = async (imageBase64: string) => {
+  getNewExpireTime = () => {
     const { refresh_interval, refresh_interval_unit } = this.parameters;
     let expireInSec = 60 * 60; // default 1 hour
 
@@ -81,12 +60,21 @@ class ImageAPI {
         break;
     }
 
+    return Math.floor(Date.now() / 1000) + expireInSec;
+  };
+
+  storeAndSaveAsActive = async (imageBase64: string) => {
     const newBackground = new Background();
     newBackground.downloadtime = Math.floor(Date.now() / 1000);
-    newBackground.expireat = Math.floor(Date.now() / 1000) + expireInSec;
+    newBackground.expireat = this.getNewExpireTime();
     newBackground.content = imageBase64;
     await newBackground.save();
   };
+
+  setAsActive = async (background: Background) => {
+    background.expireat = this.getNewExpireTime();
+    await background.save();
+  }
 }
 
 export default ImageAPI;
