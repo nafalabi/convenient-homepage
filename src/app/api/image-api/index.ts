@@ -1,7 +1,6 @@
 import Pixabay from "./Pixabay";
 import Unsplash from "./Unsplash";
 import Bing from "./Bing";
-import db from "../../storage/dexie/db";
 import Background from "../../storage/dexie/Background";
 import { ImageProvider } from "../../../constant";
 import { AbstractImageAPI } from "./type";
