@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import useListenEventFromRef from "../../../hooks/useListenEventFromRef";
+import useListenEventFromRef from "hooks/useListenEventFromRef";
 import NoteEditor from "./NoteEditor";
 import NoteHome from "./NoteHome";
 import { selectors } from "../slice";

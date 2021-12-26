@@ -3,8 +3,8 @@ import { Box, styled } from "@mui/system";
 import { IconButton, Paper, TextField, Typography } from "@mui/material";
 import forestBackground from "./forest_background.svg";
 import { ArrowForward } from "@mui/icons-material";
-import localData from "../../app/storage/local-data";
-import appData from "../../app/storage/app-data";
+import localData from "app/storage/local-data";
+import appData from "app/storage/app-data";
 
 const RootDiv = styled("div")({
   display: "flex",

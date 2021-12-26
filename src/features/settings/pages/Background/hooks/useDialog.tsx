@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from "react";
-import { IBackgroundSettings } from "../../../../../app/storage/app-data/backgroundSettings";
+import { IBackgroundSettings } from "app/storage/app-data/backgroundSettings";
 
 interface DialogContextValue {
   open: boolean;

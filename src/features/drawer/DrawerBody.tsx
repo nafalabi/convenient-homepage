@@ -1,9 +1,9 @@
 import React, { useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { actions as drawerActions } from "./slice";
-import { actions as noteActions } from "../note/slice";
-import { actions as bookmarkActions } from "../bookmark/slice";
-import { actions as settingsActions } from "../settings/slice";
+import { actions as noteActions } from "features/note/slice";
+import { actions as bookmarkActions } from "features/bookmark/slice";
+import { actions as settingsActions } from "features/settings/slice";
 import {
   List,
   ListItem,
@@ -17,7 +17,7 @@ import {
   LibraryBooks,
   CollectionsBookmark,
 } from "@mui/icons-material";
-import InputWithConfirmation from "../../components/InputWithConfirmation";
+import InputWithConfirmation from "components/InputWithConfirmation";
 
 const DrawerBodyRoot = styled("div")({
   width: 250,

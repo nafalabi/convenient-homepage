@@ -1,5 +1,5 @@
-import ImageAPI from "../../app/api/image-api";
-import appData from "../../app/storage/app-data";
+import ImageAPI from "app/api/image-api";
+import appData from "app/storage/app-data";
 
 const ALARM_NAME = "retrieve-background";
 

@@ -4,7 +4,7 @@ import { actions } from "./slice";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "@emotion/styled";
 import { useLiveQuery } from "dexie-react-hooks";
-import dexieDB from "../../app/storage/dexie/db";
+import dexieDB from "app/storage/dexie/db";
 
 const HomepageRoot = styled.div`
   background-size: cover;

@@ -1,6 +1,6 @@
 import { Box, Checkbox, TextField } from "@mui/material";
 import React from "react";
-import InlineFormControl from "../../../../../components/InlineFormControl";
+import InlineFormControl from "components/InlineFormControl";
 import { FormikBackgroundSettings } from "../types";
 
 const Pixabay = ({ formik }: { formik: FormikBackgroundSettings }) => {

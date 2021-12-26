@@ -1,4 +1,4 @@
-import { IBackgroundSettings } from "../../storage/app-data/backgroundSettings";
+import { IBackgroundSettings } from "app/storage/app-data/backgroundSettings";
 import { AbstractImageAPI } from "./type";
 
 class Unsplash implements AbstractImageAPI {

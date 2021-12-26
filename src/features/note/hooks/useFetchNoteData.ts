@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import DexieAPI from "../../../app/api/dexie-api";
-import NoteContent from "../../../app/storage/dexie/NoteContent";
-import Note from "../../../app/storage/dexie/Note";
+import DexieAPI from "app/api/dexie-api";
+import NoteContent from "app/storage/dexie/NoteContent";
+import Note from "app/storage/dexie/Note";
 
 /**
  * Get details of a note

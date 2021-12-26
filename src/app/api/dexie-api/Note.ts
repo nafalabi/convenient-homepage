@@ -1,8 +1,8 @@
 import { Collection } from "dexie";
-import { IconData } from "../../../components/IconPicker/types";
-import dexieDB from "../../storage/dexie/db";
-import Note from "../../storage/dexie/Note";
-import NoteContent from "../../storage/dexie/NoteContent";
+import { IconData } from "components/IconPicker/types";
+import dexieDB from "app/storage/dexie/db";
+import Note from "app/storage/dexie/Note";
+import NoteContent from "app/storage/dexie/NoteContent";
 
 class DexieNoteAPI {
   /**

@@ -1,13 +1,13 @@
 import Pixabay from "./Pixabay";
 import Unsplash from "./Unsplash";
 import Bing from "./Bing";
-import Background from "../../storage/dexie/Background";
-import { ImageProvider } from "../../../constant";
+import Background from "app/storage/dexie/Background";
+import { ImageProvider } from "constant";
 import { AbstractImageAPI } from "./type";
 import {
   backgroundSettingsDefault,
   IBackgroundSettings,
-} from "../../storage/app-data/backgroundSettings";
+} from "app/storage/app-data/backgroundSettings";
 
 class ImageAPI {
   apiProvider: AbstractImageAPI;
@@ -73,7 +73,7 @@ class ImageAPI {
   setAsActive = async (background: Background) => {
     background.expireat = this.getNewExpireTime();
     await background.save();
-  }
+  };
 }
 
 export default ImageAPI;

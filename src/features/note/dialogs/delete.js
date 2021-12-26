@@ -6,7 +6,7 @@ import {
   DialogActions,
   Button,
 } from "@mui/material";
-import { RenderIcon } from "../../../components/IconPicker";
+import { RenderIcon } from "components/IconPicker";
 
 const DialogDeleteNote = ({ action, handleClose, noteDetails }) => {
   return (

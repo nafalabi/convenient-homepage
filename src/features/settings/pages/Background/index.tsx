@@ -9,7 +9,7 @@ import { useSnackbar } from "notistack";
 import { actions } from "../../slice";
 import BackgroundCleaner from "./BackgroundCleaner";
 import { useFormik } from "formik";
-import appData from "../../../../app/storage/app-data";
+import appData from "app/storage/app-data";
 
 const Background = () => {
   const dispatch = useDispatch();

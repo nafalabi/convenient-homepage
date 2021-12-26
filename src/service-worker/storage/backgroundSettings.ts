@@ -1,5 +1,5 @@
-import { STORAGE_KEY } from "../../app/storage/app-data/backgroundSettings";
-import alarms from "../alarms";
+import { STORAGE_KEY } from "app/storage/app-data/backgroundSettings";
+import alarms from "service-worker/alarms";
 
 const backgroundSettings = {
   key: STORAGE_KEY,

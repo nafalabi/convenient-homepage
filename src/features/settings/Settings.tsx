@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import PanelWithSidebar from "../../components/PanelWithSidebar";
+import PanelWithSidebar from "components/PanelWithSidebar";
 import SettingsMain from "./SettingsMain";
 import SettingsSidebar from "./SettingsSidebar";
 import { actions } from "./slice";

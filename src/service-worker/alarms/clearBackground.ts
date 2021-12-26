@@ -1,5 +1,5 @@
-import appData from "../../app/storage/app-data";
-import dexieDB from "../../app/storage/dexie/db";
+import appData from "app/storage/app-data";
+import dexieDB from "app/storage/dexie/db";
 
 const ALARM_NAME = "clear-background";
 

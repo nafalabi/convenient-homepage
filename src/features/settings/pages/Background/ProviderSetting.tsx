@@ -12,14 +12,14 @@ import {
 import { ExpandMore, FactCheck, Save } from "@mui/icons-material";
 import React from "react";
 import { FormikProps } from "formik";
-import InlineFormControl from "../../../../components/InlineFormControl";
-import { ImageProvider } from "../../../../constant";
+import InlineFormControl from "components/InlineFormControl";
+import { ImageProvider } from "constant";
 import Unsplash from "./Providers/Unsplash";
 import Pixabay from "./Providers/Pixabay";
 import Bing from "./Providers/Bing";
 import { useDialog } from "./hooks/useDialog";
 import { DIALOG_TESTPROVIDER } from "./dialogs/TestImageProvider";
-import { IBackgroundSettings } from "../../../../app/storage/app-data/backgroundSettings";
+import { IBackgroundSettings } from "app/storage/app-data/backgroundSettings";
 
 type props = {
   formik: FormikProps<IBackgroundSettings>;

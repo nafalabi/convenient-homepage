@@ -1,4 +1,4 @@
-import { IconType } from "../../../constant";
+import { IconType } from "constant";
 import db from "./db";
 
 class Note {

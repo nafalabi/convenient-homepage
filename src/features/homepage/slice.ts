@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { createSlice } from "@reduxjs/toolkit";
-import appData from "../../app/storage/app-data";
+import appData from "app/storage/app-data";
 
 export const slice = createSlice({
   name: "homepage",

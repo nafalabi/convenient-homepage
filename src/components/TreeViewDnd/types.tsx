@@ -1,8 +1,6 @@
-// import { INote } from "../../app/storage/dexie/Note";
-import { SvgIconComponent } from "@mui/icons-material";
 import { TreeItemProps } from "@mui/lab";
 import { FC, SyntheticEvent } from "react";
-import Note from "../../app/storage/dexie/Note";
+import Note from "app/storage/dexie/Note";
 
 export interface TreeViewProps {
   list: Note[];

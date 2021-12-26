@@ -6,7 +6,7 @@ import { TreeViewProps } from "./types";
 import { ChevronRight, ExpandMore } from "@mui/icons-material";
 import { TreeView } from "@mui/lab";
 import TreeNode from "./TreeNode";
-import { RenderIcon } from "../IconPicker";
+import { RenderIcon } from "components/IconPicker";
 
 const TreeViewDnd = <T extends TreeViewProps>(props: T) => {
   const mapList = (arrayList: any[]) => {

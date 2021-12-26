@@ -3,12 +3,12 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useFetchNoteList from "../hooks/useFetchNoteList";
 import { actions, selectors } from "../slice";
-import InputWithConfirmation from "../../../components/InputWithConfirmation";
+import InputWithConfirmation from "components/InputWithConfirmation";
 import useFetchExpandedNoteIds from "../hooks/useFetchExpandedNoteIds";
 import NoteSidebarContextMenu from "./NoteSidebarContextMenu";
 import useContextMenu from "../hooks/useContextMenu";
-import TreeViewDnd from "../../../components/TreeViewDnd";
-import DexieAPI from "../../../app/api/dexie-api";
+import TreeViewDnd from "components/TreeViewDnd";
+import DexieAPI from "app/api/dexie-api";
 
 const Sidebar = () => {
   const treeListRefreshRef = useSelector(selectors.treeListRefreshRef);

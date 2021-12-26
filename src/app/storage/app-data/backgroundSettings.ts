@@ -1,4 +1,4 @@
-import { ImageProvider } from "../../../constant";
+import { ImageProvider } from "constant";
 import setOrGet from "./abstract";
 
 export type BackgroundRefreshIntervalUnit = "days" | "hours" | "minutes";

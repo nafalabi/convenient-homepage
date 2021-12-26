@@ -3,7 +3,7 @@
  * but keep it here for reference
  */
 import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "../../../app/storage/dexie";
+import { db } from "app/storage/dexie";
 
 const useSubscribeNote = (noteid) => {
   const note = useLiveQuery(() => {

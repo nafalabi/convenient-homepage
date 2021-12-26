@@ -1,8 +1,8 @@
 import { Dispatch } from "redux";
 import { createSlice } from "@reduxjs/toolkit";
-import { generalSettingsDefault } from "../../app/storage/app-data/generalSettings";
-import appData from "../../app/storage/app-data";
-import { backgroundSettingsDefault } from "../../app/storage/app-data/backgroundSettings";
+import { generalSettingsDefault } from "app/storage/app-data/generalSettings";
+import appData from "app/storage/app-data";
+import { backgroundSettingsDefault } from "app/storage/app-data/backgroundSettings";
 
 export const PAGE_GENERAL = 0;
 export const PAGE_BACKGROUND = 1;

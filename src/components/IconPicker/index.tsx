@@ -7,7 +7,7 @@ import { Emoji } from "emoji-mart";
 import { Box } from "@mui/system";
 import { IconData, IconFontSize } from "./types";
 import * as MIcon from "@mui/icons-material";
-import { IconType } from "../../constant";
+import { IconType } from "constant";
 
 const materialIcons: { [key: string]: any } = MIcon;
 

@@ -9,11 +9,11 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 import React from "react";
-import InlineFormControl from "../../../../components/InlineFormControl";
+import InlineFormControl from "components/InlineFormControl";
 import { ExpandMore } from "@mui/icons-material";
 import { useSnackbar } from "notistack";
 import { useSelector } from "react-redux";
-import appData from "../../../../app/storage/app-data";
+import appData from "app/storage/app-data";
 
 const UserDetails = () => {
   const { enqueueSnackbar } = useSnackbar();

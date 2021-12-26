@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import DexieAPI from "../../../app/api/dexie-api";
+import DexieAPI from "app/api/dexie-api";
 
 const useFetchExpandedNoteIds = () => {
   const [expandedNoteIds, setExpandedNoteIds] = useState<string[]>([]);

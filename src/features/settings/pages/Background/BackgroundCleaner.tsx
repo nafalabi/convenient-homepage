@@ -12,8 +12,8 @@ import {
 import { Box } from "@mui/system";
 import { FormikProps } from "formik";
 import React from "react";
-import { IBackgroundSettings } from "../../../../app/storage/app-data/backgroundSettings";
-import InlineFormControl from "../../../../components/InlineFormControl";
+import { IBackgroundSettings } from "app/storage/app-data/backgroundSettings";
+import InlineFormControl from "components/InlineFormControl";
 
 type props = {
   formik: FormikProps<IBackgroundSettings>;

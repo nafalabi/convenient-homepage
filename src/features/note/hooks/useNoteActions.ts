@@ -3,9 +3,9 @@ import { useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
 import debounce from "@mui/utils/debounce";
 import { actions } from "../slice";
-import DexieAPI from "../../../app/api/dexie-api";
-import Note from "../../../app/storage/dexie/Note";
-import { IconData } from "../../../components/IconPicker/types";
+import DexieAPI from "app/api/dexie-api";
+import Note from "app/storage/dexie/Note";
+import { IconData } from "components/IconPicker/types";
 
 const useNoteActions = (noteDetail: Note) => {
   const dispatch = useDispatch();

@@ -14,9 +14,9 @@ import { Check, Delete, ExpandMore } from "@mui/icons-material";
 import { Pagination } from "@mui/material";
 import React, { useState } from "react";
 import useSubscribeBackgroundImages from "./hooks/useSubscribeBackgroundImages";
-import appData from "../../../../app/storage/app-data";
-import Background from "../../../../app/storage/dexie/Background";
-import ImageAPI from "../../../../app/api/image-api";
+import appData from "app/storage/app-data";
+import Background from "app/storage/dexie/Background";
+import ImageAPI from "app/api/image-api";
 
 const StyledImageListItem = styled(ImageListItem)({
   position: "relative",
