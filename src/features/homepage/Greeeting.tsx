@@ -54,17 +54,17 @@ const Greeting = () => {
 
       const curHour = dt.hour;
 
-      if (curHour >= 0 || curHour <= 5) {
+      if (curHour >= 0 && curHour <= 5) {
         greetingVal = "Night";
-      } else if (curHour >= 6 || curHour <= 11) {
+      } else if (curHour >= 6 && curHour <= 11) {
         greetingVal = "Morning";
       } else if (curHour === 12) {
         greetingVal = "Noon";
-      } else if (curHour >= 13 || curHour <= 16) {
+      } else if (curHour >= 13 && curHour <= 16) {
         greetingVal = "Afternoon";
-      } else if (curHour >= 17 || curHour <= 19) {
+      } else if (curHour >= 17 && curHour <= 19) {
         greetingVal = "Evening";
-      } else if (curHour >= 20 || curHour <= 24) {
+      } else if (curHour >= 20 && curHour <= 24) {
         greetingVal = "Night";
       }
 
