@@ -45,7 +45,7 @@ const clearBackground = {
 
     chrome.alarms.create(ALARM_NAME, {
       // Todo: make it dynamic from the settings
-      periodInMinutes: 5,
+      periodInMinutes: 30,
     });
   },
 };
