@@ -4,6 +4,8 @@ import dexieDB from "app/storage/dexie/db";
 import Note from "app/storage/dexie/Note";
 import NoteContent from "app/storage/dexie/NoteContent";
 
+export type NoteListItem = Note & { totalChildren?: number; children?: Note[] } ;
+
 class DexieNoteAPI {
   /**
    * Get Note List in a form of tree list
@@ -11,21 +13,19 @@ class DexieNoteAPI {
    */
   fetchNoteList() {
     const map = async (coll: Collection<Note>) => {
-      const result: Note[] = [];
-      await coll.each(
-        async (row: { totalChildren?: number; children?: Note[] } & Note) => {
-          // calculating total children of the current note / page
-          row.totalChildren = await row.countChildren();
+      const result: NoteListItem[] = [];
+      await coll.each(async (row: NoteListItem) => {
+        // calculating total children of the current note / page
+        row.totalChildren = await row.countChildren();
 
-          // if the page / note is expanded, then fetch also its children
-          if (row.expanded && row.totalChildren) {
-            const children = await map(row.getChildrenAsCollection());
-            row.children = children;
-          }
-
-          result[row.order] = row;
+        // if the page / note is expanded, then fetch also its children
+        if (row.expanded && row.totalChildren) {
+          const children = await map(row.getChildrenAsCollection());
+          row.children = children;
         }
-      );
+
+        result[row.order] = row;
+      });
       return result;
     };
     return map(dexieDB.note.where("firstlevel").equals(1));

@@ -8,43 +8,68 @@ import { TreeView } from "@mui/lab";
 import TreeNode from "./TreeNode";
 import { RenderIcon } from "components/IconPicker";
 
-const TreeViewDnd = <T extends TreeViewProps>(props: T) => {
+const TreeViewDnd = <T extends any>({
+  resolveData,
+  onNodeDrop,
+  onNodeToggle,
+  onNodeSelect,
+  expanded,
+  list,
+  selected,
+  useInternalDndProvider = true,
+}: TreeViewProps<T>) => {
   const mapList = (arrayList: any[]) => {
-    return arrayList.map((note, index) => {
+    return arrayList.map((item, index) => {
+      const resolvedData = resolveData(item);
+      if (resolvedData.dontRender) return null;
+
       return (
         <TreeNode
-          key={note.noteid}
-          nodeId={String(note.noteid)}
-          labelText={note.notename}
+          key={resolvedData.id}
+          nodeId={String(resolvedData.id)}
+          labelText={resolvedData.label}
           labelIcon={({ className }) => (
-            <RenderIcon icon={note} className={className} />
+            <RenderIcon
+              iconType={resolvedData.iconType}
+              iconId={resolvedData.iconId}
+              className={className}
+            />
           )}
-          totalChildren={note.totalChildren}
+          totalChildren={resolvedData.hasChildren ? 1 : 0}
           nodeIndex={index}
           isLastItem={index + 1 === arrayList.length}
-          onNodeDrop={props.onNodeDrop}
+          onNodeDrop={onNodeDrop}
         >
-          {note.children && mapList(note.children)}
-          {!note.expanded && <LinearProgress />}
+          {resolvedData?.children && mapList(resolvedData.children ?? [])}
+          {resolvedData.expanding && <LinearProgress />}
         </TreeNode>
       );
     });
   };
 
+  const Wrapper = ({ children }: { children: JSX.Element }) =>
+    useInternalDndProvider ? (
+      <DndProvider backend={HTML5Backend} context={window}>
+        {children}
+      </DndProvider>
+    ) : (
+      <>{children}</>
+    );
+
   return (
     <Box>
-      <DndProvider backend={HTML5Backend} context={window}>
+      <Wrapper>
         <TreeView
           defaultCollapseIcon={<ExpandMore />}
           defaultExpandIcon={<ChevronRight />}
-          expanded={props.expanded}
-          selected={props.selected}
-          onNodeToggle={props.onNodeToggle}
-          onNodeSelect={props.onNodeSelect}
+          expanded={expanded}
+          selected={selected}
+          onNodeToggle={onNodeToggle}
+          onNodeSelect={onNodeSelect}
         >
-          {mapList(props.list)}
+          {mapList(list)}
         </TreeView>
-      </DndProvider>
+      </Wrapper>
     </Box>
   );
 };

@@ -52,9 +52,21 @@ const IconPicker = ({ selectedIcon, onChangeIcon }: props) => {
         alignItems="center"
       >
         <Typography sx={{ mr: 1 }}>Selected Icon</Typography>
-        <RenderIcon icon={selectedIcon} fontSize="small" />
-        <RenderIcon icon={selectedIcon} fontSize="medium" />
-        <RenderIcon icon={selectedIcon} fontSize="large" />
+        <RenderIcon
+          iconType={selectedIcon?.iconType}
+          iconId={selectedIcon?.iconId}
+          fontSize="small"
+        />
+        <RenderIcon
+          iconType={selectedIcon?.iconType}
+          iconId={selectedIcon?.iconId}
+          fontSize="medium"
+        />
+        <RenderIcon
+          iconType={selectedIcon?.iconType}
+          iconId={selectedIcon?.iconId}
+          fontSize="large"
+        />
       </Box>
     </Box>
   );
@@ -63,13 +75,14 @@ const IconPicker = ({ selectedIcon, onChangeIcon }: props) => {
 export default IconPicker;
 
 export const RenderIcon = (props: {
-  icon: IconData;
+  iconType?: IconType;
+  iconId?: string;
   fontSize?: IconFontSize;
   className?: string;
 }) => {
-  if (props.icon === null || props.icon === undefined) return null;
+  if (props.iconType === null || props.iconType === undefined) return null;
 
-  switch (props.icon.iconType) {
+  switch (props.iconType) {
     case IconType.EMOJI:
       const sizeMap: { [key: string]: number } = {
         large: 27,
@@ -79,7 +92,7 @@ export const RenderIcon = (props: {
       return (
         <span className={props.className}>
           <Emoji
-            emoji={props.icon.iconId}
+            emoji={props.iconId ?? ""}
             size={sizeMap[props.fontSize ?? "medium"]}
             native={true}
           />
@@ -88,7 +101,7 @@ export const RenderIcon = (props: {
     case IconType.MATERIAL_ICON:
       return (
         <SvgIcon
-          component={materialIcons[props.icon.iconId]}
+          component={materialIcons[props.iconId ?? ""]}
           fontSize={props.fontSize}
           className={props.className}
         />

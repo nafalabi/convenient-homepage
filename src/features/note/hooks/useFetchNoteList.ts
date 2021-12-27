@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import DexieAPI from "app/api/dexie-api";
-import Note from "app/storage/dexie/Note";
+import { NoteListItem } from "app/api/dexie-api/Note";
 
 const useFetchNoteList = (refreshReference = 0) => {
-  const [noteList, setNoteList] = useState<Note[]>([]);
+  const [noteList, setNoteList] = useState<NoteListItem[]>([]);
 
   useEffect(() => {
     DexieAPI.note

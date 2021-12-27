@@ -97,6 +97,7 @@ function TreeNode(props: TreeNodeProps) {
   // if has children show default icon, if not show dashed horizontal line
   const leadingIcon = totalChildren < 1 ? <div /> : undefined;
 
+  // Drop On Node
   const [{ handlerId, isNodeHovered }, drop] = useDrop({
     accept: "node",
     collect: (monitor: DropTargetMonitor) => {
@@ -112,6 +113,7 @@ function TreeNode(props: TreeNodeProps) {
     },
   });
 
+  // Drop Before Node
   const [{ handlerIdBeforeNode, isBeforeNodeHovered }, dropBeforeNode] =
     useDrop({
       accept: "node",
@@ -128,6 +130,7 @@ function TreeNode(props: TreeNodeProps) {
       },
     });
 
+  // Drop After Node
   const [{ handlerIdAfterNode, isAfterNodeHovered }, dropAfterNode] = useDrop({
     accept: "node",
     collect: (monitor: DropTargetMonitor) => {
@@ -143,6 +146,7 @@ function TreeNode(props: TreeNodeProps) {
     },
   });
 
+  // Drag Node
   const [{ isDragging }, drag, dragPreview] = useDrag({
     type: "node",
     item: () => {

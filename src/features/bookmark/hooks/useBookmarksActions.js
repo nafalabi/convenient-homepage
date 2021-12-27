@@ -2,15 +2,17 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "../slice";
+import { getBookmarkDetails } from "../utils";
 
 const useBookmarksActions = (nodeId = null) => {
   const dispatch = useDispatch();
   const selectedBookmarkId = useSelector(selectors.selectedBookmark);
 
   const [bookmarkDetail, setBookmarkDetail] = useState({});
+
   useEffect(() => {
     if (nodeId)
-      chrome.bookmarks.get(nodeId, ([bookmark]) => {
+      getBookmarkDetails(nodeId).then((bookmark) => {
         setBookmarkDetail(bookmark);
       });
   }, [nodeId]);
@@ -28,6 +30,7 @@ const useBookmarksActions = (nodeId = null) => {
       ),
     [nodeId]
   );
+
   const createBookmark = useCallback(
     async (title, url) =>
       await chrome.bookmarks.create({
@@ -37,6 +40,7 @@ const useBookmarksActions = (nodeId = null) => {
       }),
     [nodeId]
   );
+
   const editBookmark = useCallback(
     async (title, url) => {
       await chrome.bookmarks.update(nodeId, { title, url });
@@ -44,6 +48,7 @@ const useBookmarksActions = (nodeId = null) => {
     },
     [nodeId, setBookmarkDetail, bookmarkDetail]
   );
+
   const deleteBookmark = useCallback(async () => {
     if (selectedBookmarkId === nodeId) {
       dispatch(actions.selectBookmark(bookmarkDetail.parentId));

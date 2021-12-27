@@ -55,6 +55,15 @@ const Sidebar = () => {
         onNodeToggle={toggleExpandNode}
         onNodeSelect={selectNode}
         onNodeDrop={onNodeDrop}
+        resolveData={(data) => ({
+          id: data.noteid,
+          label: data.notename,
+          iconId: data.iconId,
+          iconType: data.iconType,
+          hasChildren: Boolean(data.totalChildren),
+          children: data.children,
+          expanding: data.totalChildren > 0 && !data.children,
+        })}
       />
       <Box ml={4} mr={1} mt={1}>
         <InputWithConfirmation
