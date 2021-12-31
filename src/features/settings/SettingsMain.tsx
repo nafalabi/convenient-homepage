@@ -1,8 +1,9 @@
 import React, { RefObject } from "react";
 import { useSelector } from "react-redux";
-import { PAGE_BACKGROUND, PAGE_GENERAL } from "./slice";
 import Background from "./pages/Background/index";
 import General from "./pages/General/index";
+import NoteSettingsPage from "./pages/Note";
+import { SettingsPage } from "./types";
 
 export interface SettingsMainProps {
   dialogRef: RefObject<HTMLDivElement>;
@@ -13,8 +14,9 @@ const SettingsMain = (props: { dialogRef: RefObject<HTMLDivElement> }) => {
 
   return (
     <>
-      {page === PAGE_BACKGROUND && <Background />}
-      {page === PAGE_GENERAL && <General />}
+      {page === SettingsPage.BACKGROUND && <Background />}
+      {page === SettingsPage.GENERAL && <General />}
+      {page === SettingsPage.NOTE && <NoteSettingsPage />}
     </>
   );
 };

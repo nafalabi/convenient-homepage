@@ -3,23 +3,23 @@ import { createSlice } from "@reduxjs/toolkit";
 import { generalSettingsDefault } from "app/storage/app-data/generalSettings";
 import appData from "app/storage/app-data";
 import { backgroundSettingsDefault } from "app/storage/app-data/backgroundSettings";
-
-export const PAGE_GENERAL = 0;
-export const PAGE_BACKGROUND = 1;
+import { SettingsPage } from "./types";
+import { noteSettingsDefault } from "app/storage/app-data/noteSettings";
 
 export const slice = createSlice({
   name: "settings",
   initialState: {
-    isOpen: false,
-    page: PAGE_BACKGROUND,
+    isOpen: true,
+    page: SettingsPage.NOTE,
     generalSettings: generalSettingsDefault,
     backgroundSettings: backgroundSettingsDefault,
+    noteSettings: noteSettingsDefault,
   },
   reducers: {
     toggleSettings: (state) => {
       state.isOpen = !state.isOpen;
     },
-    changePage: (state, { payload: page }) => {
+    changePage: (state, { payload: page }: { payload: SettingsPage }) => {
       state.page = page;
     },
     storeGeneralSettings: (state, { payload }) => {
@@ -27,6 +27,9 @@ export const slice = createSlice({
     },
     storeBackgroundSettings: (state, { payload }) => {
       state.backgroundSettings = payload;
+    },
+    storeNoteSettings: (state, { payload }) => {
+      state.noteSettings = payload;
     },
   },
 });
@@ -40,6 +43,10 @@ export const actions = {
   fetchBackgroundSettings: () => async (dispatch: Dispatch) => {
     const newValues = await appData.backgroundSettings();
     dispatch(slice.actions.storeBackgroundSettings(newValues));
+  },
+  fetchNoteSettings: () => async (dispatch: Dispatch) => {
+    const newValues = await appData.noteSettings();
+    dispatch(slice.actions.storeNoteSettings(newValues));
   },
 };
 

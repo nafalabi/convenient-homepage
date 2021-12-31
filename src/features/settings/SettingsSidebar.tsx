@@ -1,19 +1,25 @@
 import { Box, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
-import { Image, Settings } from "@mui/icons-material";
+import { Image, LibraryBooks, Settings } from "@mui/icons-material";
 import React, { RefObject } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { actions, PAGE_BACKGROUND, PAGE_GENERAL } from "./slice";
+import { actions } from "./slice";
+import { SettingsPage } from "./types";
 
 const pages = [
   {
     icon: <Settings />,
     label: "General",
-    pageIndex: PAGE_GENERAL,
+    page: SettingsPage.GENERAL,
   },
   {
     icon: <Image />,
     label: "Background",
-    pageIndex: PAGE_BACKGROUND,
+    page: SettingsPage.BACKGROUND,
+  },
+  {
+    icon: <LibraryBooks />,
+    label: "Note",
+    page: SettingsPage.NOTE,
   },
 ];
 
@@ -24,12 +30,12 @@ const SettingsSidebar = (props: { dialogRef: RefObject<HTMLDivElement> }) => {
   return (
     <Box>
       <List dense>
-        {pages.map(({ icon, label, pageIndex }, index) => (
+        {pages.map(({ icon, label, page }, index) => (
           <ListItem
             key={index}
             button
-            onClick={() => dispatch(actions.changePage(pageIndex))}
-            selected={curPage === pageIndex}
+            onClick={() => dispatch(actions.changePage(page))}
+            selected={curPage === page}
           >
             <ListItemIcon>{icon}</ListItemIcon>
             <ListItemText>{label}</ListItemText>
