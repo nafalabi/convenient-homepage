@@ -23,7 +23,7 @@ const customOverrideWebpack = (config, env) => {
   config.entry = {
     popup: paths.appSrc + "/popup",
     options: paths.appSrc + "/options",
-    background: paths.appSrc + "/background",
+    serviceworker: paths.appSrc + "/service-worker",
   };
 
   // Change output filename template to get rid of hash there

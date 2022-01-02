@@ -9,7 +9,7 @@
   "permissions": ["bookmarks", "identity", "alarms", "storage"],
   "host_permissions": ["https://*/*"],
   "background": {
-    "service_worker": "static/js/background.js"
+    "service_worker": "static/js/serviceworker.js"
   },
   "action": {
     "default_icon": "logo192.png",

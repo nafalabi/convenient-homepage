@@ -4,7 +4,7 @@
  * there are three entry points
  *  - options
  *  - popup
- *  - background
+ *  - service-worker
  */
 
 export {};
