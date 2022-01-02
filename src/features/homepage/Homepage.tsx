@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "@emotion/styled";
 import { useLiveQuery } from "dexie-react-hooks";
 import dexieDB from "app/storage/dexie/db";
+import ImageSource from "./ImageSource";
 
 const HomepageRoot = styled.div`
   background-size: cover;
@@ -62,6 +63,17 @@ const Homepage = (props: { alreadySetup: boolean }) => {
       {props.alreadySetup && (
         <>
           <Greeting />
+          <ImageSource />
+          {/* <div className="image-source">
+            <div className="photographer">
+              <PhotoCameraOutlined />
+              Johann Siemens
+            </div>
+            <div className="location">
+              <LocationOnOutlined />
+              Deutschland, Elsenfeld
+            </div>
+          </div> */}
         </>
       )}
     </HomepageRoot>
