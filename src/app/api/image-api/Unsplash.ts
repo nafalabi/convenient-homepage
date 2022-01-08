@@ -37,6 +37,7 @@ class Unsplash implements AbstractImageAPI {
         preview_img_url: `${row.urls.raw}&q=85&w=400`,
         provider: ImageProvider.UNSPLASH,
         photographer: row.user.name,
+        description: row.description ?? row.alt_description,
         utm_link: `${row.links.html}?utm_source=Convenient+Homepage&utm_medium=referral`,
       });
     });

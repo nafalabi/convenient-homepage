@@ -7,6 +7,7 @@ export interface IBackgroundImage {
   provider?: ImageProvider;
   photographer?: string;
   photo_location?: string;
+  description?: string;
   utm_link?: string;
   download_link?: string;
 }
@@ -18,6 +19,7 @@ class BackgroundImage implements IBackgroundImage {
   provider?: ImageProvider;
   photographer?: string;
   photo_location?: string;
+  description?: string;
   utm_link?: string;
   download_link?: string;
   active: number; // cant index boolean, use number instead

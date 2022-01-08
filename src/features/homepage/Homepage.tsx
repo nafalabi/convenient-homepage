@@ -66,6 +66,7 @@ const Homepage = (props: { alreadySetup: boolean }) => {
             provider={background?.provider}
             photographer={background?.photographer}
             photoLocation={background?.photo_location}
+            description={background?.description}
             sourceLink={background?.utm_link}
           />
         </>
