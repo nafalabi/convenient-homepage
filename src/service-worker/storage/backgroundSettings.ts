@@ -6,10 +6,10 @@ const backgroundSettings = {
 
   handleOnChange: async function (newValue: any) {
     // reset the alarm
-    await chrome.alarms.clear(alarms.retrieveBackground.name);
-    await alarms.retrieveBackground.registerAlarm(false);
-    await chrome.alarms.clear(alarms.clearBackground.name);
-    await alarms.clearBackground.registerAlarm();
+    // await chrome.alarms.clear(alarms.retrieveBackground.name);
+    // await alarms.retrieveBackground.registerAlarm(false);
+    // await chrome.alarms.clear(alarms.clearBackground.name);
+    // await alarms.clearBackground.registerAlarm();
   },
 };
 

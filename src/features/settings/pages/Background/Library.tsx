@@ -14,9 +14,8 @@ import { Check, Delete, ExpandMore } from "@mui/icons-material";
 import { Pagination } from "@mui/material";
 import React, { useState } from "react";
 import useSubscribeBackgroundImages from "./hooks/useSubscribeBackgroundImages";
-import appData from "app/storage/app-data";
-import Background from "app/storage/dexie/Background";
-import ImageAPI from "app/api/image-api";
+import DexieAPI from "app/api/dexie-api";
+import BackgroundImage from "app/storage/dexie/BackgroundImage";
 
 const StyledImageListItem = styled(ImageListItem)({
   position: "relative",
@@ -38,12 +37,10 @@ const Library = () => {
   const queryResult = useSubscribeBackgroundImages(showingImage, currentPage);
   const [selectedBackgroundId, setSelectedBackgroundId] = useState(0);
 
-  const deleteImage = (image: Background) => () => image.delete();
+  const deleteImage = (image: BackgroundImage) => () => image.delete();
 
-  const setAsBackground = (image: Background) => async () => {
-    const settings = await appData.backgroundSettings();
-    const imageAPI = new ImageAPI(settings);
-    imageAPI.setAsActive(image);
+  const setAsBackground = (image: BackgroundImage) => async () => {
+    DexieAPI.backgroundimage.setAsActive(image.id);
   };
 
   return (
@@ -53,7 +50,7 @@ const Library = () => {
           <Typography>Library</Typography>
         </Box>
         <Box color="text.secondary">
-          <Typography variant="caption">Library of Saved Images</Typography>{" "}
+          <Typography variant="caption">Library of Available Images</Typography>{" "}
         </Box>
       </AccordionSummary>
       <AccordionDetails>
@@ -66,11 +63,11 @@ const Library = () => {
               <Box width="100%">
                 <ImageList cols={3}>
                   {images.map((background) => {
-                    const { content, backgroundid } = background;
+                    const { preview_img_url, id } = background;
 
                     return (
-                      <StyledImageListItem key={backgroundid}>
-                        {backgroundid === selectedBackgroundId && (
+                      <StyledImageListItem key={id}>
+                        {id === selectedBackgroundId && (
                           <Box position="absolute" zIndex={10}>
                             <Box m={1}>
                               <Tooltip title="Delete">
@@ -97,12 +94,10 @@ const Library = () => {
                           </Box>
                         )}
                         <img
-                          src={"data:image/jpg;base64," + content}
+                          src={preview_img_url}
                           style={{ zIndex: 0, cursor: "pointer" }}
                           alt="background"
-                          onClick={() =>
-                            setSelectedBackgroundId(backgroundid ?? 0)
-                          }
+                          onClick={() => setSelectedBackgroundId(id ?? 0)}
                           draggable={false}
                         />
                       </StyledImageListItem>

@@ -1,20 +1,14 @@
 import { Box, Checkbox, TextField } from "@mui/material";
 import React from "react";
 import InlineFormControl from "components/InlineFormControl";
-import { FormikBackgroundSettings } from "../types";
+import { useFormikContext } from "formik";
+import { IBackgroundSettings } from "app/storage/app-data/backgroundSettings";
 
-const Pixabay = ({ formik }: { formik: FormikBackgroundSettings }) => {
+const Pixabay = () => {
+  const formik = useFormikContext<IBackgroundSettings>();
+
   return (
     <>
-      <InlineFormControl label="API Key">
-        <TextField
-          name="pixabay_apikey"
-          value={formik.values.pixabay_apikey}
-          onChange={formik.handleChange}
-          fullWidth
-          required
-        />
-      </InlineFormControl>
       <InlineFormControl label="Search Query">
         <TextField
           name="pixabay_q"
@@ -22,6 +16,7 @@ const Pixabay = ({ formik }: { formik: FormikBackgroundSettings }) => {
           onChange={formik.handleChange}
           fullWidth
           required
+          size="small"
         />
       </InlineFormControl>
       <InlineFormControl label="Category">
@@ -31,15 +26,7 @@ const Pixabay = ({ formik }: { formik: FormikBackgroundSettings }) => {
           onChange={formik.handleChange}
           fullWidth
           required
-        />
-      </InlineFormControl>
-      <InlineFormControl label="Image Type">
-        <TextField
-          name="pixabay_image_type"
-          value={formik.values.pixabay_image_type}
-          onChange={formik.handleChange}
-          fullWidth
-          required
+          size="small"
         />
       </InlineFormControl>
       <InlineFormControl label="Editors Choice">
@@ -60,6 +47,7 @@ const Pixabay = ({ formik }: { formik: FormikBackgroundSettings }) => {
           fullWidth
           type="number"
           required
+          size="small"
         />
       </InlineFormControl>
     </>

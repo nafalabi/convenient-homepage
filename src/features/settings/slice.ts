@@ -9,8 +9,8 @@ import { noteSettingsDefault } from "app/storage/app-data/noteSettings";
 export const slice = createSlice({
   name: "settings",
   initialState: {
-    isOpen: true,
-    page: SettingsPage.NOTE,
+    isOpen: false,
+    page: SettingsPage.BACKGROUND,
     generalSettings: generalSettingsDefault,
     backgroundSettings: backgroundSettingsDefault,
     noteSettings: noteSettingsDefault,

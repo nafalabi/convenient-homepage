@@ -43,7 +43,7 @@ const UserDetails = () => {
       <AccordionDetails>
         <form onSubmit={formik.handleSubmit} style={{ width: "100%" }}>
           <Box flex={1} display="flex" flexDirection="column">
-            <InlineFormControl label=" Name">
+            <InlineFormControl label="Name" justifyContent="normal">
               <TextField
                 name="name"
                 value={formik.values.name}

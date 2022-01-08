@@ -1,7 +1,6 @@
-export type GetURL = () => Promise<string>;
+import { IBackgroundImage } from "app/storage/dexie/BackgroundImage";
 
 export interface AbstractImageAPI {
-  apiUrl: string;
   parameters: object;
-  getUrl: GetURL;
+  getListImage: () => Promise<IBackgroundImage[]>;
 }

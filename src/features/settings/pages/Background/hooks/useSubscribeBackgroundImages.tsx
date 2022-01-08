@@ -6,10 +6,8 @@ const useSubscribeBackgroundImages = (
   currentPage: number
 ) => {
   const queryResult = useLiveQuery(async () => {
-    const total = await db.background.toCollection().count();
-    const images = await db.background
-      .orderBy("downloadtime")
-      .reverse()
+    const total = await db.backgroundimage.toCollection().count();
+    const images = await db.backgroundimage
       .offset(currentPage * showingImage)
       .limit(showingImage)
       .toArray();

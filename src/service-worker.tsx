@@ -1,14 +1,17 @@
 import alarms from "./service-worker/alarms";
 import storage from "./service-worker/storage";
+import cacheStorage from "app/storage/cache-storage";
+
+declare const self: ServiceWorkerGlobalScope;
 
 // Alarm listener
 chrome.alarms.onAlarm.addListener((alarm) => {
   switch (alarm.name) {
-    case alarms.clearBackground.name:
-      alarms.clearBackground.action();
+    case alarms.refreshImageList.name:
+      alarms.refreshImageList.action();
       break;
-    case alarms.retrieveBackground.name:
-      alarms.retrieveBackground.action();
+    case alarms.cycleBackground.name:
+      alarms.cycleBackground.action();
       break;
     default:
       break;
@@ -34,13 +37,19 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
 
 // Initialization
 chrome.runtime.onInstalled.addListener(async () => {
-  // Define periodic task to clear old background images
-  await alarms.clearBackground.registerAlarm();
-
-  // Define periodic task to retrieve new background image
-  await alarms.retrieveBackground.registerAlarm();
+  await alarms.refreshImageList.registerAlarm();
+  await alarms.cycleBackground.registerAlarm();
 
   console.log("installed");
+});
+
+// Fetch Request Interceptor (For Processing Cache)
+self.addEventListener("fetch", function (e) {
+  const url = new URL(e.request.url);
+
+  if (cacheStorage.backgroundImage.cacheableHosts.includes(url.hostname)) {
+    e.respondWith(cacheStorage.backgroundImage.getOrSet(e.request.url));
+  }
 });
 
 // merely to satisfy the linter

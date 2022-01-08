@@ -1,25 +1,25 @@
 import Dexie from "dexie";
-import Background from "./Background";
+import BackgroundImage from "./BackgroundImage";
 import Note from "./Note";
 import NoteContent from "./NoteContent";
 
 export class DexieDB extends Dexie {
-  background: Dexie.Table<Background, number>;
   note: Dexie.Table<Note, number>;
   notecontent: Dexie.Table<NoteContent, number>;
+  backgroundimage: Dexie.Table<BackgroundImage, number>;
 
   constructor() {
     super("convenient-homepage");
 
-    this.version(10).stores({
+    this.version(25).stores({
       note: "++noteid, notename, firstlevel, parentnoteid, expanded, [parentnoteid+notename], order",
       notecontent: "&noteid",
-      background: "++backgroundid, downloadtime, expireat",
+      backgroundimage: "++id, active, activated_at, provider",
     });
 
-    this.background = this.table("background");
     this.note = this.table("note");
     this.notecontent = this.table("notecontent");
+    this.backgroundimage = this.table("backgroundimage");
   }
 }
 

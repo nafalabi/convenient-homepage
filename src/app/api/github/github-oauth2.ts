@@ -1,3 +1,4 @@
+import QueryString from "app/utils/querystring";
 import PopupWindow from "./PopupWindow";
 
 export const grantAccess = async () => {
@@ -5,11 +6,7 @@ export const grantAccess = async () => {
   const client_id = process.env.REACT_APP_GITHUB_OAUTH_CLIENT_ID ?? "";
   const client_secret = process.env.REACT_APP_GITHUB_OAUTH_CLIENT_SECRET ?? "";
 
-  const qs = new URLSearchParams({
-    client_id,
-    client_secret,
-    scope: "gist",
-  }).toString();
+  const qs = QueryString.stringify({ client_id, client_secret, scope: "gist" });
   const url = `${authorizeUri}?${qs}`;
 
   try {

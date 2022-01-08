@@ -1,13 +1,18 @@
 import { Dialog } from "@mui/material";
 import React from "react";
 import { useDialog } from "../hooks/useDialog";
-import DialogTestImageProvider, { DIALOG_TESTPROVIDER } from "./TestImageProvider";
+import EditProviderParam from "./EditProviderParam";
+
+export enum Dialogs {
+  EDIT_PROVIDER = 0,
+}
 
 const DialogController = () => {
-  const { open, dialogId, closeDialog } = useDialog();
+  const { isOpen, dialogId, closeDialog } = useDialog<Dialogs, any>();
+
   return (
-    <Dialog open={open} onClose={closeDialog} maxWidth="md" fullWidth>
-      {dialogId === DIALOG_TESTPROVIDER && <DialogTestImageProvider />}
+    <Dialog open={isOpen} onClose={closeDialog} maxWidth="sm" fullWidth>
+      {dialogId === Dialogs.EDIT_PROVIDER && <EditProviderParam />}
     </Dialog>
   );
 };

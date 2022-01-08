@@ -1,54 +1,60 @@
 import { ImageProvider } from "constant";
 import setOrGet from "./abstract";
 
-export type BackgroundRefreshIntervalUnit = "days" | "hours" | "minutes";
+export type BackgroundCycleIntervalUnit = "days" | "hours" | "minutes";
 
-export type BackgroundLifetimeUnit = "weeks" | "days" | "hours";
+export type BackgroundRefreshListIntervalUnit = "weeks" | "days" | "hours";
 
 export interface IBackgroundSettings {
-  provider: ImageProvider;
-  refresh_interval: number;
-  refresh_interval_unit: BackgroundRefreshIntervalUnit;
-  background_lifetime: number;
-  background_lifetime_unit: BackgroundLifetimeUnit;
+  selected_providers: ImageProvider[];
+  cycle_interval: number;
+  cycle_interval_unit: BackgroundCycleIntervalUnit;
+  refresh_list_interval: number;
+  refresh_list_interval_unit: BackgroundRefreshListIntervalUnit;
 
-  unsplash_keyword: string;
-  unsplash_dimension: string;
-  unsplash_search_retention?: "daily" | "weekly" | null;
+  unsplash_query: string;
+  unsplash_page: number;
+  unsplash_per_page: number;
+  unsplash_order_by: string;
+  unsplash_orientation: string;
 
-  pixabay_apikey: string;
   pixabay_q: string;
-  pixabay_category: string;
   pixabay_image_type: string;
-  pixabay_per_page: number;
-  pixabay_page: number;
-  pixabay_editors_choice: boolean;
+  pixabay_orientation: string;
+  pixabay_category: string;
   pixabay_min_width: number;
-
-  bing_img_index: number;
+  pixabay_editors_choice: boolean;
+  pixabay_order: string;
+  pixabay_page: number;
+  pixabay_per_page: number;
 }
 
 export const backgroundSettingsDefault: IBackgroundSettings = {
-  provider: ImageProvider.UNSPLASH,
-  refresh_interval: 2,
-  refresh_interval_unit: "hours",
-  background_lifetime: 5,
-  background_lifetime_unit: "days",
+  selected_providers: [
+    ImageProvider.UNSPLASH,
+    ImageProvider.BING,
+    ImageProvider.PIXABAY,
+  ],
+  cycle_interval: 2,
+  cycle_interval_unit: "hours",
+  refresh_list_interval: 5,
+  refresh_list_interval_unit: "days",
 
-  unsplash_keyword: "nature",
-  unsplash_dimension: "1600x900",
-  unsplash_search_retention: null,
+  unsplash_query: "nature",
+  unsplash_page: 1,
+  unsplash_per_page: 30,
+  unsplash_order_by: "relevant",
+  unsplash_orientation: "landscape",
 
-  pixabay_apikey: "",
-  pixabay_q: "landscape",
-  pixabay_category: "background",
+  pixabay_q: "nature",
   pixabay_image_type: "photo",
-  pixabay_per_page: 10,
-  pixabay_page: 1,
-  pixabay_editors_choice: true,
+  pixabay_orientation: "horizontal",
+  pixabay_category: "backgrounds",
   pixabay_min_width: 1920,
-
-  bing_img_index: 0,
+  pixabay_editors_choice: true,
+  pixabay_order: "popular",
+  pixabay_page: 1,
+  pixabay_per_page: 30,
 };
 
 export const STORAGE_KEY = "backgroundSettings";

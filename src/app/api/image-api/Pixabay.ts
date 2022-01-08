@@ -1,33 +1,45 @@
 import { IBackgroundSettings } from "app/storage/app-data/backgroundSettings";
+import { IBackgroundImage } from "app/storage/dexie/BackgroundImage";
+import QueryString from "app/utils/querystring";
+import { ImageProvider } from "constant";
 import { AbstractImageAPI } from "./type";
 
 class Pixabay implements AbstractImageAPI {
-  apiUrl = "https://pixabay.com/api/?";
   parameters: IBackgroundSettings;
 
   constructor(parameters: IBackgroundSettings) {
     this.parameters = parameters;
   }
 
-  async getUrl() {
-    let { pixabay_apikey, pixabay_per_page, ...rawParams } = this.parameters;
+  async getListImage() {
+    const result: IBackgroundImage[] = [];
 
-    const showPerPage = Math.floor(Math.random() * 11);
-    rawParams.pixabay_page = showPerPage;
+    const qs = QueryString.stringify({
+      key: `${process.env.REACT_APP_PIXABAY_API_KEY}`,
+      q: this.parameters.pixabay_q,
+      image_type: this.parameters.pixabay_image_type,
+      orientation: this.parameters.pixabay_orientation,
+      category: this.parameters.pixabay_category,
+      min_width: this.parameters.pixabay_min_width,
+      editors_choice: this.parameters.pixabay_editors_choice,
+      order: this.parameters.pixabay_order,
+      page: this.parameters.pixabay_page,
+      per_page: this.parameters.pixabay_per_page,
+    });
 
-    const paramsString = Object.entries(rawParams).reduce(
-      (stream, [key, value]) => {
-        if (!key.includes("pixabay_")) return "";
-        key = key.replace("pixabay_", "");
-        if (typeof stream == "object") stream = `${stream[0]}=${stream[1]}`;
-        return encodeURI(`${stream}&${key}=${value}`);
-      },
-      ""
-    );
-    const fullUrl = `${this.apiUrl}key=${pixabay_apikey}&${paramsString}`;
-    const res = await (await fetch(fullUrl)).json();
-    const random = Math.floor(Math.random() * pixabay_per_page);
-    return res.hits[random].largeImageURL;
+    const res = await fetch(`https://pixabay.com/api/?${qs}`);
+    const resJson = await res.json();
+
+    resJson.hits.forEach((row: any) => {
+      result.push({
+        image_url: row.largeImageURL,
+        preview_img_url: row.webformatURL,
+        provider: ImageProvider.PIXABAY,
+        photographer: row.user,
+        utm_link: row.pageURL,
+      });
+    });
+    return result;
   }
 }
 

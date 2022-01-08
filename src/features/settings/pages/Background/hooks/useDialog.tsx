@@ -1,30 +1,32 @@
 import React, { useCallback, useContext, useState } from "react";
-import { IBackgroundSettings } from "app/storage/app-data/backgroundSettings";
 
-interface DialogContextValue {
-  open: boolean;
-  dialogId: number;
+interface DialogContextValue<TDialogID, TOpenArg> {
+  isOpen: boolean;
+  dialogId: TDialogID;
   closeDialog: () => void;
-  openDialog: (id: number, args: IBackgroundSettings) => void;
-  args: IBackgroundSettings | null;
+  openDialog: (id: number, args: TOpenArg) => void;
+  args?: TOpenArg;
 }
 
-export const DialogContext = React.createContext<DialogContextValue>({
-  open: false,
+export const DialogContext = React.createContext<any>({
+  isOpen: false,
   dialogId: -1,
   closeDialog: () => {},
   openDialog: () => {},
-  args: null,
+  args: undefined,
 });
 
 export const DialogProvider = ({ children }: { children: JSX.Element }) => {
   const [open, setOpen] = useState(false);
   const [dialogId, setDialogId] = useState(-1);
-  const [args, setArgs] = useState<IBackgroundSettings | null>(null);
+  const [args, setArgs] = useState<any | undefined>();
 
   const closeDialog = useCallback(() => {
     setOpen(false);
-    setArgs(null);
+    // avoid flickering
+    setTimeout(() => {
+      setArgs(undefined);
+    }, 300);
   }, [setOpen]);
 
   const openDialog = useCallback(
@@ -38,15 +40,15 @@ export const DialogProvider = ({ children }: { children: JSX.Element }) => {
 
   return (
     <DialogContext.Provider
-      value={{ open, dialogId, closeDialog, openDialog, args }}
+      value={{ isOpen: open, dialogId, closeDialog, openDialog, args }}
     >
       {children}
     </DialogContext.Provider>
   );
 };
 
-export const useDialog = () => {
-  const { open, dialogId, closeDialog, openDialog, args } =
-    useContext(DialogContext);
-  return { open, dialogId, closeDialog, openDialog, args };
+export const useDialog = <TDialogID extends number, TOpenArg extends any>() => {
+  const { isOpen, dialogId, closeDialog, openDialog, args } =
+    useContext<DialogContextValue<TDialogID, TOpenArg>>(DialogContext);
+  return { isOpen, dialogId, closeDialog, openDialog, args };
 };

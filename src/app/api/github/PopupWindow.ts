@@ -1,3 +1,5 @@
+import QueryString from "app/utils/querystring";
+
 class PopupWindow {
   url: string;
   params: chrome.windows.CreateData;
@@ -47,8 +49,7 @@ class PopupWindow {
           if (oriUrl === curUrl) return;
 
           const qs = popup.url?.replace(/^.*\?/, "");
-          const usp = new URLSearchParams(qs);
-          const result = Object.fromEntries(usp.entries());
+          const result = QueryString.parse(qs);
 
           chrome.windows.remove(id);
 

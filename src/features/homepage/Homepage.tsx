@@ -4,8 +4,9 @@ import { actions } from "./slice";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "@emotion/styled";
 import { useLiveQuery } from "dexie-react-hooks";
-import dexieDB from "app/storage/dexie/db";
 import ImageSource from "./ImageSource";
+import DexieAPI from "app/api/dexie-api";
+import { IBackgroundImage } from "app/storage/dexie/BackgroundImage";
 
 const HomepageRoot = styled.div`
   background-size: cover;
@@ -15,11 +16,7 @@ const HomepageRoot = styled.div`
   top: 0;
   margin: 0;
   opacity: 0;
-  transition: opacity 0.5s ease;
-
-  &.loaded {
-    opacity: 1;
-  }
+  transition: background-image 0.5s ease;
 
   &::before {
     content: " ";
@@ -33,20 +30,22 @@ const HomepageRoot = styled.div`
   }
 `;
 
+const blankBackground: IBackgroundImage = {
+  image_url:
+    "data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==",
+};
+
 const Homepage = (props: { alreadySetup: boolean }) => {
   const dispatch = useDispatch();
   const initialized = useSelector(({ homepage }) => homepage.initialized);
 
-  const imageURI = useLiveQuery<string, string>(
+  const background = useLiveQuery(
     async () => {
-      const background = await dexieDB.background
-        .orderBy("expireat")
-        .reverse()
-        .first();
-      return background?.content ?? "";
+      const result = await DexieAPI.backgroundimage.getCurActiveImage();
+      return result ? result : blankBackground;
     },
     [initialized],
-    ""
+    blankBackground
   );
 
   useEffect(() => {
@@ -56,24 +55,19 @@ const Homepage = (props: { alreadySetup: boolean }) => {
   return (
     <HomepageRoot
       style={{
-        backgroundImage: `url('data:image/jpg;base64,${imageURI}')`,
-        opacity: initialized && imageURI !== "" ? 1 : 0,
+        backgroundImage: `url(${background?.image_url ?? ""})`,
+        opacity: initialized && background !== undefined ? 1 : 0,
       }}
     >
       {props.alreadySetup && (
         <>
           <Greeting />
-          <ImageSource />
-          {/* <div className="image-source">
-            <div className="photographer">
-              <PhotoCameraOutlined />
-              Johann Siemens
-            </div>
-            <div className="location">
-              <LocationOnOutlined />
-              Deutschland, Elsenfeld
-            </div>
-          </div> */}
+          <ImageSource
+            provider={background?.provider}
+            photographer={background?.photographer}
+            photoLocation={background?.photo_location}
+            sourceLink={background?.utm_link}
+          />
         </>
       )}
     </HomepageRoot>

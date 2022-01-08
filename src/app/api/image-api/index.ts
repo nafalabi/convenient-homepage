@@ -1,78 +1,47 @@
 import Pixabay from "./Pixabay";
 import Unsplash from "./Unsplash";
 import Bing from "./Bing";
-import Background from "app/storage/dexie/Background";
-import { ImageProvider } from "constant";
 import { AbstractImageAPI } from "./type";
 import {
   backgroundSettingsDefault,
   IBackgroundSettings,
 } from "app/storage/app-data/backgroundSettings";
+import { IBackgroundImage } from "app/storage/dexie/BackgroundImage";
+import { ImageProvider } from "constant";
 
 class ImageAPI {
-  apiProvider: AbstractImageAPI;
   parameters: IBackgroundSettings;
+  providers: AbstractImageAPI[] = [];
 
   constructor(parametersGiven: IBackgroundSettings) {
-    switch (parametersGiven.provider) {
-      case ImageProvider.PIXABAY:
-        this.apiProvider = new Pixabay(parametersGiven);
-        break;
-      case ImageProvider.UNSPLASH:
-        this.apiProvider = new Unsplash(parametersGiven);
-        break;
-      case ImageProvider.BING:
-        this.apiProvider = new Bing(parametersGiven);
-        break;
-      default:
-        this.apiProvider = new Unsplash(parametersGiven);
-        break;
+    for (const imgProv of parametersGiven.selected_providers) {
+      switch (imgProv) {
+        case ImageProvider.UNSPLASH:
+          this.providers.push(new Unsplash(parametersGiven));
+          break;
+        case ImageProvider.PIXABAY:
+          this.providers.push(new Pixabay(parametersGiven));
+          break;
+        case ImageProvider.BING:
+          this.providers.push(new Bing(parametersGiven));
+          break;
+        default:
+          break;
+      }
     }
 
     this.parameters = parametersGiven;
   }
 
-  getNewBackground = async () => {
-    const imageUrl = await this.apiProvider.getUrl();
+  getImageList = async () => {
+    let result: IBackgroundImage[] = [];
 
-    const arraybuffer = await (await fetch(imageUrl)).arrayBuffer();
-    const imageBase64 = Buffer.from(arraybuffer).toString("base64");
-
-    return { imageBase64 };
-  };
-
-  getNewExpireTime = () => {
-    const { refresh_interval, refresh_interval_unit } = this.parameters;
-    let expireInSec = 60 * 60; // default 1 hour
-
-    switch (refresh_interval_unit) {
-      case "days":
-        expireInSec = refresh_interval * 24 * 60 * 60;
-        break;
-      case "hours":
-        expireInSec = refresh_interval * 60 * 60;
-        break;
-      case "minutes":
-        expireInSec = refresh_interval * 60;
-        break;
-      default:
-        break;
+    for (const provider of this.providers) {
+      const list = await provider.getListImage();
+      result = [...result, ...list];
     }
 
-    return Math.floor(Date.now() / 1000) + expireInSec;
-  };
-
-  storeAndSaveAsActive = async (imageBase64: string) => {
-    const newBackground = new Background();
-    newBackground.downloadtime = Math.floor(Date.now() / 1000);
-    newBackground.expireat = this.getNewExpireTime();
-    newBackground.content = imageBase64;
-    await newBackground.save();
-  };
-
-  setAsActive = async (background: Background) => {
-    background.expireat = this.getNewExpireTime();
-    await background.save();
+    return result;
   };
 }
 
