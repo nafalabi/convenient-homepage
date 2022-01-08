@@ -1,16 +1,12 @@
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
   Fab,
   ImageList,
   ImageListItem,
   styled,
   Tooltip,
-  Typography,
 } from "@mui/material";
-import { Check, Delete, ExpandMore } from "@mui/icons-material";
+import { Check, Delete } from "@mui/icons-material";
 import { Pagination } from "@mui/material";
 import React, { useState } from "react";
 import useSubscribeBackgroundImages from "./hooks/useSubscribeBackgroundImages";
