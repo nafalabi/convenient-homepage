@@ -16,6 +16,7 @@ import React, { useState } from "react";
 import useSubscribeBackgroundImages from "./hooks/useSubscribeBackgroundImages";
 import DexieAPI from "app/api/dexie-api";
 import BackgroundImage from "app/storage/dexie/BackgroundImage";
+import SimpleAccordion from "components/SimpleAccordion";
 
 const StyledImageListItem = styled(ImageListItem)({
   position: "relative",
@@ -43,81 +44,75 @@ const Library = () => {
     DexieAPI.backgroundimage.setAsActive(image.id);
   };
 
+  if (queryResult === undefined) return null;
+
+  const { total, images } = queryResult;
+  const totalPage = Math.ceil(total / showingImage);
+
   return (
-    <Accordion defaultExpanded={true}>
-      <AccordionSummary expandIcon={<ExpandMore />}>
-        <Box flexBasis="10rem" flexShrink={0}>
-          <Typography>Library</Typography>
-        </Box>
-        <Box color="text.secondary">
-          <Typography variant="caption">Library of Available Images</Typography>{" "}
-        </Box>
-      </AccordionSummary>
-      <AccordionDetails>
-        {queryResult &&
-          (() => {
-            const { total, images } = queryResult;
-            const totalPage = Math.ceil(total / showingImage);
+    <SimpleAccordion
+      title="Background Library"
+      subtitle="List of Available Images"
+    >
+      <>
+        {
+          <Box width="100%">
+            <ImageList cols={3}>
+              {images.map((background) => {
+                const { preview_img_url, id } = background;
 
-            return (
-              <Box width="100%">
-                <ImageList cols={3}>
-                  {images.map((background) => {
-                    const { preview_img_url, id } = background;
-
-                    return (
-                      <StyledImageListItem key={id}>
-                        {id === selectedBackgroundId && (
-                          <Box position="absolute" zIndex={10}>
-                            <Box m={1}>
-                              <Tooltip title="Delete">
-                                <Fab
-                                  color="secondary"
-                                  size="small"
-                                  onClick={deleteImage(background)}
-                                >
-                                  <Delete />
-                                </Fab>
-                              </Tooltip>
-                            </Box>
-                            <Box m={1}>
-                              <Tooltip title="Set as Background">
-                                <Fab
-                                  color="primary"
-                                  size="small"
-                                  onClick={setAsBackground(background)}
-                                >
-                                  <Check />
-                                </Fab>
-                              </Tooltip>
-                            </Box>
-                          </Box>
-                        )}
-                        <img
-                          src={preview_img_url}
-                          style={{ zIndex: 0, cursor: "pointer" }}
-                          alt="background"
-                          onClick={() => setSelectedBackgroundId(id ?? 0)}
-                          draggable={false}
-                        />
-                      </StyledImageListItem>
-                    );
-                  })}
-                </ImageList>
-                <Box mt={1} width="100%" display="flex">
-                  <Box margin="auto">
-                    <Pagination
-                      count={totalPage}
-                      page={currentPage + 1}
-                      onChange={(e, page) => setCurrentPage(page - 1)}
+                return (
+                  <StyledImageListItem key={id}>
+                    {id === selectedBackgroundId && (
+                      <Box position="absolute" zIndex={10}>
+                        <Box m={1}>
+                          <Tooltip title="Delete">
+                            <Fab
+                              color="secondary"
+                              size="small"
+                              onClick={deleteImage(background)}
+                            >
+                              <Delete />
+                            </Fab>
+                          </Tooltip>
+                        </Box>
+                        <Box m={1}>
+                          <Tooltip title="Set as Background">
+                            <Fab
+                              color="primary"
+                              size="small"
+                              onClick={setAsBackground(background)}
+                            >
+                              <Check />
+                            </Fab>
+                          </Tooltip>
+                        </Box>
+                      </Box>
+                    )}
+                    <img
+                      src={preview_img_url}
+                      style={{ zIndex: 0, cursor: "pointer" }}
+                      alt="background"
+                      onClick={() => setSelectedBackgroundId(id ?? 0)}
+                      draggable={false}
                     />
-                  </Box>
-                </Box>
+                  </StyledImageListItem>
+                );
+              })}
+            </ImageList>
+            <Box mt={1} width="100%" display="flex">
+              <Box margin="auto">
+                <Pagination
+                  count={totalPage}
+                  page={currentPage + 1}
+                  onChange={(e, page) => setCurrentPage(page - 1)}
+                />
               </Box>
-            );
-          })()}
-      </AccordionDetails>
-    </Accordion>
+            </Box>
+          </Box>
+        }
+      </>
+    </SimpleAccordion>
   );
 };
 
