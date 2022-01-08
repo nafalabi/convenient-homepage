@@ -8,3 +8,5 @@ export enum IconType {
   EMOJI = 0,
   MATERIAL_ICON = 1,
 }
+
+export type TimeCycleUnits = "weeks" | "days" | "hours" | "minutes";

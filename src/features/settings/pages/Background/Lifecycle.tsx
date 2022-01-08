@@ -26,19 +26,19 @@ const Lifecycle = () => {
           >
             <>
               <TextField
-                name="background_lifetime"
+                name="refresh_list_interval"
                 value={formik.values.refresh_list_interval}
                 onChange={formik.handleChange}
                 type="number"
-                sx={{ width: 100 }}
+                sx={{ width: 80 }}
                 size="small"
               />
               <Box sx={{ width: 10 }} />
               <Select
-                name="background_lifetime_unit"
+                name="refresh_list_interval_unit"
                 value={formik.values.refresh_list_interval_unit}
                 onChange={formik.handleChange}
-                sx={{ width: 100 }}
+                sx={{ width: 110 }}
                 size="small"
               >
                 <MenuItem value="weeks">Weeks</MenuItem>
@@ -58,15 +58,15 @@ const Lifecycle = () => {
                 value={formik.values.cycle_interval}
                 onChange={formik.handleChange}
                 type="number"
-                sx={{ width: 100 }}
+                sx={{ width: 80 }}
                 size="small"
               />
               <Box sx={{ width: 10 }} />
               <Select
-                name="cycle_interval"
+                name="cycle_interval_unit"
                 value={formik.values.cycle_interval_unit}
                 onChange={formik.handleChange}
-                sx={{ width: 100 }}
+                sx={{ width: 110 }}
                 size="small"
               >
                 <MenuItem value="days">Days</MenuItem>

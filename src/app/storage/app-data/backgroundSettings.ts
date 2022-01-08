@@ -1,9 +1,13 @@
 import { ImageProvider } from "constant";
 import setOrGet from "./abstract";
+import { TimeCycleUnits } from "constant";
 
-export type BackgroundCycleIntervalUnit = "days" | "hours" | "minutes";
+export type BackgroundCycleIntervalUnit = Exclude<TimeCycleUnits, "weeks">;
 
-export type BackgroundRefreshListIntervalUnit = "weeks" | "days" | "hours";
+export type BackgroundRefreshListIntervalUnit = Exclude<
+  TimeCycleUnits,
+  "minutes"
+>;
 
 export interface IBackgroundSettings {
   selected_providers: ImageProvider[];

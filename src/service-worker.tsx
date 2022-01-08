@@ -23,11 +23,11 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
   const keys = Object.keys(changes);
 
   for (const key of keys) {
-    const { newValue } = changes[key];
+    const { newValue, oldValue } = changes[key];
 
     switch (key) {
       case storage.backgroundSettings.key:
-        storage.backgroundSettings.handleOnChange(newValue);
+        storage.backgroundSettings.handleOnChange(newValue, oldValue);
         break;
       default:
         break;

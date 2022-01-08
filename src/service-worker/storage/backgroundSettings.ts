@@ -1,15 +1,34 @@
-import { STORAGE_KEY } from "app/storage/app-data/backgroundSettings";
+import {
+  IBackgroundSettings,
+  STORAGE_KEY,
+} from "app/storage/app-data/backgroundSettings";
 import alarms from "service-worker/alarms";
 
 const backgroundSettings = {
   key: STORAGE_KEY,
 
-  handleOnChange: async function (newValue: any) {
-    // reset the alarm
-    // await chrome.alarms.clear(alarms.retrieveBackground.name);
-    // await alarms.retrieveBackground.registerAlarm(false);
-    // await chrome.alarms.clear(alarms.clearBackground.name);
-    // await alarms.clearBackground.registerAlarm();
+  handleOnChange: async function (
+    newValue: IBackgroundSettings,
+    oldValue: IBackgroundSettings
+  ) {
+    // Reset cycle background process
+    if (
+      newValue.cycle_interval !== oldValue.cycle_interval ||
+      newValue.cycle_interval_unit !== oldValue.cycle_interval_unit
+    ) {
+      await chrome.alarms.clear(alarms.cycleBackground.name);
+      await alarms.cycleBackground.registerAlarm();
+    }
+
+    // Reset refresh background list process
+    if (
+      newValue.refresh_list_interval !== oldValue.refresh_list_interval ||
+      newValue.refresh_list_interval_unit !==
+        oldValue.refresh_list_interval_unit
+    ) {
+      await chrome.alarms.clear(alarms.refreshImageList.name);
+      await alarms.refreshImageList.registerAlarm(false);
+    }
   },
 };
 

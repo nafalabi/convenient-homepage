@@ -1,4 +1,6 @@
 import DexieAPI from "app/api/dexie-api";
+import appData from "app/storage/app-data";
+import convToMin from "app/utils/convToMin";
 
 const ALARM_NAME = "refresh-background-list";
 
@@ -19,10 +21,19 @@ const refreshImageList = {
     // Get initial background image
     if (doInitial) this.action();
 
+    const { refresh_list_interval, refresh_list_interval_unit } =
+      await appData.backgroundSettings();
+
+    const periodInMinutes = convToMin(
+      refresh_list_interval_unit,
+      refresh_list_interval
+    );
+
     chrome.alarms.create(ALARM_NAME, {
-      // Todo: make it dynamic from the settings
-      periodInMinutes: 60 * 24 * 5, // default 5 days
+      periodInMinutes,
     });
+
+    console.log("registered refresh list")
   },
 };
 

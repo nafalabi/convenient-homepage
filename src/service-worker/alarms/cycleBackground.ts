@@ -1,6 +1,8 @@
 import DexieAPI from "app/api/dexie-api";
+import appData from "app/storage/app-data";
+import convToMin from "app/utils/convToMin";
 
-const ALARM_NAME = "cycle-background-list";
+const ALARM_NAME = "cycle-background";
 
 const cycleBackground = {
   name: ALARM_NAME,
@@ -13,10 +15,14 @@ const cycleBackground = {
     // if already registered, skip
     if (await chrome.alarms.get(ALARM_NAME)) return;
 
-    chrome.alarms.create(ALARM_NAME, {
-      // Todo: make it dynamic from the settings
-      periodInMinutes: 60 * 3, // default 3 hour
-    });
+    const { cycle_interval, cycle_interval_unit } =
+      await appData.backgroundSettings();
+
+    const periodInMinutes = convToMin(cycle_interval_unit, cycle_interval);
+
+    chrome.alarms.create(ALARM_NAME, { periodInMinutes });
+
+    console.log("registered cycle background");
   },
 };
 
