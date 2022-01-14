@@ -10,7 +10,7 @@ import { selectors } from "../slice";
 import NoteCouldntLoad from "./NoteCouldntLoad";
 import styleOverride from "./style-override";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   ...styleOverride,
   statusBar: {
     position: "absolute",
@@ -19,6 +19,7 @@ const useStyles = makeStyles({
     right: 0,
     borderTop: "1px solid gainsboro",
     color: "#555",
+    background: theme.palette.background.default,
     display: "flex",
     flexDirection: "row-reverse",
     "&>*": {
@@ -26,7 +27,7 @@ const useStyles = makeStyles({
       borderLeft: "1px solid gainsboro",
     },
   },
-});
+}));
 
 const NoteEditor = ({ selectedNote }) => {
   const classes = useStyles();

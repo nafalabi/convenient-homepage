@@ -42,9 +42,9 @@ const Background = () => {
             <Divider />
           </Box>
 
+          <Library />
           <Lifecycle />
           <ImageProviderSettings />
-          <Library />
 
           <DialogController />
         </Box>

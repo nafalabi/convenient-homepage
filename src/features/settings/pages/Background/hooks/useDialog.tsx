@@ -5,7 +5,7 @@ interface DialogContextValue<TDialogID, TOpenArg> {
   dialogId: TDialogID;
   closeDialog: () => void;
   openDialog: (id: number, args: TOpenArg) => void;
-  args?: TOpenArg;
+  args: TOpenArg;
 }
 
 export const DialogContext = React.createContext<any>({
@@ -23,6 +23,7 @@ export const DialogProvider = ({ children }: { children: JSX.Element }) => {
 
   const closeDialog = useCallback(() => {
     setOpen(false);
+    setDialogId(-1);
     // avoid flickering
     setTimeout(() => {
       setArgs(undefined);
@@ -47,7 +48,7 @@ export const DialogProvider = ({ children }: { children: JSX.Element }) => {
   );
 };
 
-export const useDialog = <TDialogID extends number, TOpenArg extends any>() => {
+export const useDialog = <TDialogID extends number, TOpenArg = any>() => {
   const { isOpen, dialogId, closeDialog, openDialog, args } =
     useContext<DialogContextValue<TDialogID, TOpenArg>>(DialogContext);
   return { isOpen, dialogId, closeDialog, openDialog, args };
