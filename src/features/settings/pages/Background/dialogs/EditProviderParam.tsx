@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { IBackgroundSettings } from "app/storage/app-data/backgroundSettings";
+import getImgProviderName from "app/utils/getImgProviderName";
 import { ImageProvider } from "constant";
 import { useFormikContext } from "formik";
 import React, { FormEvent, useState } from "react";
@@ -34,14 +35,7 @@ const EditProviderParam = () => {
   const { args, closeDialog } = useEditProviderDialog();
   const providerId = args?.providerId;
 
-  const providerName =
-    providerId === ImageProvider.UNSPLASH
-      ? "Unsplash"
-      : providerId === ImageProvider.PIXABAY
-      ? "Pixabay"
-      : // : providerId === ImageProvider.BING
-        // ? "Bing"
-        "";
+  const providerName = getImgProviderName(providerId);
 
   const handleClose = () => {
     formik.setValues(originalValues);

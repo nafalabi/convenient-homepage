@@ -2,7 +2,10 @@ import appData from "app/storage/app-data";
 import cacheStorage from "app/storage/cache-storage";
 import BackgroundImage from "app/storage/dexie/BackgroundImage";
 import dexieDB from "app/storage/dexie/db";
+import { ImageProvider } from "constant";
 import ImageAPI from "../image-api";
+import { saveAs } from "file-saver";
+import Unsplash from "../image-api/Unsplash";
 
 class DexieBackgroundImageAPI {
   async refreshBackgroundList() {
@@ -47,6 +50,11 @@ class DexieBackgroundImageAPI {
     // failed caching
     if (res.status !== 200) return false;
 
+    // notify download (Unsplash only)
+    if (newImage?.provider === ImageProvider.UNSPLASH) {
+      Unsplash.notifyDownload(newImage.download_notify_url);
+    }
+
     return dexieDB.transaction("rw", dexieDB.backgroundimage, async () => {
       await prevImage?.deactivate();
       await newImage?.activate();
@@ -56,11 +64,13 @@ class DexieBackgroundImageAPI {
 
   async cycleBackground(iteration: number = 0) {
     const nextImageIds = await dexieDB.backgroundimage
-      .toCollection()
+      .where({ activated_at: -1 })
       .primaryKeys();
 
-    if (nextImageIds.length === 0)
-      throw new Error("Background image list is empty");
+    if (nextImageIds.length === 0) {
+      // all background images have already activated, reset them all
+      dexieDB.backgroundimage.toCollection().modify({ activated_at: -1 });
+    }
 
     if (iteration >= 5) throw new Error("Failed to rotate background image");
 
@@ -71,6 +81,17 @@ class DexieBackgroundImageAPI {
 
     // failed, try again
     if (!success) await this.cycleBackground(iteration + 1);
+  }
+
+  async downloadImage(id?: number) {
+    if (id === undefined) return false;
+    const image = await dexieDB.backgroundimage.get(id);
+
+    if (image?.provider === ImageProvider.UNSPLASH) {
+      Unsplash.notifyDownload(image.download_notify_url);
+    }
+
+    saveAs(image?.image_url ?? "");
   }
 }
 

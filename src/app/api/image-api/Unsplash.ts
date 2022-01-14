@@ -39,10 +39,24 @@ class Unsplash implements AbstractImageAPI {
         photographer: row.user.name,
         description: row.description ?? row.alt_description,
         utm_link: `${row.links.html}?utm_source=Convenient+Homepage&utm_medium=referral`,
+        raw_image_link: row.urls.full,
+        download_notify_url: row.links.download_location,
       });
     });
 
     return result;
+  }
+
+  static async notifyDownload(downloadNotifyUrl?: string) {
+    if (!downloadNotifyUrl) return null;
+    // send a request to notify unsplash that there is a download request
+    // https://help.unsplash.com/en/articles/2511258-guideline-triggering-a-download
+    return fetch(downloadNotifyUrl, {
+      headers: {
+        "Accept-Version": "v1",
+        Authorization: `Client-ID ${process.env.REACT_APP_UNSPLASH_CLIENT_ID}`,
+      },
+    });
   }
 }
 

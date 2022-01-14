@@ -9,7 +9,8 @@ export interface IBackgroundImage {
   photo_location?: string;
   description?: string;
   utm_link?: string;
-  download_link?: string;
+  download_notify_url?: string;
+  raw_image_link?: string;
 }
 
 class BackgroundImage implements IBackgroundImage {
@@ -21,7 +22,8 @@ class BackgroundImage implements IBackgroundImage {
   photo_location?: string;
   description?: string;
   utm_link?: string;
-  download_link?: string;
+  download_notify_url?: string;
+  raw_image_link?: string;
   active: number; // cant index boolean, use number instead
   activated_at: number; // epoch timestamp, -1 when not activated
 

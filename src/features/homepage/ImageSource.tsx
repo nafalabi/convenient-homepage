@@ -6,6 +6,7 @@ import {
   PhotoCameraOutlined,
 } from "@mui/icons-material";
 import { ImageProvider } from "constant";
+import getImgProviderName from "app/utils/getImgProviderName";
 
 const RootComp = styled.div`
   position: fixed;
@@ -59,7 +60,8 @@ const ImageSource = ({
   description,
   sourceLink,
 }: Props) => {
-  const providerString = convProviderToString(provider);
+  description = description ?? "";
+  const providerName = getImgProviderName(provider);
 
   if (provider === undefined) return null;
 
@@ -72,12 +74,13 @@ const ImageSource = ({
       {description && (
         <div className="description">
           <ImageOutlined />
-          {description}
+          {description.substring(0, 60)}
+          {description.length > 60 ? " ..." : ""}
         </div>
       )}
       <div className="photographer">
         <PhotoCameraOutlined />
-        {`${photographer} (${providerString})`}
+        {`${photographer} (${providerName})`}
       </div>
       {photoLocation && (
         <div className="location">
@@ -90,16 +93,3 @@ const ImageSource = ({
 };
 
 export default ImageSource;
-
-const convProviderToString = (provider?: ImageProvider) => {
-  switch (provider) {
-    case ImageProvider.BING:
-      return "Bing";
-    case ImageProvider.PIXABAY:
-      return "Pixabay";
-    case ImageProvider.UNSPLASH:
-      return "Unsplash";
-    default:
-      return "";
-  }
-};

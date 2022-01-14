@@ -40,6 +40,7 @@ class Bing implements AbstractImageAPI {
         photographer,
         description,
         utm_link: row.copyrightlink,
+        raw_image_link: "https://bing.com" + row.url,
       });
     });
 
