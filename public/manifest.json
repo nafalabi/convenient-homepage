@@ -6,7 +6,7 @@
   "icons": {
     "192": "logo192.png"
   },
-  "permissions": ["bookmarks", "identity", "alarms", "storage"],
+  "permissions": ["bookmarks", "identity", "alarms", "storage", "downloads"],
   "host_permissions": ["https://*/*"],
   "background": {
     "service_worker": "static/js/serviceworker.js"

@@ -4,7 +4,6 @@ import BackgroundImage from "app/storage/dexie/BackgroundImage";
 import dexieDB from "app/storage/dexie/db";
 import { ImageProvider } from "constant";
 import ImageAPI from "../image-api";
-import { saveAs } from "file-saver";
 import Unsplash from "../image-api/Unsplash";
 
 class DexieBackgroundImageAPI {
@@ -91,7 +90,7 @@ class DexieBackgroundImageAPI {
       Unsplash.notifyDownload(image.download_notify_url);
     }
 
-    saveAs(image?.image_url ?? "");
+    chrome.downloads.download({ url: image?.image_url ?? "" });
   }
 }
 

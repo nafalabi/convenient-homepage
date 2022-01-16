@@ -165,6 +165,7 @@ const BackgroundImagePreview = ({
   id?: number;
   background: BackgroundImage;
 }) => {
+  const {enqueueSnackbar} = useSnackbar();
   const isActive = Boolean(background.active);
 
   const deleteImage = () => background.delete();
@@ -174,6 +175,7 @@ const BackgroundImagePreview = ({
   };
 
   const downloadImage = () => {
+    enqueueSnackbar("Starting download...", {variant: "info"});
     DexieAPI.backgroundimage.downloadImage(background.id);
   };
 
