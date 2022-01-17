@@ -11,20 +11,20 @@ import NoteCouldntLoad from "./NoteCouldntLoad";
 import styleOverride from "./style-override";
 
 const useStyles = makeStyles((theme) => ({
-  ...styleOverride,
+  ...styleOverride(theme),
   statusBar: {
     position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
-    borderTop: "1px solid gainsboro",
+    borderTop: `1px solid ${theme.palette.divider}`,
     color: "#555",
     background: theme.palette.background.default,
     display: "flex",
     flexDirection: "row-reverse",
     "&>*": {
       padding: "4px 12px",
-      borderLeft: "1px solid gainsboro",
+      borderLeft: `1px solid ${theme.palette.divider}`,
     },
   },
 }));
@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 const NoteEditor = ({ selectedNote }) => {
   const classes = useStyles();
   const editable = useSelector(selectors.editable);
+  const darkMode = useSelector(({ global }) => global.darkMode);
   const noteData = useFetchNoteData(selectedNote);
   const {
     updateNoteContent,
@@ -47,7 +48,15 @@ const NoteEditor = ({ selectedNote }) => {
 
   return (
     <Box ml={1} onKeyDown={(e) => e.stopPropagation()}>
-      <Box ml={1} mb={2}>
+      <Box
+        sx={{
+          ml: 1,
+          mb: 2,
+          "& div": {
+            backgroundColor: "transparent",
+          },
+        }}
+      >
         {noteData ? (
           <Editor
             defaultValue={noteData.notecontent}
@@ -59,6 +68,7 @@ const NoteEditor = ({ selectedNote }) => {
             uploadImage={uploadImage}
             autoFocus
             readOnly={!editable}
+            dark={darkMode}
           />
         ) : (
           <>

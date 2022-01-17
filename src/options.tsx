@@ -1,61 +1,66 @@
 import ReactDOM from "react-dom";
 import store from "./app/storage/redux/store";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import React, { useState } from "react";
 import Homepage from "./features/homepage/Homepage";
 import Drawer from "./features/drawer/Drawer";
 import Note from "./features/note/Note";
+import Bookmark from "./features/bookmark/Bookmark";
 import Settings from "./features/settings/Settings";
+import FirstSetupScreen from "./features/first-setup";
+// import SearchComponent from "features/search";
 import CssBaseline from "@mui/material/CssBaseline";
 import {
   ThemeProvider,
   StyledEngineProvider,
   createTheme,
 } from "@mui/material";
-import Bookmark from "./features/bookmark/Bookmark";
 import CustomSnackbarProvider from "./components/NotifstackProvider";
-import localData from "./app/storage/local-data";
-import FirstSetupScreen from "./features/first-setup";
 
 import "@fontsource/montserrat";
 import "@fontsource/roboto";
+import { actions } from "app/storage/redux/globalSlice";
 
-const theme = createTheme({
-  palette: {
-    mode: "light",
-  },
-});
+const generateTheme = (darkMode: boolean) =>
+  createTheme({
+    palette: {
+      mode: darkMode ? "dark" : "light",
+    },
+  });
+
+store.dispatch(actions.init());
 
 function App() {
-  const [alreadySetup, setSetupStatus] = useState<boolean>(
-    localData.alreadyFirstSetup()
-  );
+  const alreadySetup = useSelector(({ global }) => global.alreadySetup);
+  const darkMode = useSelector(({ global }) => global.darkMode);
 
   return (
-    <React.StrictMode>
-      <Provider store={store}>
-        <StyledEngineProvider injectFirst>
-          <ThemeProvider theme={theme}>
-            <CustomSnackbarProvider>
-              <CssBaseline />
-              <Homepage alreadySetup={alreadySetup} />
-              {!alreadySetup && (
-                <FirstSetupScreen onSetup={() => setSetupStatus(true)} />
-              )}
-              {alreadySetup && (
-                <>
-                  <Drawer />
-                  <Note />
-                  <Bookmark />
-                  <Settings />
-                </>
-              )}
-            </CustomSnackbarProvider>
-          </ThemeProvider>
-        </StyledEngineProvider>
-      </Provider>
-    </React.StrictMode>
+    <ThemeProvider theme={generateTheme(darkMode)}>
+      <CustomSnackbarProvider>
+        <CssBaseline />
+        <Homepage alreadySetup={alreadySetup} />
+        {!alreadySetup && <FirstSetupScreen />}
+        {alreadySetup && (
+          <>
+            <Drawer />
+            <Note />
+            <Bookmark />
+            <Settings />
+            {/* <SearchComponent /> */}
+          </>
+        )}
+      </CustomSnackbarProvider>
+    </ThemeProvider>
   );
 }
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <StyledEngineProvider injectFirst>
+        <App />
+      </StyledEngineProvider>
+    </Provider>
+  </React.StrictMode>,
+  document.getElementById("root")
+);

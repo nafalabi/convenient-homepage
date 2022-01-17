@@ -8,7 +8,7 @@ import {
   Toolbar,
   Typography,
   Box,
-  Divider,
+  Paper,
 } from "@mui/material";
 import debounce from "@mui/utils/debounce";
 import { useCallback } from "react";
@@ -76,6 +76,8 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
     paddingTop: theme.spacing(2),
     // marginBottom: theme.spacing(4),
     overflow: "auto",
+    backgroundColor: theme.palette.background.default,
+    backgroundImage: "none",
   },
 }));
 
@@ -215,15 +217,20 @@ const PanelWithSidebar = ({
                 <SidebarComponent dialogRef={dialogRef} />
               </div>
             </Drawer>
-            <Box
-              pl={1}
-              style={{ cursor: "w-resize" }}
+            <Paper
+              sx={{
+                pl: 1,
+                cursor: "w-resize",
+                borderWidth: 0,
+                borderRightWidth: "1px",
+                borderStyle: "solid",
+                borderColor: "divider",
+              }}
+              elevation={0}
               onMouseDown={onMouseDown}
               onTouchStart={onTouchStart}
               onTouchEnd={onMouseUp}
-            >
-              <Divider orientation="vertical" />
-            </Box>
+            />
           </Box>
           <Box
             flexGrow={1}

@@ -12,6 +12,7 @@ interface Props {
   helper?: string;
   justifyContent?: CSS.Property.JustifyContent;
   referenceLink?: string;
+  inputFullWidth?: boolean;
 }
 
 const InlineFormControl = ({
@@ -23,6 +24,7 @@ const InlineFormControl = ({
   helper,
   justifyContent = "space-between",
   referenceLink,
+  inputFullWidth,
 }: Props) => {
   return (
     <Box
@@ -56,7 +58,9 @@ const InlineFormControl = ({
           </Box>
         )}
       </Box>
-      <Box display="inline-flex">{children}</Box>
+      <Box display="inline-flex" flexGrow={inputFullWidth ? 1 : 0}>
+        {children}
+      </Box>
     </Box>
   );
 };

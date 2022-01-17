@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import globalReducer from "./globalSlice";
 import homepageReducer from "features/homepage/slice";
 import drawerReducer from "features/drawer/slice";
 import noteReducer from "features/note/slice";
@@ -7,6 +8,7 @@ import settingsReducer from "features/settings/slice";
 
 const store = configureStore({
   reducer: {
+    global: globalReducer,
     homepage: homepageReducer,
     drawer: drawerReducer,
     note: noteReducer,

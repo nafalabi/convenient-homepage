@@ -8,24 +8,34 @@ import useNoteActions from "../hooks/useNoteActions";
 import styleOverride from "./style-override";
 import welcomeMessage from "./welcome-message";
 
-const useStyles = makeStyles({
-  ...styleOverride,
-});
+const useStyles = makeStyles((theme) => ({
+  ...styleOverride(theme),
+}));
 
 const NoteHome = () => {
   useStyles();
+  const darkMode = useSelector(({ global }) => global.darkMode);
   const editable = useSelector(selectors.editable);
   const { onClickLink, uploadImage } = useNoteActions();
 
   return (
     <Box>
-      <Box ml={2} mb={2}>
+      <Box
+        sx={{
+          ml: 2,
+          mb: 2,
+          "& div": {
+            backgroundColor: "transparent",
+          },
+        }}
+      >
         <Editor
           defaultValue={welcomeMessage}
           onClickLink={onClickLink}
           uploadImage={uploadImage}
           autoFocus
           readOnly={!editable}
+          dark={darkMode}
         />
       </Box>
     </Box>

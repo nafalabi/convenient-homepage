@@ -1,6 +1,6 @@
 import setOrGet from "./abstract";
 
-interface IGeneralSettings {
+export interface IGeneralSettings {
   name: string;
 }
 

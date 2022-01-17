@@ -1,7 +1,8 @@
-const STORAGE_KEY_ALREADY_SETUP = "alreadySetup";
-
+/**
+ * Wrapper for localStorage
+ */
 class LocalData {
-  _setOrGet<T = any>(key: string, value?: T, defaultValue?: T): T {
+  static _setOrGet<T = any>(key: string, value?: T, defaultValue?: T): T {
     if (value !== undefined) {
       localStorage.setItem(key, JSON.stringify(value));
       return value;
@@ -10,11 +11,19 @@ class LocalData {
     }
   }
 
-  alreadyFirstSetup(value?: boolean) {
-    return this._setOrGet(STORAGE_KEY_ALREADY_SETUP, value, false);
+  static alreadyFirstSetup(value?: boolean) {
+    return this._setOrGet("alreadySetup", value, false);
+  }
+
+  static darkMode(value?: boolean) {
+    return this._setOrGet("darkMode", value, false);
   }
 }
 
-const localData = new LocalData();
+export default LocalData;
 
-export default localData;
+declare global {
+  var localdata: typeof LocalData;
+}
+
+global.localdata = LocalData;

@@ -5,6 +5,8 @@ import forestBackground from "./forest_background.svg";
 import { ArrowForward } from "@mui/icons-material";
 import localData from "app/storage/local-data";
 import appData from "app/storage/app-data";
+import { actions } from "app/storage/redux/globalSlice";
+import { useDispatch } from "react-redux";
 
 const RootDiv = styled("div")({
   display: "flex",
@@ -24,7 +26,8 @@ const RootDiv = styled("div")({
   },
 });
 
-const FirstSetupScreen = (props: { onSetup: () => void }) => {
+const FirstSetupScreen = () => {
+  const dispatch = useDispatch();
   const [show, setShow] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
 
@@ -39,7 +42,7 @@ const FirstSetupScreen = (props: { onSetup: () => void }) => {
     appData.generalSettings(generalSettingData);
     localData.alreadyFirstSetup(true);
     setShow(false);
-    setTimeout(() => props.onSetup(), 1000);
+    setTimeout(() => dispatch(actions.setAlreadySetup()), 1000);
   };
 
   return (

@@ -1,4 +1,4 @@
-const styleOverride = {
+const styleOverride = (theme) => ({
   "@global": {
     "#block-menu-container": {
       // The popover of "+" button for rich markdown editor
@@ -11,7 +11,10 @@ const styleOverride = {
       // similar as the above, to bring the covered element up
       zIndex: 900,
     },
+    ".heading-actions": {
+      background: `${theme.palette.background.default} !important`,
+    },
   },
-};
+});
 
 export default styleOverride;

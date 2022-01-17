@@ -28,10 +28,6 @@ const StyledAdjustedTreeItem: any = styled(AdjustedTreeItem, {
     "&:hover > .MuiTreeItem-content": {
       // backgroundColor: theme.palette.action.hover,
     },
-    "&:focus > .MuiTreeItem-content, &.Mui-selected > .MuiTreeItem-content": {
-      backgroundColor: `var(--tree-view-bg-color, ${theme.palette.grey[100]})`,
-      color: "var(--tree-view-color)",
-    },
     "&:focus > .MuiTreeItem-content .MuiTreeItem-label, &:hover > .MuiTreeItem-content .MuiTreeItem-label, &.Mui-selected > .MuiTreeItem-content .MuiTreeItem-label":
       {
         backgroundColor: "transparent!important",

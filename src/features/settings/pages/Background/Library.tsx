@@ -165,7 +165,7 @@ const BackgroundImagePreview = ({
   id?: number;
   background: BackgroundImage;
 }) => {
-  const {enqueueSnackbar} = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const isActive = Boolean(background.active);
 
   const deleteImage = () => background.delete();
@@ -175,7 +175,7 @@ const BackgroundImagePreview = ({
   };
 
   const downloadImage = () => {
-    enqueueSnackbar("Starting download...", {variant: "info"});
+    enqueueSnackbar("Starting download...", { variant: "info" });
     DexieAPI.backgroundimage.downloadImage(background.id);
   };
 
@@ -202,7 +202,7 @@ const BackgroundImagePreview = ({
         <Box mt={1} ml={1}>
           <Tooltip title="Download" PopperProps={{ placement: "right" }}>
             <Fab color="inherit" size="small" onClick={downloadImage}>
-              <Download />
+              <Download sx={{ color: "background.default" }} />
             </Fab>
           </Tooltip>
         </Box>
