@@ -29,6 +29,7 @@ const classes = {
   drawer: `${PREFIX}-drawer`,
   drawerPaper: `${PREFIX}-drawerPaper`,
   drawerContainer: `${PREFIX}-drawerContainer`,
+  divider: `${PREFIX}-divider`,
   content: `${PREFIX}-content`,
 };
 
@@ -64,10 +65,25 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
     position: "absolute",
     width: DEFAULT_WIDTH,
     border: "none",
+    backgroundColor: theme.palette.background.default,
+    backgroundImage:
+      "linear-gradient(rgba(255, 255, 255, .05), rgba(255, 255, 255, .05))",
   },
 
   [`& .${classes.drawerContainer}`]: {
     overflow: "auto",
+  },
+
+  [`& .${classes.divider}`]: {
+    paddingLeft: theme.spacing(1),
+    cursor: "w-resize",
+    borderWidth: 0,
+    borderRightWidth: "1px",
+    borderStyle: "solid",
+    borderColor: theme.palette.divider,
+    backgroundColor: theme.palette.background.default,
+    backgroundImage:
+      "linear-gradient(rgba(255, 255, 255, .05), rgba(255, 255, 255, .05))",
   },
 
   [`& .${classes.content}`]: {
@@ -217,16 +233,8 @@ const PanelWithSidebar = ({
                 <SidebarComponent dialogRef={dialogRef} />
               </div>
             </Drawer>
-            <Paper
-              sx={{
-                pl: 1,
-                cursor: "w-resize",
-                borderWidth: 0,
-                borderRightWidth: "1px",
-                borderStyle: "solid",
-                borderColor: "divider",
-              }}
-              elevation={0}
+            <Box
+              className={classes.divider}
               onMouseDown={onMouseDown}
               onTouchStart={onTouchStart}
               onTouchEnd={onMouseUp}

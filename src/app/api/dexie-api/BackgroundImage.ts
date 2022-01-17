@@ -7,7 +7,7 @@ import ImageAPI from "../image-api";
 import Unsplash from "../image-api/Unsplash";
 
 class DexieBackgroundImageAPI {
-  async refreshBackgroundList() {
+  static async refreshBackgroundList() {
     const settings = await appData.backgroundSettings();
     const imgApi = new ImageAPI(settings);
     const list = await imgApi.getImageList();
@@ -31,12 +31,12 @@ class DexieBackgroundImageAPI {
     return await dexieDB.backgroundimage.bulkPut(bgInstList);
   }
 
-  async getCurActiveImage() {
+  static async getCurActiveImage() {
     const curImage = await dexieDB.backgroundimage.where({ active: 1 }).first();
     return curImage;
   }
 
-  async setAsActive(id?: number) {
+  static async setAsActive(id?: number) {
     if (id === undefined) return false;
 
     const prevImage = await this.getCurActiveImage();
@@ -61,7 +61,7 @@ class DexieBackgroundImageAPI {
     });
   }
 
-  async cycleBackground(iteration: number = 0) {
+  static async cycleBackground(iteration: number = 0) {
     const nextImageIds = await dexieDB.backgroundimage
       .where({ activated_at: -1 })
       .primaryKeys();
@@ -82,7 +82,7 @@ class DexieBackgroundImageAPI {
     if (!success) await this.cycleBackground(iteration + 1);
   }
 
-  async downloadImage(id?: number) {
+  static async downloadImage(id?: number) {
     if (id === undefined) return false;
     const image = await dexieDB.backgroundimage.get(id);
 

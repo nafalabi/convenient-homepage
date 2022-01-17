@@ -11,7 +11,7 @@ class DexieNoteAPI {
    * Get Note List in a form of tree list
    * @returns list of notes in tree form
    */
-  fetchNoteList() {
+  static fetchNoteList() {
     const map = async (coll: Collection<Note>) => {
       const result: NoteListItem[] = [];
       await coll.each(async (row: NoteListItem) => {
@@ -36,7 +36,7 @@ class DexieNoteAPI {
    * @param noteid note id
    * @returns the detail of a note
    */
-  async fetchNoteData(noteid: string) {
+  static async fetchNoteData(noteid: string) {
     const data: (Note & NoteContent) | undefined = await dexieDB.note
       .where({ noteid: parseInt(noteid) })
       .first();
@@ -51,7 +51,7 @@ class DexieNoteAPI {
    * Get list id of expanded notes
    * @returns list id of expanded notes
    */
-  async fetchExpandedNoteIds() {
+  static async fetchExpandedNoteIds() {
     let ids = await dexieDB.note.where("expanded").equals(1).primaryKeys();
     return ids.map((id) => String(id));
   }
@@ -62,7 +62,7 @@ class DexieNoteAPI {
    * @param newName new note name
    * @returns note id
    */
-  async updateNoteName(noteData: Note, newName: string) {
+  static async updateNoteName(noteData: Note, newName: string) {
     noteData.notename = newName;
     return await noteData.save();
   }
@@ -73,7 +73,7 @@ class DexieNoteAPI {
    * @param notecontent new note content
    * @returns note id
    */
-  async updateNoteContent(noteData: Note, notecontent: string) {
+  static async updateNoteContent(noteData: Note, notecontent: string) {
     const noteContent = new NoteContent();
     noteContent.noteid = noteData.noteid;
     noteContent.notecontent = notecontent;
@@ -85,7 +85,7 @@ class DexieNoteAPI {
    * @param term string to be seached (part of note name)
    * @returns list of note
    */
-  async searchNote(term: string) {
+  static async searchNote(term: string) {
     return await dexieDB.note
       .where("notename")
       .startsWithIgnoreCase(term)
@@ -98,7 +98,7 @@ class DexieNoteAPI {
    * @param notename new sub note name
    * @returns note id
    */
-  async addSubNote(noteData: Note, notename: string) {
+  static async addSubNote(noteData: Note, notename: string) {
     return dexieDB.transaction(
       "rw",
       dexieDB.note,
@@ -130,7 +130,7 @@ class DexieNoteAPI {
    * @param notename new note name
    * @returns note id
    */
-  async addNewNote(notename: string) {
+  static async addNewNote(notename: string) {
     return dexieDB.transaction(
       "rw",
       dexieDB.note,
@@ -160,7 +160,7 @@ class DexieNoteAPI {
    * @param newIds new list of id of expanded notes
    * @returns
    */
-  async toggleExpandNote(oldIds: string[], newIds: string[]) {
+  static async toggleExpandNote(oldIds: string[], newIds: string[]) {
     const idToBeExpanded = newIds.find((id) => !oldIds.includes(id));
     const idToBeShrinked = oldIds.find((id) => !newIds.includes(id));
     if (idToBeExpanded) {
@@ -177,7 +177,7 @@ class DexieNoteAPI {
    * @param targetid destination
    * @param targetType
    */
-  async reorderNote(
+  static async reorderNote(
     noteid: string,
     targetid: string,
     targetType: "BEFORE" | "INSIDE" | "AFTER",
@@ -252,7 +252,7 @@ class DexieNoteAPI {
    * @param noteData note data to be deleted
    * @returns nothing (void)
    */
-  async deleteNote(noteData: Note) {
+  static async deleteNote(noteData: Note) {
     const totalChildren = await noteData.countChildren();
 
     if (totalChildren > 0) {
@@ -275,7 +275,7 @@ class DexieNoteAPI {
    * @param noteid note id to search
    * @returns a note
    */
-  async findNoteById(noteid: string) {
+  static async findNoteById(noteid: string) {
     return await dexieDB.note.where({ noteid: parseInt(noteid) }).first();
   }
 
@@ -285,7 +285,7 @@ class DexieNoteAPI {
    * @param iconData new icon data
    * @returns void
    */
-  async updateNoteIcon(note: Note, iconData: IconData) {
+  static async updateNoteIcon(note: Note, iconData: IconData) {
     note.iconId = iconData?.iconId;
     note.iconType = iconData?.iconType;
     note.save();

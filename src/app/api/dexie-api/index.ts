@@ -2,8 +2,8 @@ import DexieBackgroundImageAPI from "./BackgroundImage";
 import DexieNoteAPI from "./Note";
 
 const DexieAPI = {
-  note: new DexieNoteAPI(),
-  backgroundimage: new DexieBackgroundImageAPI(),
+  note: DexieNoteAPI,
+  backgroundimage: DexieBackgroundImageAPI,
 };
 
 export default DexieAPI;
