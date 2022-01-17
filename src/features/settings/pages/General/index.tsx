@@ -18,23 +18,17 @@ const General = () => {
 
   const { enqueueSnackbar } = useSnackbar();
   const settingValues = useSelector(({ settings }) => settings.generalSettings);
-  const darkMode = useSelector(({ global }) => global.darkMode);
 
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: { ...settingValues, darkMode },
+    initialValues: settingValues,
     onSubmit: async (values) => {
-      await appData.generalSettings(values);
-      LocalData.darkMode(values.darkMode);
+      dispatch(actions.storeGeneralSettings(values));
       enqueueSnackbar("General Settings has been saved", {
         variant: "success",
       });
     },
   });
-
-  useEffect(() => {
-    dispatch(actions.fetchGeneralSettings());
-  }, [dispatch]);
 
   return (
     <Box>

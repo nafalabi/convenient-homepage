@@ -4,7 +4,7 @@ import appData from "app/storage/app-data";
 import { actions } from "features/settings/slice";
 import { useFormik } from "formik";
 import { useSnackbar } from "notistack";
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import GistIntegration from "./GistIntegration";
 
@@ -17,14 +17,10 @@ const NoteSettingsPage = () => {
     initialValues: noteSettings,
     enableReinitialize: true,
     onSubmit: async (values) => {
-      await appData.noteSettings(values);
+      dispatch(actions.storeNoteSettings(values));
       enqueueSnackbar("Note Settings Saved", { variant: "success" });
     },
   });
-
-  useEffect(() => {
-    dispatch(actions.fetchNoteSettings());
-  }, [dispatch]);
 
   return (
     <Box>

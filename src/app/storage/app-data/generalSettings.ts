@@ -2,10 +2,12 @@ import setOrGet from "./abstract";
 
 export interface IGeneralSettings {
   name: string;
+  darkMode: boolean;
 }
 
 export const generalSettingsDefault: IGeneralSettings = {
   name: "",
+  darkMode: false,
 };
 
 const STORAGE_KEY = "generalSettings";

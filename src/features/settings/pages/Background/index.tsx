@@ -18,15 +18,11 @@ const Background = () => {
     ({ settings }) => settings.backgroundSettings
   );
 
-  useEffect(() => {
-    dispatch(actions.fetchBackgroundSettings());
-  }, [dispatch]);
-
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: settingValues,
     onSubmit: async (values) => {
-      await appData.backgroundSettings(values);
+      dispatch(actions.storeBackgroundSettings(values));
       enqueueSnackbar("Background Settings has been saved", {
         variant: "success",
       });

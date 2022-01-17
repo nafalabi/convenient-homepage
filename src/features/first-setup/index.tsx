@@ -1,12 +1,13 @@
 import React, { useEffect, useState, SyntheticEvent } from "react";
+import { useDispatch } from "react-redux";
 import { Box, styled } from "@mui/system";
 import { IconButton, Paper, TextField, Typography } from "@mui/material";
-import forestBackground from "./forest_background.svg";
 import { ArrowForward } from "@mui/icons-material";
-import localData from "app/storage/local-data";
-import appData from "app/storage/app-data";
-import { actions } from "app/storage/redux/globalSlice";
-import { useDispatch } from "react-redux";
+
+import { actions as homepageActions } from "features/homepage/slice";
+import { actions as settingsActions } from "features/settings/slice";
+
+import forestBackground from "./forest_background.svg";
 
 const RootDiv = styled("div")({
   display: "flex",
@@ -31,18 +32,16 @@ const FirstSetupScreen = () => {
   const [show, setShow] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
 
+  // for the animations
   useEffect(() => {
     setTimeout(() => setShow(true), 0);
   }, []);
 
   const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    const generalSettingData = await appData.generalSettings();
-    generalSettingData.name = name;
-    appData.generalSettings(generalSettingData);
-    localData.alreadyFirstSetup(true);
+    dispatch(settingsActions.setUserName(name));
     setShow(false);
-    setTimeout(() => dispatch(actions.setAlreadySetup()), 1000);
+    setTimeout(() => dispatch(homepageActions.setAlreadySetup()), 1000);
   };
 
   return (

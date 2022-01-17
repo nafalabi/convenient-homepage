@@ -1,10 +1,19 @@
 import { Dispatch } from "redux";
 import { createSlice } from "@reduxjs/toolkit";
-import { generalSettingsDefault } from "app/storage/app-data/generalSettings";
-import appData from "app/storage/app-data";
-import { backgroundSettingsDefault } from "app/storage/app-data/backgroundSettings";
 import { SettingsPage } from "./types";
-import { noteSettingsDefault } from "app/storage/app-data/noteSettings";
+import appData from "app/storage/app-data";
+import {
+  generalSettingsDefault,
+  IGeneralSettings,
+} from "app/storage/app-data/generalSettings";
+import {
+  backgroundSettingsDefault,
+  IBackgroundSettings,
+} from "app/storage/app-data/backgroundSettings";
+import {
+  INoteSettings,
+  noteSettingsDefault,
+} from "app/storage/app-data/noteSettings";
 
 export const slice = createSlice({
   name: "settings",
@@ -36,17 +45,33 @@ export const slice = createSlice({
 
 export const actions = {
   ...slice.actions,
-  fetchGeneralSettings: () => async (dispatch: Dispatch) => {
-    const newValues = await appData.generalSettings();
-    dispatch(slice.actions.storeGeneralSettings(newValues));
+  init: () => async (dispatch: Dispatch) => {
+    const generalSettings = await appData.generalSettings();
+    const backgroundSettings = await appData.backgroundSettings();
+    const noteSettings = await appData.noteSettings();
+    dispatch(slice.actions.storeGeneralSettings(generalSettings));
+    dispatch(slice.actions.storeBackgroundSettings(backgroundSettings));
+    dispatch(slice.actions.storeNoteSettings(noteSettings));
   },
-  fetchBackgroundSettings: () => async (dispatch: Dispatch) => {
-    const newValues = await appData.backgroundSettings();
-    dispatch(slice.actions.storeBackgroundSettings(newValues));
-  },
-  fetchNoteSettings: () => async (dispatch: Dispatch) => {
-    const newValues = await appData.noteSettings();
-    dispatch(slice.actions.storeNoteSettings(newValues));
+  storeGeneralSettings:
+    (newValues: IGeneralSettings) => async (dispatch: Dispatch) => {
+      await appData.generalSettings(newValues);
+      dispatch(slice.actions.storeGeneralSettings(newValues));
+    },
+  storeBackgroundSettings:
+    (newValues: IBackgroundSettings) => async (dispatch: Dispatch) => {
+      await appData.backgroundSettings(newValues);
+      dispatch(slice.actions.storeBackgroundSettings(newValues));
+    },
+  storeNoteSettings:
+    (newValues: INoteSettings) => async (dispatch: Dispatch) => {
+      await appData.noteSettings(newValues);
+      dispatch(slice.actions.storeNoteSettings(newValues));
+    },
+  setUserName: (username: string) => async (dispatch: Dispatch) => {
+    const generalSettingData = await appData.generalSettings();
+    generalSettingData.name = username;
+    appData.generalSettings(generalSettingData);
   },
 };
 

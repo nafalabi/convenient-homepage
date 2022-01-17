@@ -37,6 +37,11 @@ const blankBackground: IBackgroundImage = {
 
 const Homepage = (props: { alreadySetup: boolean }) => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(actions.initialize());
+  }, [dispatch]);
+
   const initialized = useSelector(({ homepage }) => homepage.initialized);
 
   const background = useLiveQuery(
@@ -47,10 +52,6 @@ const Homepage = (props: { alreadySetup: boolean }) => {
     [initialized],
     blankBackground
   );
-
-  useEffect(() => {
-    dispatch(actions.initialize());
-  }, [dispatch]);
 
   return (
     <HomepageRoot

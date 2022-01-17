@@ -14,7 +14,9 @@ const useStyles = makeStyles((theme) => ({
 
 const NoteHome = () => {
   useStyles();
-  const darkMode = useSelector(({ global }) => global.darkMode);
+  const darkMode = useSelector(
+    ({ settings }) => settings.generalSettings.darkMode
+  );
   const editable = useSelector(selectors.editable);
   const { onClickLink, uploadImage } = useNoteActions();
 

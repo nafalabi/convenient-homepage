@@ -33,8 +33,6 @@ const Library = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const queryResult = useSubscribeBackgroundImages(showingImage, currentPage);
 
-  if (queryResult === undefined) return null;
-
   const { total, images } = queryResult;
   const totalPage = Math.ceil(total / showingImage);
 

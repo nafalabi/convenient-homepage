@@ -14,10 +14,6 @@ class LocalData {
   static alreadyFirstSetup(value?: boolean) {
     return this._setOrGet("alreadySetup", value, false);
   }
-
-  static darkMode(value?: boolean) {
-    return this._setOrGet("darkMode", value, false);
-  }
 }
 
 export default LocalData;

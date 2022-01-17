@@ -32,7 +32,9 @@ const useStyles = makeStyles((theme) => ({
 const NoteEditor = ({ selectedNote }) => {
   const classes = useStyles();
   const editable = useSelector(selectors.editable);
-  const darkMode = useSelector(({ global }) => global.darkMode);
+  const darkMode = useSelector(
+    ({ settings }) => settings.generalSettings.darkMode
+  );
   const noteData = useFetchNoteData(selectedNote);
   const {
     updateNoteContent,
