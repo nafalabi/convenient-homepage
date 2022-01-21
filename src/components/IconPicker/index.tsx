@@ -5,7 +5,6 @@ import EmojiPicker from "./EmojiPicker";
 import { Tab, Tabs, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { IconData } from "./types";
-import * as MIcon from "@mui/icons-material";
 import { IconType } from "constant";
 import IconRenderer from "components/IconRenderer";
 

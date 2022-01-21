@@ -82,7 +82,7 @@ const Library = () => {
               startIcon={<Shuffle />}
               onClick={shuffleBackground}
             >
-              Shuffle Background
+              Rotate Background
             </Button>
           </Tooltip>
         </Box>
@@ -199,8 +199,12 @@ const BackgroundImagePreview = ({
         </Box>
         <Box mt={1} ml={1}>
           <Tooltip title="Download" PopperProps={{ placement: "right" }}>
-            <Fab color="inherit" size="small" onClick={downloadImage}>
-              <Download sx={{ color: "background.default" }} />
+            <Fab
+              sx={{ backgroundColor: "background.default" }}
+              size="small"
+              onClick={downloadImage}
+            >
+              <Download sx={{ color: "text.primary" }} />
             </Fab>
           </Tooltip>
         </Box>
