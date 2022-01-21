@@ -6,7 +6,7 @@ import {
   DialogActions,
   Button,
 } from "@mui/material";
-import { RenderIcon } from "components/IconPicker";
+import IconRenderer from "components/IconRenderer";
 
 const DialogDeleteNote = ({ action, handleClose, noteDetails }) => {
   return (
@@ -21,7 +21,11 @@ const DialogDeleteNote = ({ action, handleClose, noteDetails }) => {
       <DialogContent>
         <DialogContentText>Are you sure to delete this note?</DialogContentText>
         <DialogContentText sx={{ display: "inline-flex", mt: 1 }}>
-          <RenderIcon icon={noteDetails} /> &nbsp; {noteDetails?.notename}
+          <IconRenderer
+            iconId={noteDetails.iconId}
+            iconType={noteDetails.iconType}
+          />{" "}
+          &nbsp; {noteDetails?.notename}
         </DialogContentText>
       </DialogContent>
       <DialogActions>

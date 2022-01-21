@@ -4,7 +4,7 @@ import dexieDB from "app/storage/dexie/db";
 import Note from "app/storage/dexie/Note";
 import NoteContent from "app/storage/dexie/NoteContent";
 
-export type NoteListItem = Note & { totalChildren?: number; children?: Note[] } ;
+export type NoteListItem = Note & { totalChildren?: number; children?: Note[] };
 
 class DexieNoteAPI {
   /**
@@ -85,11 +85,23 @@ class DexieNoteAPI {
    * @param term string to be seached (part of note name)
    * @returns list of note
    */
-  static async searchNote(term: string) {
-    return await dexieDB.note
-      .where("notename")
-      .startsWithIgnoreCase(term)
-      .toArray();
+  static async searchNote(term: string, fullText: boolean = false) {
+    if (!fullText) {
+      return await dexieDB.note
+        .where("notename")
+        .startsWithIgnoreCase(term)
+        .toArray();
+    } else {
+      return await dexieDB.note
+        .filter((note) => {
+          return (
+            note.notename
+              ?.toLocaleLowerCase()
+              .includes(term.toLocaleLowerCase()) ?? false
+          );
+        })
+        .toArray();
+    }
   }
 
   /**

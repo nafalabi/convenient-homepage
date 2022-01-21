@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import "emoji-mart/css/emoji-mart.css";
 import MaterialIconPicker from "./MaterialIconPicker";
 import EmojiPicker from "./EmojiPicker";
-import { SvgIcon, Tab, Tabs, Typography } from "@mui/material";
-import { Emoji } from "emoji-mart";
+import { Tab, Tabs, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { IconData, IconFontSize } from "./types";
+import { IconData } from "./types";
 import * as MIcon from "@mui/icons-material";
 import { IconType } from "constant";
-
-const materialIcons: { [key: string]: any } = MIcon;
+import IconRenderer from "components/IconRenderer";
 
 interface props {
   selectedIcon?: IconData;
@@ -52,17 +50,17 @@ const IconPicker = ({ selectedIcon, onChangeIcon }: props) => {
         alignItems="center"
       >
         <Typography sx={{ mr: 1 }}>Selected Icon</Typography>
-        <RenderIcon
+        <IconRenderer
           iconType={selectedIcon?.iconType}
           iconId={selectedIcon?.iconId}
           fontSize="small"
         />
-        <RenderIcon
+        <IconRenderer
           iconType={selectedIcon?.iconType}
           iconId={selectedIcon?.iconId}
           fontSize="medium"
         />
-        <RenderIcon
+        <IconRenderer
           iconType={selectedIcon?.iconType}
           iconId={selectedIcon?.iconId}
           fontSize="large"
@@ -73,42 +71,3 @@ const IconPicker = ({ selectedIcon, onChangeIcon }: props) => {
 };
 
 export default IconPicker;
-
-export const RenderIcon = (props: {
-  iconType?: IconType;
-  iconId?: string;
-  fontSize?: IconFontSize;
-  className?: string;
-}) => {
-  if (props.iconType === null || props.iconType === undefined) return null;
-
-  switch (props.iconType) {
-    case IconType.EMOJI:
-      const sizeMap: { [key: string]: number } = {
-        large: 27,
-        medium: 18.5,
-        small: 13,
-      };
-      return (
-        <span className={props.className}>
-          <Emoji
-            emoji={props.iconId ?? ""}
-            size={sizeMap[props.fontSize ?? "medium"]}
-            native={true}
-          />
-        </span>
-      );
-    case IconType.MATERIAL_ICON:
-      return (
-        <SvgIcon
-          component={materialIcons[props.iconId ?? ""]}
-          fontSize={props.fontSize}
-          className={props.className}
-        />
-      );
-    default:
-      break;
-  }
-
-  return null;
-};

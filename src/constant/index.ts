@@ -7,6 +7,7 @@ export enum ImageProvider {
 export enum IconType {
   EMOJI = 0,
   MATERIAL_ICON = 1,
+  URL = 2,
 }
 
 export type TimeCycleUnits = "weeks" | "days" | "hours" | "minutes";

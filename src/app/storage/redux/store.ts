@@ -4,6 +4,7 @@ import drawerReducer from "features/drawer/slice";
 import noteReducer from "features/note/slice";
 import bookmarkReducer from "features/bookmark/slice";
 import settingsReducer from "features/settings/slice";
+import searchReducer from "features/search/slice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     note: noteReducer,
     bookmark: bookmarkReducer,
     settings: settingsReducer,
+    search: searchReducer,
   },
 });
 

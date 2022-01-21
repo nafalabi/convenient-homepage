@@ -35,7 +35,7 @@ const blankBackground: IBackgroundImage = {
     "data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==",
 };
 
-const Homepage = (props: { alreadySetup: boolean }) => {
+const Background = (props: { alreadySetup: boolean }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -76,4 +76,4 @@ const Homepage = (props: { alreadySetup: boolean }) => {
   );
 };
 
-export default Homepage;
+export default Background;

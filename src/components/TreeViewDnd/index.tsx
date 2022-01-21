@@ -6,7 +6,7 @@ import { TreeViewProps } from "./types";
 import { ChevronRight, ExpandMore } from "@mui/icons-material";
 import { TreeView } from "@mui/lab";
 import TreeNode from "./TreeNode";
-import { RenderIcon } from "components/IconPicker";
+import IconRenderer from "components/IconRenderer";
 
 const TreeViewDnd = <T extends any>({
   resolveData,
@@ -29,7 +29,7 @@ const TreeViewDnd = <T extends any>({
           nodeId={String(resolvedData.id)}
           labelText={resolvedData.label}
           labelIcon={({ className }) => (
-            <RenderIcon
+            <IconRenderer
               iconType={resolvedData.iconType}
               iconId={resolvedData.iconId}
               className={className}
@@ -47,18 +47,9 @@ const TreeViewDnd = <T extends any>({
     });
   };
 
-  const Wrapper = ({ children }: { children: JSX.Element }) =>
-    useInternalDndProvider ? (
-      <DndProvider backend={HTML5Backend} context={window}>
-        {children}
-      </DndProvider>
-    ) : (
-      <>{children}</>
-    );
-
   return (
     <Box>
-      <Wrapper>
+      <Wrapper renderDndProvider={useInternalDndProvider}>
         <TreeView
           defaultCollapseIcon={<ExpandMore />}
           defaultExpandIcon={<ChevronRight />}
@@ -75,3 +66,18 @@ const TreeViewDnd = <T extends any>({
 };
 
 export default TreeViewDnd;
+
+const Wrapper = ({
+  children,
+  renderDndProvider,
+}: {
+  children: JSX.Element;
+  renderDndProvider: boolean;
+}) =>
+  renderDndProvider ? (
+    <DndProvider backend={HTML5Backend} context={window}>
+      {children}
+    </DndProvider>
+  ) : (
+    <>{children}</>
+  );

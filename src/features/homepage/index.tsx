@@ -11,6 +11,8 @@ import Note from "features/note/Note";
 import Bookmark from "features/bookmark/Bookmark";
 import Settings from "features/settings/Settings";
 import FirstSetupScreen from "features/first-setup";
+import SearchComponent from "features/search/SearchComponent";
+import useSummonSearchPanel from "./hooks/useSummonSearchPanel";
 
 import "@fontsource/montserrat";
 import "@fontsource/roboto";
@@ -28,6 +30,8 @@ const Homepage = () => {
     ({ settings }) => settings.generalSettings.darkMode
   );
 
+  useSummonSearchPanel();
+
   return (
     <ThemeProvider theme={generateTheme(darkMode)}>
       <CustomSnackbarProvider>
@@ -41,6 +45,7 @@ const Homepage = () => {
             <Note />
             <Bookmark />
             <Settings />
+            <SearchComponent />
           </>
         )}
       </CustomSnackbarProvider>

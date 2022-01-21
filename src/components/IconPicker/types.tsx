@@ -14,5 +14,3 @@ export type IconData =
     }
   | null
   | undefined;
-
-export type IconFontSize = "large" | "medium" | "small";
