@@ -12,12 +12,10 @@ import {
   styled,
 } from "@mui/material";
 import {
-  Search,
   Settings,
   LibraryBooks,
   CollectionsBookmark,
 } from "@mui/icons-material";
-import InputWithConfirmation from "components/InputWithConfirmation";
 
 const DrawerBodyRoot = styled("div")({
   width: 250,
@@ -49,14 +47,6 @@ const DrawerBody = ({ ...props }) => {
   return (
     <DrawerBodyRoot {...props}>
       <List>
-        <ListItem>
-          <InputWithConfirmation
-            onConfirm={(value) => {}}
-            inputProps={{ style: { fontSize: 16 } }}
-            placeholder="Search"
-            startAdornment={<Search />}
-          />
-        </ListItem>
         {items.map(({ label, icon, onClick }, index) => (
           <ListItem
             button
