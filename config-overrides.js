@@ -4,6 +4,7 @@ const ManifestPlugin = require("webpack-manifest-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const prebuildScript = require("./prebuild-script");
 const postbuildScript = require("./postbuild-script");
+const rewiredEsbuild = require("react-app-rewired-esbuild");
 
 const customOverrideDevServer = (configFunction) => {
   return function (proxy, allowedHost) {
@@ -28,12 +29,6 @@ const customOverrideWebpack = (config, env) => {
 
   // Change output filename template to get rid of hash there
   config.output.filename = "static/js/[name].js";
-  // Disable built-in SplitChunksPlugin
-  config.optimization.splitChunks = {
-    cacheGroups: { default: false },
-  };
-  // Disable runtime chunk addition for each entry point
-  config.optimization.runtimeChunk = false;
 
   // Shared minify options to be used in HtmlWebpackPlugin constructor
   const minifyOpts = {
@@ -134,6 +129,9 @@ const customOverrideWebpack = (config, env) => {
       });
     },
   });
+
+  // use es-build for faster build time
+  config = rewiredEsbuild()(config, env);
 
   return config;
 };
