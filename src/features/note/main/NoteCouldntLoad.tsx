@@ -2,11 +2,11 @@ import { Box, Button, Typography } from "@mui/material";
 import { Home } from "@mui/icons-material";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { actions } from "../slice";
+import { actions, NOTE_HOME } from "../slice";
 
 const NoteCouldntLoad = () => {
   const dispatch = useDispatch();
-  const backToHome = () => dispatch(actions.selectNote(0));
+  const backToHome = () => dispatch(actions.selectNote(NOTE_HOME));
 
   return (
     <Box maxWidth="600px">

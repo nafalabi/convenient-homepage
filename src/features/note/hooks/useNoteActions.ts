@@ -4,10 +4,9 @@ import { useSnackbar } from "notistack";
 import debounce from "@mui/utils/debounce";
 import { actions } from "../slice";
 import DexieAPI from "app/api/dexie-api";
-import Note from "app/storage/dexie/Note";
 import { IconData } from "components/IconPicker/types";
 
-const useNoteActions = (noteDetail: Note) => {
+const useNoteActions = (noteid?: number | string) => {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [touched, setTouched] = useState(false);
@@ -15,42 +14,42 @@ const useNoteActions = (noteDetail: Note) => {
 
   const updateNoteName = useCallback(
     (value) => {
-      if (!value) return;
-      DexieAPI.note
-        .updateNoteName(noteDetail, value)
-        .catch((e) => console.log(e))
-        .then((_) => dispatch(actions.refreshTreeList()));
+      if (!value || !noteid) return;
+      return DexieAPI.note
+        .updateNoteName(noteid, value)
+        .catch((e) => console.log(e));
     },
-    [noteDetail, dispatch]
+    [noteid]
   );
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const updateNoteContent = useCallback(
     debounce((getData: () => string) => {
+      if (!noteid) return;
       !touched && setTouched(true);
       !isSaving && setIsSaving(true);
       setTimeout(async () => {
         try {
           const notecontent = getData();
-          await DexieAPI.note.updateNoteContent(noteDetail, notecontent);
+          await DexieAPI.note.updateNoteContent(noteid as number, notecontent);
         } catch (error) {
           console.log(error);
         }
         setIsSaving(false);
       }, 300);
     }, 1000),
-    [noteDetail, touched, isSaving, setTouched, setIsSaving]
+    [noteid, touched, isSaving, setTouched, setIsSaving]
   );
 
   const onSearchLink = useCallback(async (term) => {
-    const results: { title?: string; subtitle: string; url: string }[] = [];
+    const results: { title: string; subtitle: string; url: string }[] = [];
 
     try {
       const notes = await DexieAPI.note.searchNote(String(term));
 
       notes.forEach((note) => {
         results.push({
-          title: note.notename,
+          title: note.notename ?? "",
           subtitle: note.parentnoteid ? `Sub Note` : `Root Note`,
           url: `/note?id=${note.noteid}`,
         });
@@ -64,18 +63,18 @@ const useNoteActions = (noteDetail: Note) => {
 
   const addSubNote = useCallback(
     async (notename: string) => {
-      let noteid = 0;
+      if (!noteid) return "";
+
+      let subnoteid = 0;
       try {
-        noteid = await DexieAPI.note.addSubNote(noteDetail, notename);
+        subnoteid = await DexieAPI.note.addSubNote(noteid, notename);
       } catch (error) {
         console.log(error);
       }
 
-      dispatch(actions.refreshTreeList());
-
-      return `/note?id=${noteid}`;
+      return `/note?id=${subnoteid}`;
     },
-    [noteDetail, dispatch]
+    [noteid]
   );
 
   const uploadImage = useCallback(async (file) => {
@@ -85,7 +84,7 @@ const useNoteActions = (noteDetail: Note) => {
       reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
     });
-    return imageDataBase64;
+    return imageDataBase64 as string;
   }, []);
 
   const onClickLink = useCallback(
@@ -100,7 +99,7 @@ const useNoteActions = (noteDetail: Note) => {
           });
           return;
         }
-        dispatch(actions.selectNote(noteid));
+        dispatch(actions.selectNote(parseInt(noteid)));
       } else {
         window.open(href, "_blank")?.focus();
       }
@@ -109,27 +108,27 @@ const useNoteActions = (noteDetail: Note) => {
   );
 
   const deleteNote = useCallback(async () => {
+    if (!noteid) return;
     try {
-      await DexieAPI.note.deleteNote(noteDetail);
-      dispatch(actions.refreshTreeList());
+      await DexieAPI.note.deleteNote(noteid);
     } catch (error) {
       const message = (error as Error).message;
       enqueueSnackbar(message, {
         variant: "error",
       });
     }
-  }, [dispatch, noteDetail, enqueueSnackbar]);
+  }, [noteid, enqueueSnackbar]);
 
   const updateNoteIcon = useCallback(
     async (iconData: IconData) => {
+      if (!noteid) return;
       try {
-        await DexieAPI.note.updateNoteIcon(noteDetail, iconData);
-        dispatch(actions.refreshTreeList());
+        await DexieAPI.note.updateNoteIcon(noteid, iconData);
       } catch (error) {
         console.log(error);
       }
     },
-    [noteDetail, dispatch]
+    [noteid]
   );
 
   return {

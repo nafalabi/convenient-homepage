@@ -36,9 +36,9 @@ class DexieNoteAPI {
    * @param noteid note id
    * @returns the detail of a note
    */
-  static async fetchNoteData(noteid: string) {
+  static async fetchNoteData(noteid: string | number) {
     const data: (Note & NoteContent) | undefined = await dexieDB.note
-      .where({ noteid: parseInt(noteid) })
+      .where({ noteid: Number(noteid) })
       .first();
     const noteContent = await dexieDB.notecontent
       .where({ noteid: data?.noteid ?? 0 })
@@ -58,24 +58,28 @@ class DexieNoteAPI {
 
   /**
    * Update note name
-   * @param noteData note data to be updated
+   * @param noteid note id to be updated
    * @param newName new note name
    * @returns note id
    */
-  static async updateNoteName(noteData: Note, newName: string) {
+  static async updateNoteName(noteid: string | number, newName: string) {
+    const noteData = await this.fetchNoteData(noteid);
+    // not found, skip
+    if (!noteData) return;
+
     noteData.notename = newName;
     return await noteData.save();
   }
 
   /**
    * Update note content
-   * @param noteData note data to be updated
+   * @param noteid note id to be updated
    * @param notecontent new note content
    * @returns note id
    */
-  static async updateNoteContent(noteData: Note, notecontent: string) {
+  static async updateNoteContent(noteid: string | number, notecontent: string) {
     const noteContent = new NoteContent();
-    noteContent.noteid = noteData.noteid;
+    noteContent.noteid = noteid as number;
     noteContent.notecontent = notecontent;
     return await noteContent.save();
   }
@@ -106,11 +110,11 @@ class DexieNoteAPI {
 
   /**
    * Add sub note into a note
-   * @param noteData note data to be updated
+   * @param parentnoteid parent note of the sub note
    * @param notename new sub note name
    * @returns note id
    */
-  static async addSubNote(noteData: Note, notename: string) {
+  static async addSubNote(parentnoteid: string | number, notename: string) {
     return dexieDB.transaction(
       "rw",
       dexieDB.note,
@@ -118,13 +122,13 @@ class DexieNoteAPI {
       async () => {
         const order = await dexieDB.note
           .where("parentnoteid")
-          .equals(noteData.noteid ?? 0)
+          .equals(Number(parentnoteid))
           .count();
 
         const newNote = new Note();
         newNote.notename = notename;
         newNote.firstlevel = 0;
-        newNote.parentnoteid = noteData.noteid;
+        newNote.parentnoteid = Number(parentnoteid);
         newNote.order = order;
         const noteid = await newNote.save();
 
@@ -264,7 +268,11 @@ class DexieNoteAPI {
    * @param noteData note data to be deleted
    * @returns nothing (void)
    */
-  static async deleteNote(noteData: Note) {
+  static async deleteNote(noteid: string | number) {
+    const noteData = await this.fetchNoteData(noteid);
+    // not found, skip
+    if (noteData === undefined) return;
+
     const totalChildren = await noteData.countChildren();
 
     if (totalChildren > 0) {
@@ -297,7 +305,11 @@ class DexieNoteAPI {
    * @param iconData new icon data
    * @returns void
    */
-  static async updateNoteIcon(note: Note, iconData: IconData) {
+  static async updateNoteIcon(noteid: string | number, iconData: IconData) {
+    const note = await this.fetchNoteData(noteid);
+    // not found, skip
+    if (note === undefined) return;
+
     note.iconId = iconData?.iconId;
     note.iconType = iconData?.iconType;
     note.save();

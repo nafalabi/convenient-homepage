@@ -15,13 +15,9 @@ const Note = () => {
       open={isOpen}
       toggle={() => dispatch(actions.toggleNote())}
       title="Note"
-      ToolbarItemComponent={({ dialogRef }) => (
-        <NoteToolbar dialogRef={dialogRef} />
-      )}
-      SidebarComponent={({ dialogRef }) => (
-        <NoteSidebar dialogRef={dialogRef} />
-      )}
-      ContentComponent={({ dialogRef }) => <NoteMain dialogRef={dialogRef} />}
+      ToolbarItemComponent={({ dialogRef }) => <NoteToolbar />}
+      SidebarComponent={({ dialogRef }) => <NoteSidebar />}
+      ContentComponent={({ dialogRef }) => <NoteMain />}
     />
   );
 };

@@ -7,8 +7,16 @@ import {
   Button,
 } from "@mui/material";
 import IconRenderer from "components/IconRenderer";
+import Note from "app/storage/dexie/Note";
+import { IconType } from "constant";
 
-const DialogDeleteNote = ({ action, handleClose, noteDetails }) => {
+interface Props {
+  action: () => void;
+  handleClose: () => void;
+  noteDetails: Note | null | undefined;
+}
+
+const DialogDeleteNote = ({ action, handleClose, noteDetails }: Props) => {
   return (
     <form
       onSubmit={(e) => {
@@ -22,8 +30,8 @@ const DialogDeleteNote = ({ action, handleClose, noteDetails }) => {
         <DialogContentText>Are you sure to delete this note?</DialogContentText>
         <DialogContentText sx={{ display: "inline-flex", mt: 1 }}>
           <IconRenderer
-            iconId={noteDetails.iconId}
-            iconType={noteDetails.iconType}
+            iconId={noteDetails?.iconId ?? "Subject"}
+            iconType={noteDetails?.iconType ?? IconType.MATERIAL_ICON}
           />{" "}
           &nbsp; {noteDetails?.notename}
         </DialogContentText>

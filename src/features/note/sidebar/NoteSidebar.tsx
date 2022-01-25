@@ -1,7 +1,6 @@
 import { Box } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useFetchNoteList from "../hooks/useFetchNoteList";
 import { actions, selectors } from "../slice";
 import InputWithConfirmation from "components/InputWithConfirmation";
 import useFetchExpandedNoteIds from "../hooks/useFetchExpandedNoteIds";
@@ -9,12 +8,15 @@ import NoteSidebarContextMenu from "./NoteSidebarContextMenu";
 import useContextMenu from "../hooks/useContextMenu";
 import TreeViewDnd from "components/TreeViewDnd";
 import DexieAPI from "app/api/dexie-api";
+import { TreeViewProps } from "components/TreeViewDnd/types";
+import { NoteListItem } from "app/api/dexie-api/Note";
+import { IconType } from "constant";
+import useSubscribeNoteList from "../hooks/useSubscribeNoteList";
 
 const Sidebar = () => {
-  const treeListRefreshRef = useSelector(selectors.treeListRefreshRef);
   const selectedNote = useSelector(selectors.selectedNote);
-  const [expandedNoteIds, setExpandedNoteIds] = useFetchExpandedNoteIds();
-  const noteList = useFetchNoteList(treeListRefreshRef);
+  const { expandedNoteIds, setExpandedNoteIds } = useFetchExpandedNoteIds();
+  const noteList = useSubscribeNoteList();
   const dispatch = useDispatch();
 
   const {
@@ -24,26 +26,32 @@ const Sidebar = () => {
     onContextMenu,
   } = useContextMenu(false);
 
-  const toggleExpandNode = async (e, ids) => {
-    if (!e.target.closest(".MuiTreeItem-iconContainer")) return;
-    DexieAPI.note.toggleExpandNote(expandedNoteIds, ids);
+  const toggleExpandNode: TreeViewProps<NoteListItem>["onNodeToggle"] = async (
+    e,
+    ids
+  ) => {
+    if (!(e.target as HTMLElement).closest(".MuiTreeItem-iconContainer"))
+      return;
     setExpandedNoteIds(ids);
-    setTimeout(() => dispatch(actions.refreshTreeList()), 500);
+    setTimeout(() => DexieAPI.note.toggleExpandNote(expandedNoteIds, ids), 500);
   };
 
-  const selectNode = (e, id) => {
-    !e.target.closest(".MuiTreeItem-iconContainer") &&
+  const selectNode: TreeViewProps<NoteListItem>["onNodeSelect"] = (e, id) => {
+    !(e.target as HTMLElement).closest(".MuiTreeItem-iconContainer") &&
       dispatch(actions.selectNote(parseInt(id)));
   };
 
-  const addNewNote = async (notename) => {
+  const addNewNote = async (notename: string) => {
     await DexieAPI.note.addNewNote(notename);
-    dispatch(actions.refreshTreeList());
   };
 
-  const onNodeDrop = async (id, targetId, targetType, targetIndex) => {
+  const onNodeDrop: TreeViewProps<NoteListItem>["onNodeDrop"] = async (
+    id,
+    targetId,
+    targetType,
+    targetIndex
+  ) => {
     await DexieAPI.note.reorderNote(id, targetId, targetType, targetIndex);
-    dispatch(actions.refreshTreeList());
   };
 
   return (
@@ -56,13 +64,13 @@ const Sidebar = () => {
         onNodeSelect={selectNode}
         onNodeDrop={onNodeDrop}
         resolveData={(data) => ({
-          id: data.noteid,
-          label: data.notename,
-          iconId: data.iconId,
-          iconType: data.iconType,
+          id: data.noteid ?? 0,
+          label: data.notename ?? "",
+          iconId: data.iconId ?? "Subject",
+          iconType: data.iconType ?? IconType.MATERIAL_ICON,
           hasChildren: Boolean(data.totalChildren),
           children: data.children,
-          expanding: data.totalChildren > 0 && !data.children,
+          expanding: (data.totalChildren ?? 0) > 0 && !data.children,
         })}
       />
       <Box ml={4} mr={1} mt={1}>

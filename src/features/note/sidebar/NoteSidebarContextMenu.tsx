@@ -1,5 +1,5 @@
 import { Dialog, Menu, MenuItem } from "@mui/material";
-import React, { useState } from "react";
+import React, { SyntheticEvent, useState } from "react";
 import DialogAddSubNote from "../dialogs/addSubNote";
 import DialogChangeIcon from "../dialogs/changeIcon";
 import DialogDeleteNote from "../dialogs/delete";
@@ -7,17 +7,34 @@ import DialogRenameNote from "../dialogs/rename";
 import useFetchNoteData from "../hooks/useFetchNoteData";
 import useNoteActions from "../hooks/useNoteActions";
 
+interface Props {
+  handleClose: () => void;
+  clickPosition: {
+    mouseX: number | null;
+    mouseY: number | null;
+  };
+  clickedNodeId: string | null;
+}
+
+enum ContextMenuDialogs {
+  NONE = -1,
+  ADD_SUB_NOTE = 0,
+  DELETE_NOTE = 1,
+  RENAME_NOTE = 2,
+  CHANGE_ICON = 3,
+}
+
 const NoteSidebarContextMenu = ({
   handleClose,
   clickPosition,
   clickedNodeId,
-}) => {
+}: Props) => {
   const noteDetails = useFetchNoteData(clickedNodeId);
   const { updateNoteName, addSubNote, deleteNote, updateNoteIcon } =
-    useNoteActions(noteDetails);
+    useNoteActions(clickedNodeId as string);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [openedDialog, setOpenedDialog] = useState(-1);
-  const openDialog = (type) => (e) => {
+  const [openedDialog, setOpenedDialog] = useState<ContextMenuDialogs>(-1);
+  const openDialog = (type: ContextMenuDialogs) => (e: SyntheticEvent) => {
     setOpenedDialog(type);
     handleClose();
     setDialogOpen(true);
@@ -37,43 +54,43 @@ const NoteSidebarContextMenu = ({
             : undefined
         }
       >
-        <MenuItem dense onClick={openDialog(0)}>
+        <MenuItem dense onClick={openDialog(ContextMenuDialogs.ADD_SUB_NOTE)}>
           Add Sub Note
         </MenuItem>
-        <MenuItem dense onClick={openDialog(1)}>
+        <MenuItem dense onClick={openDialog(ContextMenuDialogs.DELETE_NOTE)}>
           Delete Note
         </MenuItem>
-        <MenuItem dense onClick={openDialog(2)}>
+        <MenuItem dense onClick={openDialog(ContextMenuDialogs.RENAME_NOTE)}>
           Rename Note
         </MenuItem>
-        <MenuItem dense onClick={openDialog(3)}>
+        <MenuItem dense onClick={openDialog(ContextMenuDialogs.CHANGE_ICON)}>
           Change Icon
         </MenuItem>
       </Menu>
 
       <Dialog open={dialogOpen} onClose={handleCloseDialog}>
-        {openedDialog === 0 && (
+        {openedDialog === ContextMenuDialogs.ADD_SUB_NOTE && (
           <DialogAddSubNote
             handleClose={handleCloseDialog}
             noteDetails={noteDetails}
             action={addSubNote}
           />
         )}
-        {openedDialog === 1 && (
+        {openedDialog === ContextMenuDialogs.DELETE_NOTE && (
           <DialogDeleteNote
             handleClose={handleCloseDialog}
             noteDetails={noteDetails}
             action={deleteNote}
           />
         )}
-        {openedDialog === 2 && (
+        {openedDialog === ContextMenuDialogs.RENAME_NOTE && (
           <DialogRenameNote
             handleClose={handleCloseDialog}
             noteDetails={noteDetails}
             action={updateNoteName}
           />
         )}
-        {openedDialog === 3 && (
+        {openedDialog === ContextMenuDialogs.CHANGE_ICON && (
           <DialogChangeIcon
             handleClose={handleCloseDialog}
             noteDetails={noteDetails}

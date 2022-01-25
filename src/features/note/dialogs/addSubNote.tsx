@@ -5,12 +5,18 @@ import {
   TextField,
   DialogActions,
   Button,
-  Box,
   DialogContentText,
 } from "@mui/material";
 import { useFormik } from "formik";
+import Note from "app/storage/dexie/Note";
 
-const DialogAddSubNote = ({ action, handleClose, noteDetails }) => {
+interface Props {
+  action: (title: string) => void;
+  handleClose: () => void;
+  noteDetails: Note | null | undefined;
+}
+
+const DialogAddSubNote = ({ action, handleClose, noteDetails }: Props) => {
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -25,14 +31,10 @@ const DialogAddSubNote = ({ action, handleClose, noteDetails }) => {
     <form onSubmit={formik.handleSubmit}>
       <DialogTitle>Add Sub Note</DialogTitle>
       <DialogContent>
-        <Box clone display="inline-flex">
-          <DialogContentText>
-            Parent: &nbsp;
-            {/* <Subject />  */}
-            {/* &nbsp;  */}
-            {noteDetails?.notename}
-          </DialogContentText>
-        </Box>
+        <DialogContentText sx={{ display: "inline-flex" }}>
+          Parent: &nbsp;
+          {noteDetails?.notename}
+        </DialogContentText>
         <TextField
           autoFocus
           margin="dense"

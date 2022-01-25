@@ -7,14 +7,21 @@ import {
   Button,
 } from "@mui/material";
 import { useFormik } from "formik";
+import Note from "app/storage/dexie/Note";
 
-const DialogRenameNote = ({ action, handleClose, noteDetails }) => {
+interface Props {
+  action: (title: string) => void;
+  handleClose: () => void;
+  noteDetails: Note | null | undefined;
+}
+
+const DialogRenameNote = ({ action, handleClose, noteDetails }: Props) => {
   const formik = useFormik({
     initialValues: {
       title: noteDetails?.notename,
     },
     onSubmit: async (values) => {
-      action(values.title);
+      action(values.title ?? "");
       handleClose();
     },
   });

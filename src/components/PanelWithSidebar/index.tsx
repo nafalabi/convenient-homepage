@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  RefObject,
+  SyntheticEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { styled } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
 import {
@@ -8,7 +14,6 @@ import {
   Toolbar,
   Typography,
   Box,
-  Paper,
 } from "@mui/material";
 import debounce from "@mui/utils/debounce";
 import { useCallback } from "react";
@@ -107,6 +112,19 @@ const globalStyles = (
   />
 );
 
+type CompositionComponent = (props: {
+  dialogRef: RefObject<HTMLDivElement>;
+}) => JSX.Element;
+
+export interface PanelWithSidebarProps {
+  open: boolean;
+  toggle: () => void;
+  title: string;
+  SidebarComponent: CompositionComponent;
+  ContentComponent: CompositionComponent;
+  ToolbarItemComponent?: CompositionComponent;
+}
+
 const PanelWithSidebar = ({
   open,
   toggle,
@@ -114,15 +132,15 @@ const PanelWithSidebar = ({
   SidebarComponent,
   ContentComponent,
   ToolbarItemComponent,
-}) => {
+}: PanelWithSidebarProps) => {
   const theme = useTheme();
-  const dialogRef = useRef(null);
-  const drawerRef = useRef(null);
-  const titleRef = useRef(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLSpanElement>(null);
 
   const [dragging, setDragging] = useState(false);
 
-  const onTouchStart = (e) => {
+  const onTouchStart = (e: SyntheticEvent) => {
     setDragging(true);
   };
 
@@ -145,14 +163,14 @@ const PanelWithSidebar = ({
         }
 
         // Set Drawer Width
-        const drawerEl = drawerRef.current;
-        const drawerBodyEl = drawerRef.current.children[0];
+        const drawerEl = drawerRef.current as HTMLElement;
+        const drawerBodyEl = drawerRef.current.children[0] as HTMLElement;
         drawerEl.style["width"] = `${newDrawerWidth}px`;
         drawerBodyEl.style["width"] = `${newDrawerWidth}px`;
         // Set title width
-        const titleEl = titleRef.current;
+        const titleEl = titleRef.current as HTMLElement;
         const reservedSpace = theme.spacing(2).replace(/\D/g, "");
-        titleEl.style["width"] = `${newDrawerWidth - reservedSpace}px`;
+        titleEl.style["width"] = `${newDrawerWidth - Number(reservedSpace)}px`;
       }
     }, 10),
     [dragging]
@@ -177,7 +195,7 @@ const PanelWithSidebar = ({
     setDragging(false);
   }, [setDragging]);
 
-  const onMouseDown = (e) => {
+  const onMouseDown = (e: SyntheticEvent) => {
     setDragging(true);
   };
 
@@ -216,7 +234,9 @@ const PanelWithSidebar = ({
               >
                 {title}
               </Typography>
-              <ToolbarItemComponent dialogRef={dialogRef} />
+              {ToolbarItemComponent && (
+                <ToolbarItemComponent dialogRef={dialogRef} />
+              )}
             </Toolbar>
           </AppBar>
           <Box display="flex">
@@ -256,12 +276,6 @@ const PanelWithSidebar = ({
       </StyledDialog>
     </>
   );
-};
-
-PanelWithSidebar.defaultProps = {
-  SidebarComponent: () => null,
-  ContentComponent: () => null,
-  ToolbarItemComponent: () => null,
 };
 
 export default PanelWithSidebar;

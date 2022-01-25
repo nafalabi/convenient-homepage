@@ -8,7 +8,7 @@ import Note from "app/storage/dexie/Note";
  * @param noteid the id of the note
  * @returns Returns Note details on success, undefined on not found, and null when not loaded yet
  */
-const useFetchNoteData = (noteid: string) => {
+const useFetchNoteData = (noteid: string | null) => {
   const [noteData, setNoteData] = useState<
     (NoteContent & Note) | null | undefined
   >(null);

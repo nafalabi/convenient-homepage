@@ -14,13 +14,13 @@ import { IconType } from "constant";
 interface Props {
   action: (icon: IconData) => void;
   handleClose: () => void;
-  noteDetails: Note;
+  noteDetails: Note | null | undefined;
 }
 
 const DialogChangeIcon = ({ action, handleClose, noteDetails }: Props) => {
   const [selectedIcon, setIcon] = useState<IconData>({
-    iconId: noteDetails.iconId ?? "Subject",
-    iconType: noteDetails.iconType ?? IconType.MATERIAL_ICON,
+    iconId: noteDetails?.iconId ?? "Subject",
+    iconType: noteDetails?.iconType ?? IconType.MATERIAL_ICON,
   });
 
   return (

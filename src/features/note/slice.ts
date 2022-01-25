@@ -1,10 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, Dispatch } from "@reduxjs/toolkit";
 import db from "app/storage/dexie/db";
+import Note from "app/storage/dexie/Note";
+import { DefaultRootState } from "react-redux";
+
+export const NOTE_HOME = 0;
 
 const initialState = {
   isOpen: false,
-  selectedNote: 0,
-  treeListRefreshRef: 0,
+  selectedNote: NOTE_HOME,
   noteStack: [], // for breadcrumb
   editable: true,
 };
@@ -19,9 +22,6 @@ const slice = createSlice({
     selectNote: (state, { payload: noteId }) => {
       state.selectedNote = noteId;
     },
-    refreshTreeList: (state) => {
-      state.treeListRefreshRef = Math.random();
-    },
     replaceNoteStack: (state, { payload: newStack }) => {
       state.noteStack = newStack;
     },
@@ -33,7 +33,7 @@ const slice = createSlice({
 
 export const actions = {
   ...slice.actions,
-  selectNote: (noteId) => (dispatch) => {
+  selectNote: (noteId?: number) => (dispatch: Dispatch) => {
     dispatch(slice.actions.selectNote(noteId));
 
     // Processing Breadcrumb
@@ -60,11 +60,10 @@ export const actions = {
 };
 
 export const selectors = {
-  isOpen: ({ note }) => note.isOpen,
-  selectedNote: ({ note }) => note.selectedNote,
-  treeListRefreshRef: ({ note }) => note.treeListRefreshRef,
-  noteStack: ({ note }) => note.noteStack,
-  editable: ({ note }) => note.editable,
+  isOpen: ({ note }: DefaultRootState) => note.isOpen,
+  selectedNote: ({ note }: DefaultRootState) => note.selectedNote,
+  noteStack: ({ note }: DefaultRootState) => note.noteStack as Note[],
+  editable: ({ note }: DefaultRootState) => note.editable,
 };
 
 export default slice.reducer;
