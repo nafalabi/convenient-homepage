@@ -1,6 +1,7 @@
 import backgroundSettings from "./backgroundSettings";
 import generalSettings from "./generalSettings";
 import noteSettings from "./noteSettings";
+import shortcuts from "./shortcuts";
 
 /**
  * Wrapper for chrome.storage
@@ -12,12 +13,13 @@ const appData = {
   backgroundSettings,
   generalSettings,
   noteSettings,
+  shortcuts,
 };
 
 export default appData;
 
 declare global {
-	var appdata: typeof appData;
+  var appdata: typeof appData;
 }
 
 global.appdata = appData;

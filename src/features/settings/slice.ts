@@ -14,6 +14,7 @@ import {
   INoteSettings,
   noteSettingsDefault,
 } from "app/storage/app-data/noteSettings";
+import { IShortcuts, shortcutDefault } from "app/storage/app-data/shortcuts";
 
 export const slice = createSlice({
   name: "settings",
@@ -23,6 +24,7 @@ export const slice = createSlice({
     generalSettings: generalSettingsDefault,
     backgroundSettings: backgroundSettingsDefault,
     noteSettings: noteSettingsDefault,
+    shortcuts: shortcutDefault,
   },
   reducers: {
     toggleSettings: (state) => {
@@ -39,6 +41,9 @@ export const slice = createSlice({
     },
     storeNoteSettings: (state, { payload }) => {
       state.noteSettings = payload;
+    },
+    storeShortcuts: (state, { payload }) => {
+      state.shortcuts = payload;
     },
   },
 });
@@ -68,6 +73,10 @@ export const actions = {
       await appData.noteSettings(newValues);
       dispatch(slice.actions.storeNoteSettings(newValues));
     },
+  storeShortcuts: (newValues: IShortcuts) => async (dispatch: Dispatch) => {
+    await appData.shortcuts(newValues);
+    dispatch(slice.actions.storeShortcuts(newValues));
+  },
   setUserName: (username: string) => async (dispatch: Dispatch) => {
     const generalSettingData = await appData.generalSettings();
     generalSettingData.name = username;

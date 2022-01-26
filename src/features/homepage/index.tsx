@@ -12,7 +12,8 @@ import Bookmark from "features/bookmark/Bookmark";
 import Settings from "features/settings/Settings";
 import FirstSetupScreen from "features/first-setup";
 import SearchComponent from "features/search/SearchComponent";
-import useSummonSearchPanel from "./hooks/useSummonSearchPanel";
+import useSummonSearchPanel from "features/search/hooks/useSummonSearchPanel";
+import useShortcut from "features/shortcut/useShortcut";
 
 import "@fontsource/montserrat";
 import "@fontsource/roboto";
@@ -31,6 +32,7 @@ const Homepage = () => {
   );
 
   useSummonSearchPanel();
+  useShortcut();
 
   return (
     <ThemeProvider theme={generateTheme(darkMode)}>

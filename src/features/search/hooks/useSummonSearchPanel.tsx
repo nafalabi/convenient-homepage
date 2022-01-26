@@ -1,14 +1,17 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
-
-import { actions } from "features/search/slice";
+import { actions } from "../slice";
 
 const useSummonSearchPanel = () => {
   const dispatch = useDispatch();
 
-  const summonSearch = useCallback(() => {
-    dispatch(actions.openSearch());
-  }, [dispatch]);
+  const summonSearch = useCallback(
+    (e) => {
+      console.log("keypress", e);
+      dispatch(actions.openSearch());
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     const el = document.querySelector("#root") as HTMLElement;
