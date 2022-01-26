@@ -1,13 +1,4 @@
-import {
-  Box,
-  Button,
-  Grid,
-  Paper,
-  Typography,
-  Tooltip,
-  useTheme,
-} from "@mui/material";
-import { Folder } from "@mui/icons-material";
+import { Box, Button, Grid, Paper, Typography, Tooltip } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useContextMenu from "../hooks/useContextMenu";
@@ -15,9 +6,10 @@ import useSubscribeOneLevelBookmarks from "../hooks/useSubscribeOneLevelBookmark
 import { selectors, actions } from "../slice";
 import HomeGreeting from "./HomeGreeting";
 import ContextMenu from "./ContextMenu";
+import IconRenderer from "components/IconRenderer";
+import { IconType } from "constant";
 
 const GridLayout = () => {
-  const theme = useTheme();
   const dispatch = useDispatch();
   const id = useSelector(selectors.selectedBookmark);
   const bookmarks = useSubscribeOneLevelBookmarks(id);
@@ -37,22 +29,11 @@ const GridLayout = () => {
           const bookmarkDomain = bookmark.url
             ? new URL(bookmark.url).hostname
             : "";
-          const icon = bookmarkDomain ? (
-            <img
-              src={`https://www.google.com/s2/favicons?sz=64&domain=${bookmarkDomain}`}
-              alt="favicon"
-              style={{ height: "100%", width: "auto", pointerEvents: "none" }}
-            />
-          ) : (
-            <Box
-              clone
-              color={theme.palette.grey[600]}
-              style={{ pointerEvents: "none" }}
-            >
-              <Folder fontSize="large" />
-            </Box>
-          );
           const isFolder = bookmark.url === undefined;
+          const iconId = isFolder
+            ? "Folder"
+            : `https://www.google.com/s2/favicons?sz=64&domain=${bookmarkDomain}`;
+          const iconType = isFolder ? IconType.MATERIAL_ICON : IconType.URL;
 
           return (
             <Grid item key={bookmark.id}>
@@ -74,10 +55,20 @@ const GridLayout = () => {
                       alignItems="center"
                       width="100px"
                       height="80px"
+                      overflow="hidden"
                       data={bookmark.id}
                     >
-                      <Box height="36px" width="36px" data={bookmark.id}>
-                        {icon}
+                      <Box
+                        data={bookmark.id}
+                        display="flex"
+                        mt={isFolder ? "0px" : "4px"}
+                        mb="4px"
+                      >
+                        <IconRenderer
+                          iconId={iconId}
+                          iconType={iconType}
+                          fontSize="large"
+                        />
                       </Box>
                       <Typography
                         variant="caption"
@@ -87,6 +78,8 @@ const GridLayout = () => {
                           WebkitBoxOrient: "vertical",
                           overflow: "hidden",
                           margin: "auto",
+                          textTransform: "none",
+                          lineHeight: 1.3,
                         }}
                         data={bookmark.id}
                       >
