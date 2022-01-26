@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "@emotion/styled";
 import { useSelector } from "react-redux";
 import { DateTime } from "luxon";
@@ -41,35 +41,50 @@ const GreetingRoot = styled.div`
   }
 `;
 
+const greetings = [
+  "What's your main focus for today?",
+  "How can I help you?",
+  "What a lovely day!",
+  "You sure love to work :)",
+  "Consider to have a break, if you haven't",
+  "I'm sure you have a great plan today!",
+  "Make sure to take a note :)",
+  "Browsing can be really tedious, don't you think?",
+];
+
 const Greeting = () => {
   const username = useSelector(({ homepage }) => homepage.username);
   const [time, setTime] = useState<string | undefined>();
   const [greeting, setGreeting] = useState("");
+  const greetingText = useMemo(
+    () => greetings[Math.floor(Math.random() * greetings.length)],
+    []
+  );
 
   useEffect(() => {
     const action = () => {
       const dt = DateTime.now();
       let timeString = dt.toFormat("HH:mm");
-      let greetingVal = "";
+      let greetingTime = "";
 
       const curHour = dt.hour;
 
       if (curHour >= 0 && curHour <= 5) {
-        greetingVal = "Night";
+        greetingTime = "Night";
       } else if (curHour >= 6 && curHour <= 11) {
-        greetingVal = "Morning";
+        greetingTime = "Morning";
       } else if (curHour === 12) {
-        greetingVal = "Noon";
+        greetingTime = "Noon";
       } else if (curHour >= 13 && curHour <= 16) {
-        greetingVal = "Afternoon";
+        greetingTime = "Afternoon";
       } else if (curHour >= 17 && curHour <= 19) {
-        greetingVal = "Evening";
+        greetingTime = "Evening";
       } else if (curHour >= 20 && curHour <= 24) {
-        greetingVal = "Night";
+        greetingTime = "Night";
       }
 
       setTime(timeString);
-      setGreeting(greetingVal);
+      setGreeting(greetingTime);
     };
 
     const interval = setInterval(action, 30000);
@@ -85,7 +100,7 @@ const Greeting = () => {
         <h1>
           Good {greeting}, {username}
         </h1>
-        <h3>What is your main focus for today?</h3>
+        <h3>{greetingText}</h3>
       </div>
     </GreetingRoot>
   );
