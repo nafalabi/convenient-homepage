@@ -24,11 +24,19 @@ const customOverrideWebpack = (config, env) => {
   config.entry = {
     popup: paths.appSrc + "/popup",
     options: paths.appSrc + "/options",
-    serviceworker: paths.appSrc + "/service-worker",
+    serviceworker: paths.appSrc + "/extension-service-worker",
   };
 
   // Change output filename template to get rid of hash there
   config.output.filename = "static/js/[name].js";
+
+  // Disable built-in SplitChunksPlugin
+  config.optimization.splitChunks = {
+    cacheGroups: { default: false },
+  };
+
+  // Disable runtime chunk addition for each entry point
+  config.optimization.runtimeChunk = false;
 
   // Shared minify options to be used in HtmlWebpackPlugin constructor
   const minifyOpts = {
