@@ -20,8 +20,6 @@ export const handleActions = async (item: SearchItem, keyword?: string) => {
       break;
     case SearchItemType.PREDEFINED_ACTIONS:
       switch (id) {
-        case PredefinedActionsIds.CREATE_NOTE:
-          break;
         case PredefinedActionsIds.OPEN_BOOKMARKS:
           handleOpenBookmarks();
           break;

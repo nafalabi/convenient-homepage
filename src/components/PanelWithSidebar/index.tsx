@@ -123,6 +123,7 @@ export interface PanelWithSidebarProps {
   SidebarComponent: CompositionComponent;
   ContentComponent: CompositionComponent;
   ToolbarItemComponent?: CompositionComponent;
+  keepMounted?: boolean;
 }
 
 const PanelWithSidebar = ({
@@ -132,6 +133,7 @@ const PanelWithSidebar = ({
   SidebarComponent,
   ContentComponent,
   ToolbarItemComponent,
+  keepMounted = false,
 }: PanelWithSidebarProps) => {
   const theme = useTheme();
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -222,6 +224,7 @@ const PanelWithSidebar = ({
         fullWidth={true}
         classes={{ paper: classes.dialogPaper, root: classes.dialogRoot }}
         disableEnforceFocus={true}
+        keepMounted={keepMounted}
       >
         <div className={classes.root}>
           <AppBar position="absolute" className={classes.appBar}>

@@ -5,8 +5,7 @@ export enum PredefinedActionsIds {
   OPEN_NOTES = 0,
   OPEN_BOOKMARKS = 1,
   OPEN_SETTINGS = 2,
-  CREATE_NOTE = 3,
-  SEARCH_ON_INTERNET = 4,
+  SEARCH_ON_INTERNET = 3,
 }
 
 const predefinedActions: SearchItem[] = [
@@ -40,14 +39,6 @@ const predefinedActions: SearchItem[] = [
     subtitle: "Open settings in convenient homepage",
     type: SearchItemType.PREDEFINED_ACTIONS,
     icon: "Settings",
-    iconType: IconType.MATERIAL_ICON,
-  },
-  {
-    id: PredefinedActionsIds.CREATE_NOTE,
-    title: "Create a Note",
-    subtitle: "Create a new note in convenient homepage",
-    type: SearchItemType.PREDEFINED_ACTIONS,
-    icon: "TextSnippet",
     iconType: IconType.MATERIAL_ICON,
   },
 ];
