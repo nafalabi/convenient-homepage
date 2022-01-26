@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import DexieAPI from "app/api/dexie-api";
+import InternalAPI from "app/api/internal-api";
 
 const useFetchExpandedNoteIds = () => {
   const [expandedNoteIds, setExpandedNoteIds] = useState<string[]>([]);
 
   useEffect(() => {
-    DexieAPI.note.fetchExpandedNoteIds().then((val) => setExpandedNoteIds(val));
+    InternalAPI.note.fetchExpandedNoteIds().then((val) => setExpandedNoteIds(val));
   }, []);
 
   return { expandedNoteIds, setExpandedNoteIds };

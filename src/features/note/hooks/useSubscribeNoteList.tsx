@@ -1,11 +1,11 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import DexieAPI from "app/api/dexie-api";
-import { NoteListItem } from "app/api/dexie-api/Note";
+import InternalAPI from "app/api/internal-api";
+import { NoteListItem } from "app/api/internal-api/Note";
 
 const useSubscribeNoteList = () => {
   const noteList = useLiveQuery<NoteListItem[], NoteListItem[]>(
     () => {
-      return DexieAPI.note.fetchNoteList();
+      return InternalAPI.note.fetchNoteList();
     },
     [],
     []

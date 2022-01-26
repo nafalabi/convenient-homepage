@@ -1,4 +1,4 @@
-import DexieAPI from "app/api/dexie-api";
+import InternalAPI from "app/api/internal-api";
 import appData from "app/storage/app-data";
 import convToMin from "app/utils/convToMin";
 
@@ -7,7 +7,7 @@ const ALARM_NAME = "refresh-background-list";
 const refreshImageList = {
   name: ALARM_NAME,
   action: async function () {
-    await DexieAPI.backgroundimage.refreshBackgroundList();
+    await InternalAPI.backgroundimage.refreshBackgroundList();
 
     console.info(
       `Background image list has been refreshed`,

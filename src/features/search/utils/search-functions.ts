@@ -1,4 +1,4 @@
-import DexieAPI from "app/api/dexie-api";
+import InternalAPI from "app/api/internal-api";
 import { IconType } from "constant";
 import predefinedActions, { PredefinedActionsIds } from "./predefined-actions";
 import { SearchItem, SearchItemType } from "../types";
@@ -8,7 +8,7 @@ export const searchNotes = async (keyword: string) => {
 
   if (keyword === "") return result;
 
-  const notes = await DexieAPI.note.searchNote(keyword, true);
+  const notes = await InternalAPI.note.searchNote(keyword, true);
   notes.forEach((note) => {
     result.push({
       id: note.noteid ?? 0,

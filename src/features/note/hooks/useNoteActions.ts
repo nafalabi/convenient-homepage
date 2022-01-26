@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
 import debounce from "@mui/utils/debounce";
 import { actions } from "../slice";
-import DexieAPI from "app/api/dexie-api";
+import InternalAPI from "app/api/internal-api";
 import { IconData } from "components/IconPicker/types";
 
 const useNoteActions = (noteid?: number | string) => {
@@ -15,7 +15,7 @@ const useNoteActions = (noteid?: number | string) => {
   const updateNoteName = useCallback(
     (value) => {
       if (!value || !noteid) return;
-      return DexieAPI.note
+      return InternalAPI.note
         .updateNoteName(noteid, value)
         .catch((e) => console.log(e));
     },
@@ -31,7 +31,7 @@ const useNoteActions = (noteid?: number | string) => {
       setTimeout(async () => {
         try {
           const notecontent = getData();
-          await DexieAPI.note.updateNoteContent(noteid as number, notecontent);
+          await InternalAPI.note.updateNoteContent(noteid as number, notecontent);
         } catch (error) {
           console.log(error);
         }
@@ -45,7 +45,7 @@ const useNoteActions = (noteid?: number | string) => {
     const results: { title: string; subtitle: string; url: string }[] = [];
 
     try {
-      const notes = await DexieAPI.note.searchNote(String(term));
+      const notes = await InternalAPI.note.searchNote(String(term));
 
       notes.forEach((note) => {
         results.push({
@@ -67,7 +67,7 @@ const useNoteActions = (noteid?: number | string) => {
 
       let subnoteid = 0;
       try {
-        subnoteid = await DexieAPI.note.addSubNote(noteid, notename);
+        subnoteid = await InternalAPI.note.addSubNote(noteid, notename);
       } catch (error) {
         console.log(error);
       }
@@ -92,7 +92,7 @@ const useNoteActions = (noteid?: number | string) => {
       const match = href.match(/\/note\?id=(\d+)/);
       if (match) {
         const noteid = match[1];
-        const noteData = await DexieAPI.note.findNoteById(noteid);
+        const noteData = await InternalAPI.note.findNoteById(noteid);
         if (noteData === undefined) {
           enqueueSnackbar("The page doesn't exist", {
             variant: "error",
@@ -110,7 +110,7 @@ const useNoteActions = (noteid?: number | string) => {
   const deleteNote = useCallback(async () => {
     if (!noteid) return;
     try {
-      await DexieAPI.note.deleteNote(noteid);
+      await InternalAPI.note.deleteNote(noteid);
     } catch (error) {
       const message = (error as Error).message;
       enqueueSnackbar(message, {
@@ -123,7 +123,7 @@ const useNoteActions = (noteid?: number | string) => {
     async (iconData: IconData) => {
       if (!noteid) return;
       try {
-        await DexieAPI.note.updateNoteIcon(noteid, iconData);
+        await InternalAPI.note.updateNoteIcon(noteid, iconData);
       } catch (error) {
         console.log(error);
       }

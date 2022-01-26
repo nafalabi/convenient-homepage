@@ -6,7 +6,7 @@ import NoteContent from "app/storage/dexie/NoteContent";
 
 export type NoteListItem = Note & { totalChildren?: number; children?: Note[] };
 
-class DexieNoteAPI {
+class InternalNoteAPI {
   /**
    * Get Note List in a form of tree list
    * @returns list of notes in tree form
@@ -316,4 +316,4 @@ class DexieNoteAPI {
   }
 }
 
-export default DexieNoteAPI;
+export default InternalNoteAPI;

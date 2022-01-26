@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "@emotion/styled";
 import { useLiveQuery } from "dexie-react-hooks";
 import ImageSource from "./ImageSource";
-import DexieAPI from "app/api/dexie-api";
+import InternalAPI from "app/api/internal-api";
 import { IBackgroundImage } from "app/storage/dexie/BackgroundImage";
 
 const HomepageRoot = styled.div`
@@ -46,7 +46,7 @@ const Background = (props: { alreadySetup: boolean }) => {
 
   const background = useLiveQuery(
     async () => {
-      const result = await DexieAPI.backgroundimage.getCurActiveImage();
+      const result = await InternalAPI.backgroundimage.getCurActiveImage();
       return result ? result : blankBackground;
     },
     [initialized],

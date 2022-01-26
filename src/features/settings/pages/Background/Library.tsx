@@ -19,7 +19,7 @@ import {
 import { Pagination } from "@mui/material";
 import React, { useState } from "react";
 import useSubscribeBackgroundImages from "./hooks/useSubscribeBackgroundImages";
-import DexieAPI from "app/api/dexie-api";
+import InternalAPI from "app/api/internal-api";
 import SimpleAccordion from "components/SimpleAccordion";
 import BackgroundImage from "app/storage/dexie/BackgroundImage";
 import getImgProviderName from "app/utils/getImgProviderName";
@@ -38,7 +38,7 @@ const Library = () => {
 
   const shuffleBackground = async () => {
     enqueueSnackbar("Shuffling Background Image...", { variant: "info" });
-    await DexieAPI.backgroundimage.cycleBackground();
+    await InternalAPI.backgroundimage.cycleBackground();
     closeSnackbar();
     enqueueSnackbar("Success Shuffling Background Image", {
       variant: "success",
@@ -52,7 +52,7 @@ const Library = () => {
       async (confirmed) => {
         if (!confirmed) return;
         enqueueSnackbar("Refreshing Image List...", { variant: "info" });
-        await DexieAPI.backgroundimage.refreshBackgroundList();
+        await InternalAPI.backgroundimage.refreshBackgroundList();
         enqueueSnackbar("Success Refreshing Image List", {
           variant: "success",
         });
@@ -169,12 +169,12 @@ const BackgroundImagePreview = ({
   const deleteImage = () => background.delete();
 
   const setAsBackground = () => {
-    DexieAPI.backgroundimage.setAsActive(background.id);
+    InternalAPI.backgroundimage.setAsActive(background.id);
   };
 
   const downloadImage = () => {
     enqueueSnackbar("Starting download...", { variant: "info" });
-    DexieAPI.backgroundimage.downloadImage(background.id);
+    InternalAPI.backgroundimage.downloadImage(background.id);
   };
 
   return (

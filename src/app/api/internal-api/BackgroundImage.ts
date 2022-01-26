@@ -6,7 +6,7 @@ import { ImageProvider } from "constant";
 import ImageAPI from "../image-api";
 import Unsplash from "../image-api/Unsplash";
 
-class DexieBackgroundImageAPI {
+class InternalBackgroundImageAPI {
   static async refreshBackgroundList() {
     const settings = await appData.backgroundSettings();
     const imgApi = new ImageAPI(settings);
@@ -94,4 +94,4 @@ class DexieBackgroundImageAPI {
   }
 }
 
-export default DexieBackgroundImageAPI;
+export default InternalBackgroundImageAPI;

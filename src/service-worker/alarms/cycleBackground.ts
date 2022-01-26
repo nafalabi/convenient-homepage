@@ -1,4 +1,4 @@
-import DexieAPI from "app/api/dexie-api";
+import InternalAPI from "app/api/internal-api";
 import appData from "app/storage/app-data";
 import convToMin from "app/utils/convToMin";
 
@@ -7,7 +7,7 @@ const ALARM_NAME = "cycle-background";
 const cycleBackground = {
   name: ALARM_NAME,
   action: async () => {
-    await DexieAPI.backgroundimage.cycleBackground();
+    await InternalAPI.backgroundimage.cycleBackground();
 
     console.info(`Background has been rotated`, new Date().toLocaleString());
   },
