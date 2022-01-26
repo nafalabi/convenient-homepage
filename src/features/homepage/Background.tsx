@@ -69,6 +69,7 @@ const Background = (props: { alreadySetup: boolean }) => {
             photoLocation={background?.photo_location}
             description={background?.description}
             sourceLink={background?.utm_link}
+            photographerPageLink={background?.photographer_utm_link}
           />
         </>
       )}

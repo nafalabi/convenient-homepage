@@ -15,7 +15,11 @@ const RootComp = styled.div`
   padding-bottom: 1rem;
   color: white;
   user-select: none;
-  cursor: pointer;
+
+  & .photographer,
+  & .description {
+    cursor: pointer;
+  }
 
   & > div {
     display: flex;
@@ -51,6 +55,7 @@ interface Props {
   photoLocation?: string;
   description?: string;
   sourceLink?: string;
+  photographerPageLink?: string;
 }
 
 const ImageSource = ({
@@ -59,6 +64,7 @@ const ImageSource = ({
   photoLocation,
   description,
   sourceLink,
+  photographerPageLink,
 }: Props) => {
   description = description ?? "";
   const providerName = getImgProviderName(provider);
@@ -69,16 +75,20 @@ const ImageSource = ({
     window.open(sourceLink, "_blank");
   };
 
+  const openPhotographerPage = () => {
+    window.open(photographerPageLink ?? sourceLink, "_blank");
+  };
+
   return (
-    <RootComp onClick={openImageSource}>
+    <RootComp>
       {description && (
-        <div className="description">
+        <div className="description" onClick={openImageSource}>
           <ImageOutlined />
           {description.substring(0, 60)}
           {description.length > 60 ? " ..." : ""}
         </div>
       )}
-      <div className="photographer">
+      <div className="photographer" onClick={openPhotographerPage}>
         <PhotoCameraOutlined />
         {`${photographer} (${providerName})`}
       </div>

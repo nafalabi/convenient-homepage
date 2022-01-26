@@ -9,6 +9,7 @@ export interface IBackgroundImage {
   photo_location?: string;
   description?: string;
   utm_link?: string;
+  photographer_utm_link?: string;
   download_notify_url?: string;
   raw_image_link?: string;
 }
@@ -22,6 +23,7 @@ class BackgroundImage implements IBackgroundImage {
   photo_location?: string;
   description?: string;
   utm_link?: string;
+  photographer_utm_link?: string;
   download_notify_url?: string;
   raw_image_link?: string;
   active: number; // cant index boolean, use number instead

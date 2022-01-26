@@ -39,6 +39,7 @@ class Unsplash implements AbstractImageAPI {
         photographer: row.user.name,
         description: row.description ?? row.alt_description,
         utm_link: `${row.links.html}?utm_source=Convenient+Homepage&utm_medium=referral`,
+        photographer_utm_link: `${row.user.links.html}?utm_source=Convenient+Homepage&utm_medium=referral`,
         raw_image_link: row.urls.full,
         download_notify_url: row.links.download_location,
       });
