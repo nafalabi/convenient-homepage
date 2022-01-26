@@ -15,6 +15,8 @@ import {
   Settings,
   LibraryBooks,
   CollectionsBookmark,
+  Apps,
+  Tab,
 } from "@mui/icons-material";
 
 const DrawerBodyRoot = styled("div")({
@@ -39,6 +41,22 @@ const DrawerBody = ({ ...props }) => {
         label: "Settings",
         icon: <Settings />,
         onClick: () => dispatch(settingsActions.toggleSettings()),
+      },
+      {
+        label: "Chrome apps",
+        icon: <Apps />,
+        onClick: () =>
+          chrome.tabs.update({
+            url: "chrome://apps/",
+          }),
+      },
+      {
+        label: "Original Homepage",
+        icon: <Tab />,
+        onClick: () =>
+          chrome.tabs.update({
+            url: "chrome-search://local-ntp/local-ntp.html",
+          }),
       },
     ],
     [dispatch]
