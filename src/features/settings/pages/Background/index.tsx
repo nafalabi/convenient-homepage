@@ -1,5 +1,5 @@
 import { Box, Divider, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import DialogController from "./dialogs/DialogController";
 import { DialogProvider } from "./hooks/useDialog";
 import Library from "./Library";
@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import { actions } from "../../slice";
 import { FormikProvider, useFormik } from "formik";
-import appData from "app/storage/app-data";
 import Lifecycle from "./Lifecycle";
 import ImageProviderSettings from "./Provider";
 

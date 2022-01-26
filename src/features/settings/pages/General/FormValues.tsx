@@ -2,7 +2,6 @@ import { Box, Button, Paper, Switch, TextField } from "@mui/material";
 import { useFormikContext } from "formik";
 import React from "react";
 import InlineFormControl from "components/InlineFormControl";
-import { IGeneralSettings } from "app/storage/app-data/generalSettings";
 import { Save } from "@mui/icons-material";
 import { GeneralSettingsFormValues } from ".";
 

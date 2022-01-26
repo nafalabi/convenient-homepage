@@ -1,6 +1,5 @@
 import { Divider, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import appData from "app/storage/app-data";
 import { actions } from "features/settings/slice";
 import { useFormik } from "formik";
 import { useSnackbar } from "notistack";

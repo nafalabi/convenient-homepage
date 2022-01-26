@@ -1,13 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Box, Divider, Typography } from "@mui/material";
 import FormValues from "./FormValues";
 import { useDispatch, useSelector } from "react-redux";
 import { actions } from "../../slice";
 import { useSnackbar } from "notistack";
 import { FormikProvider, useFormik } from "formik";
-import appData from "app/storage/app-data";
 import { IGeneralSettings } from "app/storage/app-data/generalSettings";
-import LocalData from "app/storage/local-data";
 
 export interface GeneralSettingsFormValues extends IGeneralSettings {
   darkMode: boolean;
