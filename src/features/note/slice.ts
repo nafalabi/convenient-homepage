@@ -1,7 +1,9 @@
 import { createSlice, Dispatch } from "@reduxjs/toolkit";
+import { DefaultRootState } from "react-redux";
 import db from "app/storage/dexie/db";
 import Note from "app/storage/dexie/Note";
-import { DefaultRootState } from "react-redux";
+import { actions as settingsActions } from "features/settings/slice";
+import store from "app/storage/redux/store";
 
 export const NOTE_HOME = 0;
 
@@ -9,7 +11,6 @@ const initialState = {
   isOpen: false,
   selectedNote: NOTE_HOME,
   noteStack: [], // for breadcrumb
-  editable: true,
 };
 
 const slice = createSlice({
@@ -24,9 +25,6 @@ const slice = createSlice({
     },
     replaceNoteStack: (state, { payload: newStack }) => {
       state.noteStack = newStack;
-    },
-    toggleEditable: (state) => {
-      state.editable = !state.editable;
     },
   },
 });
@@ -57,13 +55,19 @@ export const actions = {
       dispatch(slice.actions.replaceNoteStack(newNoteStack));
     })();
   },
+  toggleEditable: () => (dispatch: Dispatch) => {
+    const state = store.getState();
+    const noteSettings = Object.assign({}, state.settings.noteSettings);
+    noteSettings.editable = !noteSettings.editable;
+    store.dispatch(settingsActions.storeNoteSettings(noteSettings));
+  },
 };
 
 export const selectors = {
   isOpen: ({ note }: DefaultRootState) => note.isOpen,
   selectedNote: ({ note }: DefaultRootState) => note.selectedNote,
   noteStack: ({ note }: DefaultRootState) => note.noteStack as Note[],
-  editable: ({ note }: DefaultRootState) => note.editable,
+  editable: ({ settings }: DefaultRootState) => settings.noteSettings.editable,
 };
 
 export default slice.reducer;

@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import { useSnackbar } from "notistack";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import General from "./General";
 import GistIntegration from "./GistIntegration";
 
 const NoteSettingsPage = () => {
@@ -28,6 +29,7 @@ const NoteSettingsPage = () => {
         <Divider />
       </Box>
 
+      <General formik={formik} />
       <GistIntegration formik={formik} />
     </Box>
   );

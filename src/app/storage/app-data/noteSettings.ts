@@ -3,11 +3,13 @@ import setOrGet from "./abstract";
 export interface INoteSettings {
   integrateGithubGist: boolean;
   githubAccessToken: string;
+  editable: boolean;
 }
 
 export const noteSettingsDefault: INoteSettings = {
   integrateGithubGist: false,
   githubAccessToken: "",
+  editable: true,
 };
 
 const STORAGE_KEY = "noteSettings";

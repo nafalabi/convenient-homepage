@@ -1,4 +1,4 @@
-import { ExpandMore } from "@mui/icons-material";
+import { ExpandMore, Save } from "@mui/icons-material";
 import {
   Accordion,
   AccordionDetails,
@@ -77,7 +77,12 @@ const GistIntegration = ({ formik }: Props) => {
             />
           </InlineFormControl>
           <Box alignSelf="flex-end" mt={1} display="flex" alignItems="center">
-            <Button variant="contained" color="primary" type="submit">
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              startIcon={<Save />}
+            >
               Save
             </Button>
           </Box>
