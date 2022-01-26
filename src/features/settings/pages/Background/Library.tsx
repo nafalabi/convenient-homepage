@@ -200,7 +200,10 @@ const BackgroundImagePreview = ({
         <Box mt={1} ml={1}>
           <Tooltip title="Download" PopperProps={{ placement: "right" }}>
             <Fab
-              sx={{ backgroundColor: "background.default" }}
+              sx={{
+                backgroundColor: "background.default",
+                "&:hover": { backgroundColor: "background.default" },
+              }}
               size="small"
               onClick={downloadImage}
             >
