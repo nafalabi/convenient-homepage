@@ -6,7 +6,8 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "analyze": "GENERATE_SOURCEMAP=true yarn build && source-map-explorer 'build/static/js/*.js' --no-border-checks"
   },
   "dependencies": {
     "@emotion/react": "^11.5.0",
@@ -52,6 +53,7 @@
     "react-app-rewired": "^2.1.8",
     "react-app-rewired-esbuild": "^0.0.10",
     "react-scripts": "^4.0.3",
+    "source-map-explorer": "^2.5.2",
     "typescript": "^4.4.4"
   },
   "eslintConfig": {
