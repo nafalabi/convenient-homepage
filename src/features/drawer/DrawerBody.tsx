@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useDispatch } from "react-redux";
-import { actions as drawerActions } from "./slice";
+import { actions, actions as drawerActions } from "./slice";
 import { actions as noteActions } from "features/note/slice";
 import { actions as bookmarkActions } from "features/bookmark/slice";
 import { actions as settingsActions } from "features/settings/slice";
@@ -45,18 +45,12 @@ const DrawerBody = ({ ...props }) => {
       {
         label: "Chrome apps",
         icon: <Apps />,
-        onClick: () =>
-          chrome.tabs.update({
-            url: "chrome://apps/",
-          }),
+        onClick: () => actions.handleOpenChromeApps(),
       },
       {
         label: "Original Homepage",
         icon: <Tab />,
-        onClick: () =>
-          chrome.tabs.update({
-            url: "chrome-search://local-ntp/local-ntp.html",
-          }),
+        onClick: () => actions.handleOpenOriginalHomepage(),
       },
     ],
     [dispatch]

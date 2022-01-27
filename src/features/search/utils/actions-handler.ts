@@ -5,6 +5,7 @@ import { actions as settingActions } from "features/settings/slice";
 import { actions as searchActions } from "../slice";
 import { PredefinedActionsIds } from "./predefined-actions";
 import { SearchItem, SearchItemType } from "../types";
+import { actions as drawerActions } from "features/drawer/slice";
 
 export const handleActions = async (item: SearchItem, keyword?: string) => {
   const { id, type } = item;
@@ -31,6 +32,12 @@ export const handleActions = async (item: SearchItem, keyword?: string) => {
           break;
         case PredefinedActionsIds.SEARCH_ON_INTERNET:
           handleSearchOnInternet(keyword);
+          break;
+        case PredefinedActionsIds.OPEN_CHROME_APPS:
+          handleOpenChromeApps();
+          break;
+        case PredefinedActionsIds.OPEN_ORIGINAL_HOMEPAGE:
+          handleOpenOriginalHomepage();
           break;
         default:
           break;
@@ -72,4 +79,12 @@ export const handleVisitBookmarks = async (bookmarkid?: string) => {
 export const handleSearchOnInternet = async (keyword?: string) => {
   if (keyword === undefined) return;
   chrome.search.query({ disposition: "CURRENT_TAB", text: keyword }, () => {});
+};
+
+export const handleOpenChromeApps = () => {
+  drawerActions.handleOpenChromeApps();
+};
+
+export const handleOpenOriginalHomepage = () => {
+  drawerActions.handleOpenOriginalHomepage();
 };
