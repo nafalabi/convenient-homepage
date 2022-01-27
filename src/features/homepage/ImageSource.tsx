@@ -2,34 +2,40 @@ import React from "react";
 import styled from "@emotion/styled";
 import {
   ImageOutlined,
-  LocationOnOutlined,
+  // LocationOnOutlined,
   PhotoCameraOutlined,
+  RotateLeftOutlined,
 } from "@mui/icons-material";
 import { ImageProvider } from "constant";
 import getImgProviderName from "app/utils/getImgProviderName";
+import InternalAPI from "app/api/internal-api";
 
 const RootComp = styled.div`
   position: fixed;
   bottom: 0;
   left: 1rem;
   padding-bottom: 1rem;
-  color: white;
+  color: rgba(255, 255, 255, 0.68);
   user-select: none;
-
-  & .photographer,
-  & .description {
-    cursor: pointer;
-  }
 
   & > div {
     display: flex;
     transition: all 0.5s ease;
+    cursor: pointer;
+
+    &: hover {
+      color: white;
+    }
 
     &.description {
+      transform: translate3d(0, 52px, 5px);
+    }
+    &.photographer {
       transform: translate3d(0, 26px, 5px);
     }
     &.photographer,
-    &.location {
+    /* &.location, */
+    &.change-image-action {
       opacity: 0;
     }
 
@@ -42,8 +48,12 @@ const RootComp = styled.div`
     & .description {
       transform: translate3d(0, 0, 0) !important;
     }
+    & .photographer {
+      transform: translate3d(0, 0, 0) !important;
+    }
     & .photographer,
-    & .location {
+    /* & .location, */
+    & .change-image-action {
       opacity: 1;
     }
   }
@@ -79,6 +89,10 @@ const ImageSource = ({
     window.open(photographerPageLink ?? sourceLink, "_blank");
   };
 
+  const handleChangeImage = () => {
+    InternalAPI.backgroundimage.cycleBackground();
+  };
+
   return (
     <RootComp>
       {description && (
@@ -92,12 +106,16 @@ const ImageSource = ({
         <PhotoCameraOutlined />
         {`${photographer} (${providerName})`}
       </div>
-      {photoLocation && (
+      {/* {photoLocation && (
         <div className="location">
           <LocationOnOutlined />
           {photoLocation}
         </div>
-      )}
+      )} */}
+      <div className="change-image-action" onClick={handleChangeImage}>
+        <RotateLeftOutlined />
+        Change Image
+      </div>
     </RootComp>
   );
 };
