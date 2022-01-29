@@ -15,7 +15,7 @@ const RootComp = styled.div`
   bottom: 0;
   left: 1rem;
   padding-bottom: 1rem;
-  color: rgba(255, 255, 255, 0.68);
+  color: rgba(255, 255, 255, 0.8);
   user-select: none;
 
   & > div {
