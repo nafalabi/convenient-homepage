@@ -7,6 +7,8 @@ import { useLiveQuery } from "dexie-react-hooks";
 import ImageSource from "./ImageSource";
 import InternalAPI from "app/api/internal-api";
 import { IBackgroundImage } from "app/storage/dexie/BackgroundImage";
+import SearchField from "./SearchField";
+import Clock from "./Clock";
 
 const HomepageRoot = styled.div`
   background-size: cover;
@@ -27,6 +29,17 @@ const HomepageRoot = styled.div`
     position: fixed;
     top: 0;
     left: 0;
+  }
+
+  & .background-content {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    user-select: none;
   }
 `;
 
@@ -62,7 +75,11 @@ const Background = (props: { alreadySetup: boolean }) => {
     >
       {props.alreadySetup && (
         <>
-          <Greeting />
+          <div className="background-content">
+            <Clock />
+            <Greeting />
+            <SearchField />
+          </div>
           <ImageSource
             provider={background?.provider}
             photographer={background?.photographer}

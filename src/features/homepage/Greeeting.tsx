@@ -4,40 +4,20 @@ import { useSelector } from "react-redux";
 import { DateTime } from "luxon";
 
 const GreetingRoot = styled.div`
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  width: 80vw;
-  user-select: none;
+  font-family: "Montserrat", sans-serif;
+  color: white;
+  /* font-size: 3vw; */
+  font-size: 2rem;
+  text-align: center;
 
-  & .clock {
-    color: white;
-    font-size: 9rem;
+  & h1 {
     margin: 0;
-    text-align: center;
-    font-family: "Roboto", sans-serif;
-    line-height: 1;
+    font-weight: 100;
   }
 
-  & .greeting {
-    font-family: "Montserrat", sans-serif;
-    color: white;
-    /* font-size: 3vw; */
-    font-size: 2rem;
-    text-align: center;
-
-    & h1 {
-      margin: 0;
-      font-weight: 100;
-    }
-
-    & h3 {
-      margin: 0;
-      font-weight: 100;
-    }
+  & h3 {
+    margin: 0;
+    font-weight: 100;
   }
 `;
 
@@ -54,7 +34,6 @@ const greetings = [
 
 const Greeting = () => {
   const username = useSelector(({ homepage }) => homepage.username);
-  const [time, setTime] = useState<string | undefined>();
   const [greeting, setGreeting] = useState("");
   const greetingText = useMemo(
     () => greetings[Math.floor(Math.random() * greetings.length)],
@@ -64,13 +43,12 @@ const Greeting = () => {
   useEffect(() => {
     const action = () => {
       const dt = DateTime.now();
-      let timeString = dt.toFormat("HH:mm");
       let greetingTime = "";
 
       const curHour = dt.hour;
 
       if (curHour >= 0 && curHour <= 5) {
-        greetingTime = "Night";
+        greetingTime = "Evening";
       } else if (curHour >= 6 && curHour <= 11) {
         greetingTime = "Morning";
       } else if (curHour === 12) {
@@ -80,10 +58,9 @@ const Greeting = () => {
       } else if (curHour >= 17 && curHour <= 19) {
         greetingTime = "Evening";
       } else if (curHour >= 20 && curHour <= 24) {
-        greetingTime = "Night";
+        greetingTime = "Evening";
       }
 
-      setTime(timeString);
       setGreeting(greetingTime);
     };
 
@@ -95,13 +72,10 @@ const Greeting = () => {
 
   return (
     <GreetingRoot>
-      <p className="clock">{time}</p>
-      <div className="greeting">
-        <h1>
-          Good {greeting}, {username}
-        </h1>
-        <h3>{greetingText}</h3>
-      </div>
+      <h1>
+        Good {greeting}, {username}
+      </h1>
+      <h3>{greetingText}</h3>
     </GreetingRoot>
   );
 };

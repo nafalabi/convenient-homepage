@@ -2,7 +2,7 @@ import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { actions } from "../slice";
 
-const useSummonSearchPanel = () => {
+const useSummonSearchComponent = () => {
   const dispatch = useDispatch();
 
   const summonSearch = useCallback(
@@ -23,4 +23,4 @@ const useSummonSearchPanel = () => {
   }, [summonSearch]);
 };
 
-export default useSummonSearchPanel;
+export default useSummonSearchComponent;

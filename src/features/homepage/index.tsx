@@ -12,7 +12,7 @@ import Bookmark from "features/bookmark/Bookmark";
 import Settings from "features/settings/Settings";
 import FirstSetupScreen from "features/first-setup";
 import SearchComponent from "features/search/SearchComponent";
-import useSummonSearchPanel from "features/search/hooks/useSummonSearchPanel";
+import useSummonSearchComponent from "features/search/hooks/useSummonSearchComponent";
 import useShortcut from "features/shortcut/useShortcut";
 
 import "@fontsource/montserrat";
@@ -31,7 +31,7 @@ const Homepage = () => {
     ({ settings }) => settings.generalSettings.darkMode
   );
 
-  useSummonSearchPanel();
+  useSummonSearchComponent();
   useShortcut();
 
   return (
