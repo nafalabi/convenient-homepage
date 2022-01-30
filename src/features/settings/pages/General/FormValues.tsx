@@ -1,4 +1,4 @@
-import { Box, Button, Paper, Switch, TextField } from "@mui/material";
+import { Box, Button, Divider, Paper, Switch, TextField } from "@mui/material";
 import { useFormikContext } from "formik";
 import React from "react";
 import InlineFormControl from "components/InlineFormControl";
@@ -32,6 +32,42 @@ const FormValues = () => {
             onChange={formik.handleChange}
           />
         </InlineFormControl>
+
+        <Box mt={1} pb={1}>
+          Background Appearance
+        </Box>
+        <Divider sx={{ mb: 1 }} />
+
+        <Box pl={1}>
+          <InlineFormControl label="Clock">
+            <Switch
+              name="showClock"
+              checked={formik.values.showClock}
+              onChange={formik.handleChange}
+            />
+          </InlineFormControl>
+          <InlineFormControl label="Time Greeting">
+            <Switch
+              name="showTimeGreeting"
+              checked={formik.values.showTimeGreeting}
+              onChange={formik.handleChange}
+            />
+          </InlineFormControl>
+          <InlineFormControl label="Casual Greeting">
+            <Switch
+              name="showCasualGreeting"
+              checked={formik.values.showCasualGreeting}
+              onChange={formik.handleChange}
+            />
+          </InlineFormControl>
+          <InlineFormControl label="Search Field">
+            <Switch
+              name="showSearchField"
+              checked={formik.values.showSearchField}
+              onChange={formik.handleChange}
+            />
+          </InlineFormControl>
+        </Box>
 
         <Box alignSelf="flex-end" mt={1} display="flex" alignItems="center">
           <Button

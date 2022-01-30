@@ -8,8 +8,11 @@ import { Box } from "@mui/system";
 
 const SearchField = () => {
   const dispatch = useDispatch();
+  const showSearchField = useSelector(
+    ({ settings }) => settings.generalSettings.showSearchField
+  );
   const isSearchComponentOpen = useSelector(({ search }) => search.isOpen);
-  const isSelfOpen = !isSearchComponentOpen;
+  const showSelf = !isSearchComponentOpen && showSearchField;
 
   const handleClick = (e: any) => {
     e.preventDefault();
@@ -17,7 +20,7 @@ const SearchField = () => {
   };
 
   return (
-    <Fade in={isSelfOpen}>
+    <Fade in={showSelf}>
       <Box
         sx={{
           display: "flex",

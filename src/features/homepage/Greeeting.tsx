@@ -33,6 +33,9 @@ const greetings = [
 ];
 
 const Greeting = () => {
+  const { showCasualGreeting, showTimeGreeting } = useSelector(
+    ({ settings }) => settings.generalSettings
+  );
   const username = useSelector(({ homepage }) => homepage.username);
   const [greeting, setGreeting] = useState("");
   const greetingText = useMemo(
@@ -72,10 +75,12 @@ const Greeting = () => {
 
   return (
     <GreetingRoot>
-      <h1>
-        Good {greeting}, {username}
-      </h1>
-      <h3>{greetingText}</h3>
+      {showTimeGreeting && (
+        <h1>
+          Good {greeting}, {username}
+        </h1>
+      )}
+      {showCasualGreeting && <h3>{greetingText}</h3>}
     </GreetingRoot>
   );
 };

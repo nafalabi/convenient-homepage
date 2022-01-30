@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { DateTime } from "luxon";
+import { useSelector } from "react-redux";
 
 const ClockRoot = styled.p`
   color: white;
@@ -12,6 +13,9 @@ const ClockRoot = styled.p`
 `;
 
 const Clock = () => {
+  const showClock = useSelector(
+    ({ settings }) => settings.generalSettings.showClock
+  );
   const [time, setTime] = useState<string | undefined>();
 
   useEffect(() => {
@@ -26,6 +30,8 @@ const Clock = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  if (!showClock) return null;
 
   return <ClockRoot>{time}</ClockRoot>;
 };

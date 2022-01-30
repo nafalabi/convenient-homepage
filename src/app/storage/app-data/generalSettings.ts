@@ -3,11 +3,19 @@ import setOrGet from "./abstract";
 export interface IGeneralSettings {
   name: string;
   darkMode: boolean;
+  showClock: boolean;
+  showTimeGreeting: boolean;
+  showCasualGreeting: boolean;
+  showSearchField: boolean;
 }
 
 export const generalSettingsDefault: IGeneralSettings = {
   name: "",
   darkMode: false,
+  showClock: true,
+  showTimeGreeting: true,
+  showCasualGreeting: true,
+  showSearchField: true,
 };
 
 const STORAGE_KEY = "generalSettings";
