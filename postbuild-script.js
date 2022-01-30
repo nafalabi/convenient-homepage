@@ -11,6 +11,9 @@ module.exports = function postbuildScript(isEnvProduction) {
   const manifestPath = resolve(outputDir, "manifest.json");
   const manifest = require(manifestPath);
   manifest.oauth2.client_id = process.env.GOOGLEAPI_OAUTH2_CLIENTID;
-  manifest.key = process.env.CHROME_EXTENSION_PUBLIC_KEY;
+  manifest.key = isEnvProduction
+    ? process.env.CHROME_EXTENSION_PUBLIC_KEY
+    : undefined;
+  manifest.name += " (DEV)";
   fse.writeFileSync(manifestPath, JSON.stringify(manifest));
 };
