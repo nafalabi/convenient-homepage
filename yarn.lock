@@ -1393,6 +1393,31 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@fontsource/material-icons-outlined@^4.5.2":
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/@fontsource/material-icons-outlined/-/material-icons-outlined-4.5.2.tgz#2db2914f54de1fdb480186bb8ae4f7023e407f0d"
+  integrity sha512-yEanCFpvd7+W9HGJRxs0QCoKu7dJmOynZBqKSMB0oO9SNl7SlXw9S/CO2jI3Hg4+1Husk/F13Ch7jsboYUjWuA==
+
+"@fontsource/material-icons-rounded@^4.5.2":
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/@fontsource/material-icons-rounded/-/material-icons-rounded-4.5.2.tgz#e164f40a742ac7bea25909a5af86b29a2fdd231a"
+  integrity sha512-wk/vqodMF+4IBbxhI0cjaPBcouvRrnJdeQCslY0Zae8ojyZCUksJn4JTiQk89fbY9kvT3oG7AZIZ+poKdpS02w==
+
+"@fontsource/material-icons-sharp@^4.5.2":
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/@fontsource/material-icons-sharp/-/material-icons-sharp-4.5.2.tgz#73e0c3a373c43e0562a353d255d59bb684f058aa"
+  integrity sha512-YzyytRhB93uphi5hnfuqDMMisj7ER+CzQm9IQ/YvRdpyGIE4F1fIxJbUzih6hgSH5j2zanE3L7Hv42e3rRnC0w==
+
+"@fontsource/material-icons-two-tone@^4.5.2":
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/@fontsource/material-icons-two-tone/-/material-icons-two-tone-4.5.2.tgz#9488103a4fc5adf1c5bacf1744c44a506447a29e"
+  integrity sha512-JmWWDT5UJSXoKtPSAvpS+Tbu49sh11aWIJ1cc3t1BWO5delm8Oa6n/hnhibW/EvcdGVDOW41Ll7+6gYAenmYhQ==
+
+"@fontsource/material-icons@^4.5.2":
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/@fontsource/material-icons/-/material-icons-4.5.2.tgz#0a914c0d52272efd37d2b45c79c75a3839bb9e66"
+  integrity sha512-J6Slv1GhQ42TF/DbEIvsebIe1rYvkMrEglVsPYvKAnbQzpm7m7Uv4bkpbsqxjXJvaJZWefg1sXqvCOYAyBTfIA==
+
 "@fontsource/montserrat@^4.5.1":
   version "4.5.1"
   resolved "https://registry.yarnpkg.com/@fontsource/montserrat/-/montserrat-4.5.1.tgz#64a33ffdb77bbc63484c0321710bed272cc5b16f"

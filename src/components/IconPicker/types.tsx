@@ -4,7 +4,7 @@ export interface IconDataMaterial {
   importName: string;
   name: string;
   theme: string;
-  Component: any;
+  renderName: string;
 }
 
 export type IconData =

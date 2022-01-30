@@ -1,18 +1,14 @@
 import React from "react";
-import { SvgIcon } from "@mui/material";
+import { Icon } from "@mui/material";
 import { IconType } from "constant";
 import { Emoji } from "emoji-mart";
-import * as MIcon from "@mui/icons-material";
-
-export type MIconKeys = keyof typeof MIcon;
+import toSnakeCase from "app/utils/toSnakeCase";
 
 export type IconFontSize = "large" | "medium" | "small";
 
-const materialIcons: { [key: string]: any } = MIcon;
-
 const IconRenderer = (props: {
   iconType?: IconType;
-  iconId?: MIconKeys | string;
+  iconId?: string;
   fontSize?: IconFontSize;
   className?: string;
 }) => {
@@ -20,7 +16,7 @@ const IconRenderer = (props: {
 
   switch (props.iconType) {
     case IconType.EMOJI:
-      let sizeMapEmoji: { [key: string]: number } = {
+      const sizeMapEmoji: { [key: string]: number } = {
         large: 27,
         medium: 18.5,
         small: 13,
@@ -35,15 +31,26 @@ const IconRenderer = (props: {
         </span>
       );
     case IconType.MATERIAL_ICON:
+      // the style provided from "fontSize" prop got overriden by material-icons' css
+      // need to specifically set the size
+      const sizeMapMI: { [key: string]: string } = {
+        large: "2.25rem",
+        medium: "1.5rem",
+        small: "1.25rem",
+      };
       return (
-        <SvgIcon
-          component={materialIcons[props.iconId ?? ""]}
-          fontSize={props.fontSize ?? "medium"}
+        <Icon
           className={props.className}
-        />
+          fontSize={props.fontSize ?? "medium"}
+          sx={{
+            fontSize: `${sizeMapMI[props.fontSize ?? "medium"]} !important`,
+          }}
+        >
+          {toSnakeCase(props.iconId)}
+        </Icon>
       );
     case IconType.URL:
-      let sizeMapUrl: { [key: string]: number } = {
+      const sizeMapUrl: { [key: string]: number } = {
         large: 27,
         medium: 18.5,
         small: 13,

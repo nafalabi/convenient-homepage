@@ -1,62 +1,60 @@
+/**
+ * Reference
+ * https://github.com/mui-org/material-ui-docs/blob/latest/docs/src/pages/components/material-icons/SearchIcons.js
+ */
 import React from "react";
-import * as MIcon from "@mui/icons-material";
 import { Box, styled } from "@mui/system";
 import { Index as FlexSearchIndex, IndexSearchResult } from "flexsearch";
 import synonyms from "./synonyms";
 import debounce from "@mui/utils/debounce";
 import {
   FormControlLabel,
+  Icon as FontIcon,
   InputAdornment,
   Radio,
   RadioGroup,
-  SvgIcon,
   TextField,
   Theme,
 } from "@mui/material";
 import { IconDataMaterial } from "./types";
+import toSnakeCase from "app/utils/toSnakeCase";
+import materialIcons from "./material-icons.json";
 
 const searchIndex = new FlexSearchIndex({
   tokenize: "full",
 });
 
-/**
- * Considering we can't define type for 'import *'\
- * assign it to a new variable and define the type
- */
-const materialIcons: { [key: string]: any } = MIcon;
 const allIconsMap: { [key: string]: IconDataMaterial } = {};
-const allIcons: IconDataMaterial[] = Object.keys(materialIcons)
-  .sort()
-  .map((importName) => {
-    let theme;
-    if (importName.indexOf("Outlined") !== -1) {
-      theme = "Outlined";
-    } else if (importName.indexOf("TwoTone") !== -1) {
-      theme = "Two tone";
-    } else if (importName.indexOf("Rounded") !== -1) {
-      theme = "Rounded";
-    } else if (importName.indexOf("Sharp") !== -1) {
-      theme = "Sharp";
-    } else {
-      theme = "Filled";
-    }
+const allIcons: IconDataMaterial[] = materialIcons.sort().map((iconName) => {
+  let theme;
+  if (iconName.indexOf("outlined") !== -1) {
+    theme = "Outlined";
+  } else if (iconName.indexOf("two_tone") !== -1) {
+    theme = "Two tone";
+  } else if (iconName.indexOf("rounded") !== -1) {
+    theme = "Rounded";
+  } else if (iconName.indexOf("sharp") !== -1) {
+    theme = "Sharp";
+  } else {
+    theme = "Filled";
+  }
 
-    const name = importName.replace(/(Outlined|TwoTone|Rounded|Sharp)$/, "");
-    let searchable = name;
-    if (synonyms[searchable]) {
-      searchable += ` ${synonyms[searchable]}`;
-    }
-    searchIndex.addAsync(importName, searchable);
+  const name = iconName.replace(/(outlined|two_tone|rounded|sharp)$/, "");
+  let searchable = name;
+  if (synonyms[searchable]) {
+    searchable += ` ${synonyms[searchable]}`;
+  }
+  searchIndex.addAsync(iconName, searchable);
 
-    const icon = {
-      importName,
-      name,
-      theme,
-      Component: materialIcons[importName],
-    };
-    allIconsMap[importName] = icon;
-    return icon;
-  });
+  const icon = {
+    importName: iconName,
+    name,
+    theme,
+    renderName: toSnakeCase(iconName) ?? "",
+  };
+  allIconsMap[iconName] = icon;
+  return icon;
+});
 
 const StyledIcon = styled("span")(({ theme }) => ({
   display: "inline-flex",
@@ -75,7 +73,7 @@ const StyledIcon = styled("span")(({ theme }) => ({
   },
 }));
 
-const StyledSvgIcon: any = styled(SvgIcon)(({ theme }: { theme: Theme }) => ({
+const StyledFontIcon: any = styled(FontIcon)(({ theme }: { theme: Theme }) => ({
   boxSizing: "content-box",
   cursor: "pointer",
   color: theme.palette.text.primary,
@@ -105,12 +103,13 @@ const Icons = React.memo(function Icons(props: {
             onClick={() => onClickIcon(icon.importName)}
             title={icon.importName}
           >
-            <StyledSvgIcon
-              component={icon.Component}
+            <StyledFontIcon
               fontSize="large"
               tabIndex={-1}
               title={icon.importName}
-            />
+            >
+              {icon.renderName}
+            </StyledFontIcon>
           </StyledIcon>
         );
       })}
@@ -162,7 +161,7 @@ const MaterialIconPicker = (props: {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <MIcon.Search />
+                <FontIcon>search</FontIcon>
               </InputAdornment>
             ),
           }}

@@ -7,6 +7,11 @@ import { StyledEngineProvider } from "@mui/material";
 
 import "@fontsource/montserrat";
 import "@fontsource/roboto";
+import "@fontsource/material-icons";
+import "@fontsource/material-icons-outlined";
+import "@fontsource/material-icons-rounded";
+import "@fontsource/material-icons-sharp";
+import "@fontsource/material-icons-two-tone";
 
 ReactDOM.render(
   <React.StrictMode>
