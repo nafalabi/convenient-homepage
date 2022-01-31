@@ -14,6 +14,7 @@ module.exports = function postbuildScript(isEnvProduction) {
   manifest.key = isEnvProduction
     ? process.env.CHROME_EXTENSION_PUBLIC_KEY
     : undefined;
-  manifest.name += " (DEV)";
+  const suffix = isEnvProduction ? "" : " (DEV)";
+  manifest.name += suffix;
   fse.writeFileSync(manifestPath, JSON.stringify(manifest));
 };

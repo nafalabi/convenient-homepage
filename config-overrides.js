@@ -119,21 +119,30 @@ const customOverrideWebpack = (config, env) => {
   // Add prebuild and postbuild script
   config.plugins.push({
     apply: (compiler) => {
+      let preBuildCompleted = false;
+      let postBuildCompleted = false;
+
       compiler.hooks.afterEnvironment.tap("PreBuildScript", (compilation) => {
+        // Prevent second run
+        if (preBuildCompleted) return;
         try {
           prebuildScript(isEnvProduction);
           process.stdout.write("Success running pre-build script\n");
         } catch (error) {
           process.stderr.write(`Error running pre-build script: ${error}\n`);
         }
+        preBuildCompleted = true;
       });
-      compiler.hooks.afterEmit.tap("PostBuildScript", (compilation) => {
+      compiler.hooks.done.tap("PostBuildScript", (compilation) => {
+        // Prevent second run
+        if (postBuildCompleted) return;
         try {
           postbuildScript(isEnvProduction);
           process.stdout.write("Success running post-build script\n");
         } catch (error) {
           process.stderr.write(`Error running post-build script: ${error}\n`);
         }
+        postBuildCompleted = true;
       });
     },
   });
