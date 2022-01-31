@@ -38,15 +38,29 @@ const IconRenderer = (props: {
         medium: "1.5rem",
         small: "1.25rem",
       };
+      let baseClassName = "material-icons";
+      let iconName = toSnakeCase(props.iconId);
+
+      if (iconName?.includes("_outlined")) {
+        baseClassName += "-outlined";
+      } else if (iconName?.includes("two_tone")) {
+        baseClassName += "-two-tone";
+      } else if (iconName?.includes("round")) {
+        baseClassName += "-rounded";
+      } else if (iconName?.includes("sharp")) {
+        baseClassName += "-sharp";
+      }
+
       return (
         <Icon
           className={props.className}
+          baseClassName={baseClassName}
           fontSize={props.fontSize ?? "medium"}
           sx={{
             fontSize: `${sizeMapMI[props.fontSize ?? "medium"]} !important`,
           }}
         >
-          {toSnakeCase(props.iconId)}
+          {iconName}
         </Icon>
       );
     case IconType.URL:

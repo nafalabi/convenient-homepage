@@ -5,7 +5,6 @@
 import React from "react";
 import { Box, styled } from "@mui/system";
 import { Index as FlexSearchIndex, IndexSearchResult } from "flexsearch";
-import synonyms from "./synonyms";
 import debounce from "@mui/utils/debounce";
 import {
   FormControlLabel,
@@ -16,9 +15,12 @@ import {
   TextField,
   Theme,
 } from "@mui/material";
+import { FixedSizeGrid } from "react-window";
+
 import { IconDataMaterial } from "./types";
 import toSnakeCase from "app/utils/toSnakeCase";
 import materialIcons from "./material-icons.json";
+import synonyms from "./synonyms";
 
 const searchIndex = new FlexSearchIndex({
   tokenize: "full",
@@ -86,33 +88,62 @@ const StyledFontIcon: any = styled(FontIcon)(({ theme }: { theme: Theme }) => ({
   },
 }));
 
+const COUNT_PER_LINE = 15;
+
 const Icons = React.memo(function Icons(props: {
   icons: IconDataMaterial[];
   onClickIcon: (iconid: string) => void;
+  theme: string;
 }) {
   const { icons, onClickIcon } = props;
+  let baseClassName = "material-icons";
+  if (props.theme === "Outlined") {
+    baseClassName += "-outlined";
+  } else if (props.theme === "Two tone") {
+    baseClassName += "-two-tone";
+  } else if (props.theme === "Rounded") {
+    baseClassName += "-rounded";
+  } else if (props.theme === "Sharp") {
+    baseClassName += "-sharp";
+  }
 
   return (
     <div
       style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
     >
-      {icons.map((icon) => {
-        return (
-          <StyledIcon
-            key={icon.importName}
-            onClick={() => onClickIcon(icon.importName)}
-            title={icon.importName}
-          >
-            <StyledFontIcon
-              fontSize="large"
-              tabIndex={-1}
+      <FixedSizeGrid
+        columnCount={COUNT_PER_LINE}
+        columnWidth={32}
+        height={250}
+        rowCount={icons.length / COUNT_PER_LINE}
+        rowHeight={32}
+        width={32 * COUNT_PER_LINE + 16}
+      >
+        {({ columnIndex, rowIndex, style }) => {
+          const iconIndex = rowIndex * COUNT_PER_LINE + columnIndex;
+          const icon = icons[iconIndex];
+
+          if (!icon) return null;
+
+          return (
+            <StyledIcon
+              key={icon.importName}
+              onClick={() => onClickIcon(icon.importName)}
               title={icon.importName}
+              style={style}
             >
-              {icon.renderName}
-            </StyledFontIcon>
-          </StyledIcon>
-        );
-      })}
+              <StyledFontIcon
+                fontSize="large"
+                tabIndex={-1}
+                title={icon.importName}
+                baseClassName={baseClassName}
+              >
+                {icon.renderName}
+              </StyledFontIcon>
+            </StyledIcon>
+          );
+        }}
+      </FixedSizeGrid>
     </div>
   );
 });
@@ -190,8 +221,8 @@ const MaterialIconPicker = (props: {
           )}
         </RadioGroup>
       </Box>
-      <Box height="250px" width="500px" overflow="auto">
-        <Icons icons={icons} onClickIcon={props.onClickIcon} />
+      <Box height="auto" width="auto" overflow="hidden">
+        <Icons icons={icons} onClickIcon={props.onClickIcon} theme={theme} />
       </Box>
     </Box>
   );
