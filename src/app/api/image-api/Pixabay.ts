@@ -38,6 +38,7 @@ class Pixabay implements AbstractImageAPI {
         photographer: row.user,
         utm_link: row.pageURL,
         raw_image_link: row.largeImageURL,
+        description: row.user,
       });
     });
     return result;
