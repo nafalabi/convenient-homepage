@@ -6,7 +6,7 @@ import { useSnackbar } from "notistack";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import General from "./General";
-import GistIntegration from "./GistIntegration";
+// import GistIntegration from "./GistIntegration";
 
 const NoteSettingsPage = () => {
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ const NoteSettingsPage = () => {
       </Box>
 
       <General formik={formik} />
-      <GistIntegration formik={formik} />
+      {/* <GistIntegration formik={formik} /> */}
     </Box>
   );
 };
