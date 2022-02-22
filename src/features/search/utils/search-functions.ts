@@ -2,6 +2,7 @@ import InternalAPI from "app/api/internal-api";
 import { IconType } from "constant";
 import predefinedActions, { PredefinedActionsIds } from "./predefined-actions";
 import { SearchItem, SearchItemType } from "../types";
+import getFaviconFromUrl from "app/utils/getFaviconFromUrl";
 
 export const searchNotes = async (keyword: string) => {
   const result: SearchItem[] = [];
@@ -33,9 +34,7 @@ export const searchBookmarks = async (keyword: string) => {
     const isFolder = bookmark.url === undefined;
     const icon = isFolder
       ? "Folder"
-      : `https://www.google.com/s2/favicons?sz=16&domain=${
-          new URL(bookmark.url ?? "").hostname
-        }`;
+      : getFaviconFromUrl(bookmark.url as string);
     const iconType = isFolder ? IconType.MATERIAL_ICON : IconType.URL;
     const subtitle = isFolder ? "Bookmark Folder" : `Bookmark: ${bookmark.url}`;
 

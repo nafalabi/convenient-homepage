@@ -1,14 +1,15 @@
 import React, { useEffect } from "react";
-import Greeting from "./Greeeting";
+import Greeting from "./widgets/Greeting/Greeeting";
 import { actions } from "./slice";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "@emotion/styled";
 import { useLiveQuery } from "dexie-react-hooks";
-import ImageSource from "./ImageSource";
+import ImageInfo from "./widgets/ImageInfo/ImageInfo";
 import InternalAPI from "app/api/internal-api";
 import { IBackgroundImage } from "app/storage/dexie/BackgroundImage";
-import SearchField from "./SearchField";
-import Clock from "./Clock";
+import SearchField from "./widgets/SearchField/SearchField";
+import Clock from "./widgets/Clock/Clock";
+import QuickLinks from "./widgets/QuickLinks/QuickLinks";
 
 const HomepageRoot = styled.div`
   background-size: cover;
@@ -79,8 +80,9 @@ const Background = (props: { alreadySetup: boolean }) => {
             <Clock />
             <Greeting />
             <SearchField />
+            <QuickLinks />
           </div>
-          <ImageSource
+          <ImageInfo
             provider={background?.provider}
             photographer={background?.photographer}
             photoLocation={background?.photo_location}

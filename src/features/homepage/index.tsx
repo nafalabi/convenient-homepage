@@ -15,9 +15,6 @@ import SearchComponent from "features/search/SearchComponent";
 import useSummonSearchComponent from "features/search/hooks/useSummonSearchComponent";
 import useShortcut from "features/shortcut/useShortcut";
 
-import "@fontsource/montserrat";
-import "@fontsource/roboto";
-
 const generateTheme = (darkMode: boolean) =>
   createTheme({
     palette: {

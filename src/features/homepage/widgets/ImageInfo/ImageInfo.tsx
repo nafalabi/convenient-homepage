@@ -68,7 +68,7 @@ interface Props {
   photographerPageLink?: string;
 }
 
-const ImageSource = ({
+const ImageInfo = ({
   provider,
   photographer,
   photoLocation,
@@ -120,4 +120,4 @@ const ImageSource = ({
   );
 };
 
-export default ImageSource;
+export default ImageInfo;

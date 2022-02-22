@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { CSSProperties, useEffect, useRef } from "react";
 import { useTheme, darken } from "@mui/material";
 import { Box } from "@mui/system";
 import { SearchItem } from "./types";
@@ -8,10 +8,12 @@ const SearchItemRender = ({
   item,
   selected,
   onClick,
+  sx,
 }: {
   item: SearchItem;
   selected: boolean;
   onClick: () => void;
+  sx?: CSSProperties;
 }) => {
   const theme = useTheme();
   const rootRef = useRef<HTMLDivElement>();
@@ -43,6 +45,7 @@ const SearchItemRender = ({
         "&:hover": {
           backgroundColor: darken(theme.palette.background.default, 0.05),
         },
+        ...sx,
       }}
     >
       <Box sx={{ display: "flex", overflow: "hidden" }}>

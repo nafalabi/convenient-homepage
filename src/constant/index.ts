@@ -11,3 +11,11 @@ export enum IconType {
 }
 
 export type TimeCycleUnits = "weeks" | "days" | "hours" | "minutes";
+
+export enum QuickLinkTypes {
+  BOOKMARKS = 0,
+  NOTE = 1,
+  PREDEFINED_ACTIONS = 2,
+  MANUAL_LINK = 3,
+  USER_ACTIONS = 4,
+}
