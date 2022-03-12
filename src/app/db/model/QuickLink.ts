@@ -1,7 +1,7 @@
 import { IconType, QuickLinkTypes } from "constant";
 import dexieDB from "app/db";
 
-class QuickLink {
+class QuickLinkModel {
   id?: number;
   type?: QuickLinkTypes;
   iconId?: string;
@@ -24,6 +24,6 @@ class QuickLink {
   }
 }
 
-dexieDB.quicklink.mapToClass(QuickLink);
+dexieDB.quicklink.mapToClass(QuickLinkModel);
 
-export default QuickLink;
+export default QuickLinkModel;

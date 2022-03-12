@@ -7,13 +7,13 @@ import {
   Button,
 } from "@mui/material";
 import IconRenderer from "components/IconRenderer";
-import Note from "app/db/schema/Note";
+import NoteModel from "app/db/model/Note";
 import { IconType } from "constant";
 
 interface Props {
   action: () => void;
   handleClose: () => void;
-  noteDetails: Note | null | undefined;
+  noteDetails: NoteModel | null | undefined;
 }
 
 const DialogDeleteNote = ({ action, handleClose, noteDetails }: Props) => {

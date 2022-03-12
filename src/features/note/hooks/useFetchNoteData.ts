@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import AppController from "app/controller";
-import NoteContent from "app/db/schema/NoteContent";
-import Note from "app/db/schema/Note";
+import NoteContentModel from "app/db/model/NoteContent";
+import NoteModel from "app/db/model/Note";
 
 /**
  * Get details of a note
@@ -10,7 +10,7 @@ import Note from "app/db/schema/Note";
  */
 const useFetchNoteData = (noteid: string | null) => {
   const [noteData, setNoteData] = useState<
-    (NoteContent & Note) | null | undefined
+    (NoteContentModel & NoteModel) | null | undefined
   >(null);
 
   useEffect(() => {

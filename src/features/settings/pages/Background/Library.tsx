@@ -21,7 +21,7 @@ import React, { useState } from "react";
 import useSubscribeBackgroundImages from "./hooks/useSubscribeBackgroundImages";
 import AppController from "app/controller";
 import SimpleAccordion from "components/SimpleAccordion";
-import BackgroundImage from "app/db/schema/BackgroundImage";
+import BackgroundImageModel from "app/db/model/BackgroundImage";
 import getImgProviderName from "app/utils/getImgProviderName";
 import { useSnackbar } from "notistack";
 import { useConfirmationDialog } from "./dialogs/ConfirmationDialog";
@@ -161,7 +161,7 @@ const BackgroundImagePreview = ({
   background,
 }: {
   id?: number;
-  background: BackgroundImage;
+  background: BackgroundImageModel;
 }) => {
   const { enqueueSnackbar } = useSnackbar();
   const isActive = Boolean(background.active);

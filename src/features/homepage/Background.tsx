@@ -6,7 +6,7 @@ import styled from "@emotion/styled";
 import { useLiveQuery } from "dexie-react-hooks";
 import ImageInfo from "./widgets/ImageInfo/ImageInfo";
 import AppController from "app/controller";
-import { IBackgroundImage } from "app/db/schema/BackgroundImage";
+import { IBackgroundImage } from "app/db/model/BackgroundImage";
 import SearchField from "./widgets/SearchField/SearchField";
 import Clock from "./widgets/Clock/Clock";
 import QuickLinks from "./widgets/QuickLinks/QuickLinks";

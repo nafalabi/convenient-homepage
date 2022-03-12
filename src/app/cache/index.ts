@@ -1,5 +1,5 @@
-import backgroundImage from "./backgroundImage";
+import BackgroundImageCacheStore from "./store/backgroundImage";
 
-const cacheStorage = { backgroundImage };
+const cacheStorage = { backgroundImage: BackgroundImageCacheStore };
 
 export default cacheStorage;

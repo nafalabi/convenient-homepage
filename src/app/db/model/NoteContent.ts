@@ -1,6 +1,6 @@
 import db from "app/db";
 
-class NoteContent {
+class NoteContentModel {
   noteid?: number;
   notecontent?: string;
 
@@ -21,6 +21,6 @@ class NoteContent {
   }
 }
 
-db.notecontent.mapToClass(NoteContent);
+db.notecontent.mapToClass(NoteContentModel);
 
-export default NoteContent;
+export default NoteContentModel;

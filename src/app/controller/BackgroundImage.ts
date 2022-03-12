@@ -1,6 +1,6 @@
 import appData from "app/storage/app-data";
 import cacheStorage from "app/cache";
-import BackgroundImage from "app/db/schema/BackgroundImage";
+import BackgroundImageModel from "app/db/model/BackgroundImage";
 import dexieDB from "app/db";
 import { ImageProvider } from "constant";
 import ImageAPI from "app/api/image-api";
@@ -19,7 +19,7 @@ class BackgroundImageController {
     const bgInstList = [];
     // convert plain obj to dexie row instance
     for (const image of list) {
-      const imgInst = new BackgroundImage(image);
+      const imgInst = new BackgroundImageModel(image);
       bgInstList.push(imgInst);
     }
 

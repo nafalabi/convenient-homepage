@@ -1,7 +1,7 @@
 import { createSlice, Dispatch } from "@reduxjs/toolkit";
 import { DefaultRootState } from "react-redux";
 import db from "app/db";
-import Note from "app/db/schema/Note";
+import NoteModel from "app/db/model/Note";
 import { actions as settingsActions } from "features/settings/slice";
 import store from "app/redux/store";
 
@@ -67,7 +67,7 @@ export const actions = {
 export const selectors = {
   isOpen: ({ note }: DefaultRootState) => note.isOpen,
   selectedNote: ({ note }: DefaultRootState) => note.selectedNote,
-  noteStack: ({ note }: DefaultRootState) => note.noteStack as Note[],
+  noteStack: ({ note }: DefaultRootState) => note.noteStack as NoteModel[],
   editable: ({ settings }: DefaultRootState) => settings.noteSettings.editable,
 };
 

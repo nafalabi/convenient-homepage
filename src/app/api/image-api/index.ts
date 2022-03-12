@@ -6,7 +6,7 @@ import {
   backgroundSettingsDefault,
   IBackgroundSettings,
 } from "app/storage/app-data/backgroundSettings";
-import { IBackgroundImage } from "app/db/schema/BackgroundImage";
+import { IBackgroundImage } from "app/db/model/BackgroundImage";
 import { ImageProvider } from "constant";
 
 class ImageAPI {

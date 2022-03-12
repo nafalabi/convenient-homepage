@@ -7,12 +7,12 @@ import {
   Button,
 } from "@mui/material";
 import { useFormik } from "formik";
-import Note from "app/db/schema/Note";
+import NoteModel from "app/db/model/Note";
 
 interface Props {
   action: (title: string) => void;
   handleClose: () => void;
-  noteDetails: Note | null | undefined;
+  noteDetails: NoteModel | null | undefined;
 }
 
 const DialogRenameNote = ({ action, handleClose, noteDetails }: Props) => {

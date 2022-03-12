@@ -1,7 +1,7 @@
 import { IconType } from "constant";
 import db from "app/db";
 
-class Note {
+class NoteModel {
   noteid?: number;
   notename?: string;
   firstlevel?: 0 | 1;
@@ -67,6 +67,6 @@ class Note {
   }
 }
 
-db.note.mapToClass(Note);
+db.note.mapToClass(NoteModel);
 
-export default Note;
+export default NoteModel;

@@ -1,14 +1,14 @@
 import Dexie from "dexie";
-import BackgroundImage from "./schema/BackgroundImage";
-import Note from "./schema/Note";
-import NoteContent from "./schema/NoteContent";
-import QuickLink from "./schema/QuickLink";
+import BackgroundImageModel from "./model/BackgroundImage";
+import NoteModel from "./model/Note";
+import NoteContentModel from "./model/NoteContent";
+import QuickLinkModel from "./model/QuickLink";
 
 export class DexieDB extends Dexie {
-  note: Dexie.Table<Note, number>;
-  notecontent: Dexie.Table<NoteContent, number>;
-  backgroundimage: Dexie.Table<BackgroundImage, number>;
-  quicklink: Dexie.Table<QuickLink, number>;
+  note: Dexie.Table<NoteModel, number>;
+  notecontent: Dexie.Table<NoteContentModel, number>;
+  backgroundimage: Dexie.Table<BackgroundImageModel, number>;
+  quicklink: Dexie.Table<QuickLinkModel, number>;
 
   constructor() {
     super("convenient-homepage");

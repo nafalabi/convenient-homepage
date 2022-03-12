@@ -10,7 +10,7 @@ import {
   Link,
 } from "@mui/material";
 import { useFormik } from "formik";
-import QuickLink from "app/db/schema/QuickLink";
+import QuickLinkModel from "app/db/model/QuickLink";
 import IconRenderer from "components/IconRenderer";
 import InlineFormControl from "components/InlineFormControl";
 import { IconType, QuickLinkTypes } from "constant";
@@ -25,12 +25,12 @@ export enum ActionDialogs {
 
 export interface ActionMenuProps {
   className: string;
-  data: QuickLink;
+  data: QuickLinkModel;
 }
 
 export interface ActionMenuDialogProps {
   isOpen: boolean;
-  data: QuickLink;
+  data: QuickLinkModel;
   handleClose: (e: SyntheticEvent) => void;
 }
 

@@ -1,12 +1,12 @@
 import dexieDB from "app/db";
-import QuickLink from "app/db/schema/QuickLink";
+import QuickLinkModel from "app/db/model/QuickLink";
 import getFaviconFromUrl from "app/utils/getFaviconFromUrl";
 import { IconType, QuickLinkTypes } from "constant";
 import { SearchItem, SearchItemType } from "features/search/types";
 
 class QuickLinkController {
   static createFromSearchedLink = async (searchItemData: SearchItem) => {
-    const newQL = new QuickLink();
+    const newQL = new QuickLinkModel();
 
     const countQL = await dexieDB.quicklink.count();
 
@@ -34,7 +34,7 @@ class QuickLinkController {
   };
 
   static createFromManualLink = async (title: string, url: string) => {
-    const newQL = new QuickLink();
+    const newQL = new QuickLinkModel();
 
     const countQL = await dexieDB.quicklink.count();
 

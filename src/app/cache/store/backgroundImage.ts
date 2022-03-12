@@ -1,8 +1,11 @@
+import { CacheStore } from "../types";
+
 const CACHE_NAME = "background-image";
 
-const backgroundImage = {
-  cacheableHosts: ["images.unsplash.com", "pixabay.com", "bing.com"],
-  async getOrSet(req: string | Request) {
+class BackgroundImageCacheStore implements CacheStore {
+  static cacheableHosts = ["images.unsplash.com", "pixabay.com", "bing.com"];
+
+  static async getOrSet(req: string | Request) {
     const cm = await caches.open(CACHE_NAME);
 
     return cm.match(req).then(function (response) {
@@ -20,10 +23,11 @@ const backgroundImage = {
         return response;
       });
     });
-  },
-  async clearCache() {
-    return await caches.delete(CACHE_NAME);
-  },
-};
+  }
 
-export default backgroundImage;
+  static async clearCache() {
+    return await caches.delete(CACHE_NAME);
+  }
+}
+
+export default BackgroundImageCacheStore;

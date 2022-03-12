@@ -1,10 +1,10 @@
 import { Collection } from "dexie";
 import { IconData } from "components/IconPicker/types";
 import dexieDB from "app/db";
-import Note from "app/db/schema/Note";
-import NoteContent from "app/db/schema/NoteContent";
+import NoteModel from "app/db/model/Note";
+import NoteContentModel from "app/db/model/NoteContent";
 
-export type NoteListItem = Note & { totalChildren?: number; children?: Note[] };
+export type NoteListItem = NoteModel & { totalChildren?: number; children?: NoteModel[] };
 
 class NoteController {
   /**
@@ -12,7 +12,7 @@ class NoteController {
    * @returns list of notes in tree form
    */
   static fetchNoteList() {
-    const map = async (coll: Collection<Note>) => {
+    const map = async (coll: Collection<NoteModel>) => {
       const result: NoteListItem[] = [];
       await coll.each(async (row: NoteListItem) => {
         // calculating total children of the current note / page
@@ -37,7 +37,7 @@ class NoteController {
    * @returns the detail of a note
    */
   static async fetchNoteData(noteid: string | number) {
-    const data: (Note & NoteContent) | undefined = await dexieDB.note
+    const data: (NoteModel & NoteContentModel) | undefined = await dexieDB.note
       .where({ noteid: Number(noteid) })
       .first();
     const noteContent = await dexieDB.notecontent
@@ -78,7 +78,7 @@ class NoteController {
    * @returns note id
    */
   static async updateNoteContent(noteid: string | number, notecontent: string) {
-    const noteContent = new NoteContent();
+    const noteContent = new NoteContentModel();
     noteContent.noteid = noteid as number;
     noteContent.notecontent = notecontent;
     return await noteContent.save();
@@ -125,14 +125,14 @@ class NoteController {
           .equals(Number(parentnoteid))
           .count();
 
-        const newNote = new Note();
+        const newNote = new NoteModel();
         newNote.notename = notename;
         newNote.firstlevel = 0;
         newNote.parentnoteid = Number(parentnoteid);
         newNote.order = order;
         const noteid = await newNote.save();
 
-        const newNoteContent = new NoteContent();
+        const newNoteContent = new NoteContentModel();
         newNoteContent.noteid = noteid;
         newNoteContent.notecontent = `# ${notename}\n\n\n`;
         await newNoteContent.save();
@@ -154,14 +154,14 @@ class NoteController {
       async () => {
         const order = await dexieDB.note.where("firstlevel").equals(1).count();
 
-        const newNote = new Note();
+        const newNote = new NoteModel();
         newNote.notename = notename;
         newNote.firstlevel = 1;
         newNote.parentnoteid = 0;
         newNote.order = order;
         const noteid = await newNote.save();
 
-        const newNoteContent = new NoteContent();
+        const newNoteContent = new NoteContentModel();
         newNoteContent.noteid = noteid;
         newNoteContent.notecontent = `# ${notename}\n\n\n`;
         await newNoteContent.save();

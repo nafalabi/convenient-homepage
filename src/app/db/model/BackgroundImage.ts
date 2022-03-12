@@ -14,7 +14,7 @@ export interface IBackgroundImage {
   raw_image_link?: string;
 }
 
-class BackgroundImage implements IBackgroundImage {
+class BackgroundImageModel implements IBackgroundImage {
   id?: number;
   image_url?: string;
   preview_img_url?: string;
@@ -57,6 +57,6 @@ class BackgroundImage implements IBackgroundImage {
   }
 }
 
-dexieDB.backgroundimage.mapToClass(BackgroundImage);
+dexieDB.backgroundimage.mapToClass(BackgroundImageModel);
 
-export default BackgroundImage;
+export default BackgroundImageModel;

@@ -6,7 +6,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import React, { useState } from "react";
-import Note from "app/db/schema/Note";
+import NoteModel from "app/db/model/Note";
 import IconPicker from "components/IconPicker";
 import { IconData } from "components/IconPicker/types";
 import { IconType } from "constant";
@@ -14,7 +14,7 @@ import { IconType } from "constant";
 interface Props {
   action: (icon: IconData) => void;
   handleClose: () => void;
-  noteDetails: Note | null | undefined;
+  noteDetails: NoteModel | null | undefined;
 }
 
 const DialogChangeIcon = ({ action, handleClose, noteDetails }: Props) => {
