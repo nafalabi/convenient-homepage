@@ -17,9 +17,3 @@ const appData = {
 };
 
 export default appData;
-
-declare global {
-  var appdata: typeof appData;
-}
-
-global.appdata = appData;

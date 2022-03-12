@@ -30,9 +30,3 @@ export class DexieDB extends Dexie {
 const dexieDB = new DexieDB();
 
 export default dexieDB;
-
-// for debug purpose only
-declare global {
-  var db: DexieDB;
-}
-global.db = dexieDB;

@@ -1,6 +1,7 @@
 import alarms from "./service-worker/alarms";
 import storage from "./service-worker/storage";
 import cacheStorage from "app/cache";
+import exposeGlobalVars from "exposeGlobalVars";
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -54,3 +55,5 @@ self.addEventListener("fetch", function (e) {
 
 // merely to satisfy the linter
 export {};
+
+exposeGlobalVars();

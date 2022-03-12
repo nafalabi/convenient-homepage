@@ -46,8 +46,3 @@ class ImageAPI {
 }
 
 export default ImageAPI;
-
-declare global {
-  var imgapi: ImageAPI;
-}
-global.imgapi = new ImageAPI(backgroundSettingsDefault);

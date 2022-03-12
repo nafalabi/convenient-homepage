@@ -9,9 +9,3 @@ const AppController = {
 };
 
 export default AppController;
-
-declare global {
-  var dexieapi: typeof AppController;
-}
-
-global.dexieapi = AppController;

@@ -14,7 +14,7 @@ class QuickLinkModel {
 
   async save() {
     try {
-      const id = await db.quicklink.put(this, this.id);
+      const id = await dexieDB.quicklink.put(this, this.id);
       this.id = id;
       return id;
     } catch (error: any) {

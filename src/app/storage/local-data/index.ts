@@ -17,9 +17,3 @@ class LocalData {
 }
 
 export default LocalData;
-
-declare global {
-  var localdata: typeof LocalData;
-}
-
-global.localdata = LocalData;

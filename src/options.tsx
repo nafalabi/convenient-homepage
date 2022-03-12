@@ -13,6 +13,8 @@ import "@fontsource/material-icons-rounded";
 import "@fontsource/material-icons-sharp";
 import "@fontsource/material-icons-two-tone";
 
+import exposeGlobalVars from "exposeGlobalVars";
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
@@ -23,3 +25,5 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById("root")
 );
+
+exposeGlobalVars();
