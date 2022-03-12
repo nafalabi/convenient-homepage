@@ -1,4 +1,4 @@
-import store from "app/storage/redux/store";
+import store from "app/redux/store";
 import { actions as bookmarkActions } from "features/bookmark/slice";
 import { actions as noteActions } from "features/note/slice";
 import { actions as settingActions } from "features/settings/slice";

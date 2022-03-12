@@ -1,12 +1,12 @@
 import { Collection } from "dexie";
 import { IconData } from "components/IconPicker/types";
-import dexieDB from "app/storage/dexie/db";
-import Note from "app/storage/dexie/Note";
-import NoteContent from "app/storage/dexie/NoteContent";
+import dexieDB from "app/db";
+import Note from "app/db/schema/Note";
+import NoteContent from "app/db/schema/NoteContent";
 
 export type NoteListItem = Note & { totalChildren?: number; children?: Note[] };
 
-class InternalNoteAPI {
+class NoteController {
   /**
    * Get Note List in a form of tree list
    * @returns list of notes in tree form
@@ -316,4 +316,4 @@ class InternalNoteAPI {
   }
 }
 
-export default InternalNoteAPI;
+export default NoteController;

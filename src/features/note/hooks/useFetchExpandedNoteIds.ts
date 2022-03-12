@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import InternalAPI from "app/api/internal-api";
+import AppController from "app/controller";
 
 const useFetchExpandedNoteIds = () => {
   const [expandedNoteIds, setExpandedNoteIds] = useState<string[]>([]);
 
   useEffect(() => {
-    InternalAPI.note.fetchExpandedNoteIds().then((val) => setExpandedNoteIds(val));
+    AppController.note.fetchExpandedNoteIds().then((val) => setExpandedNoteIds(val));
   }, []);
 
   return { expandedNoteIds, setExpandedNoteIds };

@@ -1,8 +1,8 @@
 import Dexie from "dexie";
-import BackgroundImage from "./BackgroundImage";
-import Note from "./Note";
-import NoteContent from "./NoteContent";
-import QuickLink from "./QuickLink";
+import BackgroundImage from "./schema/BackgroundImage";
+import Note from "./schema/Note";
+import NoteContent from "./schema/NoteContent";
+import QuickLink from "./schema/QuickLink";
 
 export class DexieDB extends Dexie {
   note: Dexie.Table<Note, number>;

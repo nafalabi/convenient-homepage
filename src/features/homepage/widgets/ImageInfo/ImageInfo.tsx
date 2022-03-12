@@ -8,7 +8,7 @@ import {
 } from "@mui/icons-material";
 import { ImageProvider } from "constant";
 import getImgProviderName from "app/utils/getImgProviderName";
-import InternalAPI from "app/api/internal-api";
+import AppController from "app/controller";
 
 const RootComp = styled.div`
   position: fixed;
@@ -90,7 +90,7 @@ const ImageInfo = ({
   };
 
   const handleChangeImage = () => {
-    InternalAPI.backgroundimage.cycleBackground();
+    AppController.backgroundimage.cycleBackground();
   };
 
   return (

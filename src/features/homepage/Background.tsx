@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "@emotion/styled";
 import { useLiveQuery } from "dexie-react-hooks";
 import ImageInfo from "./widgets/ImageInfo/ImageInfo";
-import InternalAPI from "app/api/internal-api";
-import { IBackgroundImage } from "app/storage/dexie/BackgroundImage";
+import AppController from "app/controller";
+import { IBackgroundImage } from "app/db/schema/BackgroundImage";
 import SearchField from "./widgets/SearchField/SearchField";
 import Clock from "./widgets/Clock/Clock";
 import QuickLinks from "./widgets/QuickLinks/QuickLinks";
@@ -60,7 +60,7 @@ const Background = (props: { alreadySetup: boolean }) => {
 
   const background = useLiveQuery(
     async () => {
-      const result = await InternalAPI.backgroundimage.getCurActiveImage();
+      const result = await AppController.backgroundimage.getCurActiveImage();
       return result ? result : blankBackground;
     },
     [initialized],

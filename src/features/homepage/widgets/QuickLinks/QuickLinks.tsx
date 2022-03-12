@@ -3,8 +3,8 @@ import { styled } from "@mui/material";
 import QuickLinkItem from "./QuickLinkItem";
 import AddNewQuickLink from "./AddNew";
 import { useLiveQuery } from "dexie-react-hooks";
-import QuickLink from "app/storage/dexie/QuickLink";
-import InternalAPI from "app/api/internal-api";
+import QuickLink from "app/db/schema/QuickLink";
+import AppController from "app/controller";
 
 export const QUICK_LINKS_MAX_ITEM = 12;
 
@@ -26,7 +26,7 @@ const RootQuickLinks = styled("div")(({ theme }) => ({
 const QuickLinks = () => {
   const list = useLiveQuery<QuickLink[], QuickLink[]>(
     async () => {
-      return await InternalAPI.quicklink.getList();
+      return await AppController.quicklink.getList();
     },
     [],
     []

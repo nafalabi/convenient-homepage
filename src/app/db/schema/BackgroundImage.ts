@@ -1,5 +1,5 @@
 import { ImageProvider } from "constant";
-import dexieDB from "./db";
+import dexieDB from "app/db";
 
 export interface IBackgroundImage {
   image_url?: string;

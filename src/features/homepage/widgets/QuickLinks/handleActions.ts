@@ -1,4 +1,4 @@
-import InternalAPI from "app/api/internal-api";
+import AppController from "app/controller";
 import { QuickLinkTypes } from "constant";
 import {
   handleActions,
@@ -8,7 +8,7 @@ import {
 import predefinedActions from "features/search/utils/predefined-actions";
 
 const handleQuickLinkActions = async (id: number) => {
-  const QL = await InternalAPI.quicklink.getQuickLinkDetail(id);
+  const QL = await AppController.quicklink.getQuickLinkDetail(id);
   if (QL === undefined) return;
 
   switch (QL.type) {

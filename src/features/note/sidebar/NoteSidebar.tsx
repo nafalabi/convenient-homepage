@@ -7,9 +7,9 @@ import useFetchExpandedNoteIds from "../hooks/useFetchExpandedNoteIds";
 import NoteSidebarContextMenu from "./NoteSidebarContextMenu";
 import useContextMenu from "../hooks/useContextMenu";
 import TreeViewDnd from "components/TreeViewDnd";
-import InternalAPI from "app/api/internal-api";
+import AppController from "app/controller";
 import { TreeViewProps } from "components/TreeViewDnd/types";
-import { NoteListItem } from "app/api/internal-api/Note";
+import { NoteListItem } from "app/controller/Note";
 import { IconType } from "constant";
 import useSubscribeNoteList from "../hooks/useSubscribeNoteList";
 
@@ -33,7 +33,7 @@ const Sidebar = () => {
     if (!(e.target as HTMLElement).closest(".MuiTreeItem-iconContainer"))
       return;
     setExpandedNoteIds(ids);
-    setTimeout(() => InternalAPI.note.toggleExpandNote(expandedNoteIds, ids), 500);
+    setTimeout(() => AppController.note.toggleExpandNote(expandedNoteIds, ids), 500);
   };
 
   const selectNode: TreeViewProps<NoteListItem>["onNodeSelect"] = (e, id) => {
@@ -42,7 +42,7 @@ const Sidebar = () => {
   };
 
   const addNewNote = async (notename: string) => {
-    await InternalAPI.note.addNewNote(notename);
+    await AppController.note.addNewNote(notename);
   };
 
   const onNodeDrop: TreeViewProps<NoteListItem>["onNodeDrop"] = async (
@@ -51,7 +51,7 @@ const Sidebar = () => {
     targetType,
     targetIndex
   ) => {
-    await InternalAPI.note.reorderNote(id, targetId, targetType, targetIndex);
+    await AppController.note.reorderNote(id, targetId, targetType, targetIndex);
   };
 
   return (

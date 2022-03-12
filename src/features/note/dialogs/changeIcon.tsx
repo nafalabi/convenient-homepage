@@ -6,7 +6,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import React, { useState } from "react";
-import Note from "app/storage/dexie/Note";
+import Note from "app/db/schema/Note";
 import IconPicker from "components/IconPicker";
 import { IconData } from "components/IconPicker/types";
 import { IconType } from "constant";

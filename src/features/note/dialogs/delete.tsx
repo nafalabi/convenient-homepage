@@ -7,7 +7,7 @@ import {
   Button,
 } from "@mui/material";
 import IconRenderer from "components/IconRenderer";
-import Note from "app/storage/dexie/Note";
+import Note from "app/db/schema/Note";
 import { IconType } from "constant";
 
 interface Props {

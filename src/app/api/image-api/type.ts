@@ -1,4 +1,4 @@
-import { IBackgroundImage } from "app/storage/dexie/BackgroundImage";
+import { IBackgroundImage } from "app/db/schema/BackgroundImage";
 
 export interface AbstractImageAPI {
   parameters: object;

@@ -1,6 +1,6 @@
 import alarms from "./service-worker/alarms";
 import storage from "./service-worker/storage";
-import cacheStorage from "app/storage/cache-storage";
+import cacheStorage from "app/cache";
 
 declare const self: ServiceWorkerGlobalScope;
 

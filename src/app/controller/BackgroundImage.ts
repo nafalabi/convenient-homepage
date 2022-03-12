@@ -1,12 +1,12 @@
 import appData from "app/storage/app-data";
-import cacheStorage from "app/storage/cache-storage";
-import BackgroundImage from "app/storage/dexie/BackgroundImage";
-import dexieDB from "app/storage/dexie/db";
+import cacheStorage from "app/cache";
+import BackgroundImage from "app/db/schema/BackgroundImage";
+import dexieDB from "app/db";
 import { ImageProvider } from "constant";
-import ImageAPI from "../image-api";
-import Unsplash from "../image-api/Unsplash";
+import ImageAPI from "app/api/image-api";
+import Unsplash from "app/api/image-api/Unsplash";
 
-class InternalBackgroundImageAPI {
+class BackgroundImageController {
   static async refreshBackgroundList() {
     const settings = await appData.backgroundSettings();
     const imgApi = new ImageAPI(settings);
@@ -94,4 +94,4 @@ class InternalBackgroundImageAPI {
   }
 }
 
-export default InternalBackgroundImageAPI;
+export default BackgroundImageController;

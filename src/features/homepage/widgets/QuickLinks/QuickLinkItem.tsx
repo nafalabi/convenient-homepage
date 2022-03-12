@@ -1,7 +1,7 @@
 import React, { SyntheticEvent } from "react";
 import { styled } from "@mui/material";
 import commonStyle from "./commonStyle";
-import QuickLink from "app/storage/dexie/QuickLink";
+import QuickLink from "app/db/schema/QuickLink";
 import IconRenderer from "components/IconRenderer";
 import handleQuickLinkActions from "./handleActions";
 import ActionMenu from "./ActionMenu";

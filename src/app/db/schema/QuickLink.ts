@@ -1,5 +1,5 @@
 import { IconType, QuickLinkTypes } from "constant";
-import dexieDB from "./db";
+import dexieDB from "app/db";
 
 class QuickLink {
   id?: number;

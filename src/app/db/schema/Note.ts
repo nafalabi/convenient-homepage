@@ -1,5 +1,5 @@
 import { IconType } from "constant";
-import db from "./db";
+import db from "app/db";
 
 class Note {
   noteid?: number;

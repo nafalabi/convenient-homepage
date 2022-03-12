@@ -1,9 +1,9 @@
 import { createSlice, Dispatch } from "@reduxjs/toolkit";
 import { DefaultRootState } from "react-redux";
-import db from "app/storage/dexie/db";
-import Note from "app/storage/dexie/Note";
+import db from "app/db";
+import Note from "app/db/schema/Note";
 import { actions as settingsActions } from "features/settings/slice";
-import store from "app/storage/redux/store";
+import store from "app/redux/store";
 
 export const NOTE_HOME = 0;
 
@@ -55,12 +55,13 @@ export const actions = {
       dispatch(slice.actions.replaceNoteStack(newNoteStack));
     })();
   },
-  toggleEditable: () => (dispatch: Dispatch) => {
-    const state = store.getState();
-    const noteSettings = Object.assign({}, state.settings.noteSettings);
-    noteSettings.editable = !noteSettings.editable;
-    store.dispatch(settingsActions.storeNoteSettings(noteSettings));
-  },
+  toggleEditable:
+    () => (dispatch: Dispatch, getState: () => DefaultRootState) => {
+      const state = getState();
+      const noteSettings = Object.assign({}, state.settings.noteSettings);
+      noteSettings.editable = !noteSettings.editable;
+      settingsActions.storeNoteSettings(noteSettings)(dispatch);
+    },
 };
 
 export const selectors = {

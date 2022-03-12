@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Dialog, Icon, Paper, styled, Tab, Tabs } from "@mui/material";
 import commonStyle from "./commonStyle";
 import { Box } from "@mui/system";
-import InternalAPI from "app/api/internal-api";
+import AppController from "app/controller";
 import { SearchItem } from "features/search/types";
 import SearchLinks from "./SearchLinks";
 import CreateLink from "./CreateLink";
@@ -27,12 +27,12 @@ const AddNewQuickLink = () => {
   };
 
   const handleCreateFromSearch = (item: SearchItem) => {
-    InternalAPI.quicklink.createFromSearchedLink(item);
+    AppController.quicklink.createFromSearchedLink(item);
     setDialogOpen(false);
   };
 
   const handleManualCreate = (title: string, url: string) => {
-    InternalAPI.quicklink.createFromManualLink(title, url);
+    AppController.quicklink.createFromManualLink(title, url);
     setDialogOpen(false);
   };
 

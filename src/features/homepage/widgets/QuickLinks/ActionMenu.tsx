@@ -10,12 +10,12 @@ import {
   Link,
 } from "@mui/material";
 import { useFormik } from "formik";
-import QuickLink from "app/storage/dexie/QuickLink";
+import QuickLink from "app/db/schema/QuickLink";
 import IconRenderer from "components/IconRenderer";
 import InlineFormControl from "components/InlineFormControl";
 import { IconType, QuickLinkTypes } from "constant";
 import React, { SyntheticEvent, useRef, useState } from "react";
-import InternalAPI from "app/api/internal-api";
+import AppController from "app/controller";
 import handleQuickLinkActions from "./handleActions";
 
 export enum ActionDialogs {
@@ -122,7 +122,7 @@ const DialogRemoveQL = ({
   };
 
   const handleRemoveQL = async (e: SyntheticEvent) => {
-    await InternalAPI.quicklink.removeQuickLink(data.id);
+    await AppController.quicklink.removeQuickLink(data.id);
     handleClose(e);
   };
 
@@ -190,7 +190,7 @@ const DialogEditQL = ({ isOpen, data, handleClose }: ActionMenuDialogProps) => {
       url: data.url,
     },
     onSubmit: ({ title, url }) => {
-      InternalAPI.quicklink.updateQuickLink(data.id as number, {
+      AppController.quicklink.updateQuickLink(data.id as number, {
         title: title ?? "",
         url,
       });

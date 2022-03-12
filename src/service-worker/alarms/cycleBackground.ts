@@ -1,4 +1,4 @@
-import InternalAPI from "app/api/internal-api";
+import AppController from "app/controller";
 import appData from "app/storage/app-data";
 import convToMin from "app/utils/convToMin";
 
@@ -7,7 +7,7 @@ const ALARM_NAME = "cycle-background";
 const cycleBackground = {
   name: ALARM_NAME,
   action: async () => {
-    await InternalAPI.backgroundimage.cycleBackground();
+    await AppController.backgroundimage.cycleBackground();
 
     console.info(`Background has been rotated`, new Date().toLocaleString());
   },

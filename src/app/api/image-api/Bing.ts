@@ -1,7 +1,7 @@
 import { IBackgroundSettings } from "app/storage/app-data/backgroundSettings";
 import { ImageProvider } from "constant";
 import { AbstractImageAPI } from "./type";
-import { IBackgroundImage } from "app/storage/dexie/BackgroundImage";
+import { IBackgroundImage } from "app/db/schema/BackgroundImage";
 
 class Bing implements AbstractImageAPI {
   apiUrl = "https://www.bing.com/HPImageArchive.aspx?format=js&n=8"; // it only returns 8 max even if we requested for 100

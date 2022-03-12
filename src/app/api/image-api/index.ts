@@ -6,7 +6,7 @@ import {
   backgroundSettingsDefault,
   IBackgroundSettings,
 } from "app/storage/app-data/backgroundSettings";
-import { IBackgroundImage } from "app/storage/dexie/BackgroundImage";
+import { IBackgroundImage } from "app/db/schema/BackgroundImage";
 import { ImageProvider } from "constant";
 
 class ImageAPI {

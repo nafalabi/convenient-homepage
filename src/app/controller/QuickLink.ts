@@ -1,10 +1,10 @@
-import dexieDB from "app/storage/dexie/db";
-import QuickLink from "app/storage/dexie/QuickLink";
+import dexieDB from "app/db";
+import QuickLink from "app/db/schema/QuickLink";
 import getFaviconFromUrl from "app/utils/getFaviconFromUrl";
 import { IconType, QuickLinkTypes } from "constant";
 import { SearchItem, SearchItemType } from "features/search/types";
 
-class InternalQuickLinkAPI {
+class QuickLinkController {
   static createFromSearchedLink = async (searchItemData: SearchItem) => {
     const newQL = new QuickLink();
 
@@ -73,4 +73,4 @@ class InternalQuickLinkAPI {
   };
 }
 
-export default InternalQuickLinkAPI;
+export default QuickLinkController;

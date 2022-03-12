@@ -1,5 +1,5 @@
 import { IBackgroundSettings } from "app/storage/app-data/backgroundSettings";
-import { IBackgroundImage } from "app/storage/dexie/BackgroundImage";
+import { IBackgroundImage } from "app/db/schema/BackgroundImage";
 import QueryString from "app/utils/querystring";
 import { ImageProvider } from "constant";
 import { AbstractImageAPI } from "./type";

@@ -19,9 +19,9 @@ import {
 import { Pagination } from "@mui/material";
 import React, { useState } from "react";
 import useSubscribeBackgroundImages from "./hooks/useSubscribeBackgroundImages";
-import InternalAPI from "app/api/internal-api";
+import AppController from "app/controller";
 import SimpleAccordion from "components/SimpleAccordion";
-import BackgroundImage from "app/storage/dexie/BackgroundImage";
+import BackgroundImage from "app/db/schema/BackgroundImage";
 import getImgProviderName from "app/utils/getImgProviderName";
 import { useSnackbar } from "notistack";
 import { useConfirmationDialog } from "./dialogs/ConfirmationDialog";
@@ -38,7 +38,7 @@ const Library = () => {
 
   const shuffleBackground = async () => {
     enqueueSnackbar("Shuffling Background Image...", { variant: "info" });
-    await InternalAPI.backgroundimage.cycleBackground();
+    await AppController.backgroundimage.cycleBackground();
     closeSnackbar();
     enqueueSnackbar("Success Shuffling Background Image", {
       variant: "success",
@@ -52,7 +52,7 @@ const Library = () => {
       async (confirmed) => {
         if (!confirmed) return;
         enqueueSnackbar("Refreshing Image List...", { variant: "info" });
-        await InternalAPI.backgroundimage.refreshBackgroundList();
+        await AppController.backgroundimage.refreshBackgroundList();
         enqueueSnackbar("Success Refreshing Image List", {
           variant: "success",
         });
@@ -169,12 +169,12 @@ const BackgroundImagePreview = ({
   const deleteImage = () => background.delete();
 
   const setAsBackground = () => {
-    InternalAPI.backgroundimage.setAsActive(background.id);
+    AppController.backgroundimage.setAsActive(background.id);
   };
 
   const downloadImage = () => {
     enqueueSnackbar("Starting download...", { variant: "info" });
-    InternalAPI.backgroundimage.downloadImage(background.id);
+    AppController.backgroundimage.downloadImage(background.id);
   };
 
   return (

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import InternalAPI from "app/api/internal-api";
-import NoteContent from "app/storage/dexie/NoteContent";
-import Note from "app/storage/dexie/Note";
+import AppController from "app/controller";
+import NoteContent from "app/db/schema/NoteContent";
+import Note from "app/db/schema/Note";
 
 /**
  * Get details of a note
@@ -15,7 +15,7 @@ const useFetchNoteData = (noteid: string | null) => {
 
   useEffect(() => {
     if (noteid !== null)
-      InternalAPI.note.fetchNoteData(noteid).then((val) => setNoteData(val));
+      AppController.note.fetchNoteData(noteid).then((val) => setNoteData(val));
   }, [noteid, setNoteData]);
 
   return noteData;
