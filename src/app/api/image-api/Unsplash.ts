@@ -4,8 +4,12 @@ import QueryString from "app/utils/querystring";
 import { ImageProvider } from "constant";
 import { AbstractImageAPI } from "./type";
 
+export enum UnsplashFetchMode {
+  RANDOM = 0,
+  SEARCH = 1,
+}
+
 class Unsplash implements AbstractImageAPI {
-  apiUrl = "https://source.unsplash.com/";
   parameters: IBackgroundSettings;
 
   constructor(parameters: IBackgroundSettings) {
@@ -15,23 +19,45 @@ class Unsplash implements AbstractImageAPI {
   async getListImage() {
     const result: IBackgroundImage[] = [];
 
-    const qs = QueryString.stringify({
-      query: this.parameters.unsplash_query,
-      page: this.parameters.unsplash_page,
-      per_page: this.parameters.unsplash_per_page,
-      order_by: this.parameters.unsplash_order_by,
-      orientation: this.parameters.unsplash_orientation,
-    });
+    const parameters: { [key: string]: any } = {};
+    let apiEndpoint = "";
+    let paramPrefix = "";
 
-    const res = await fetch(`https://api.unsplash.com/search/photos?${qs}`, {
+    switch (this.parameters.unsplash_fetch_mode) {
+      case UnsplashFetchMode.SEARCH:
+        paramPrefix = "search_unsplash";
+        apiEndpoint = "https://api.unsplash.com/search/photos";
+        break;
+      case UnsplashFetchMode.RANDOM:
+      default:
+        paramPrefix = "random_unsplash";
+        apiEndpoint = "https://api.unsplash.com/photos/random";
+        break;
+    }
+
+    for (const [key, val] of Object.entries(this.parameters).filter(([key]) =>
+      key.includes(paramPrefix)
+    )) {
+      if (!val) continue;
+      const trimmedKey = key.replace(`${paramPrefix}_`, "");
+      parameters[trimmedKey] = val;
+    }
+
+    const qs = QueryString.stringify(parameters);
+
+    const res = await fetch(`${apiEndpoint}?${qs}`, {
       headers: {
         "Accept-Version": "v1",
         Authorization: `Client-ID ${process.env.REACT_APP_UNSPLASH_CLIENT_ID}`,
       },
     });
     const resJson = await res.json();
+    const list =
+      UnsplashFetchMode.RANDOM === this.parameters.unsplash_fetch_mode
+        ? resJson
+        : resJson.results;
 
-    resJson.results.forEach((row: any) => {
+    list.forEach((row: any) => {
       result.push({
         image_url: `${row.urls.raw}&q=85&w=1920`,
         preview_img_url: `${row.urls.raw}&q=85&w=400`,

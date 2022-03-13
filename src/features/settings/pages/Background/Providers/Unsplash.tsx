@@ -1,18 +1,67 @@
 import React from "react";
-import { useFormikContext } from "formik";
+import { FormikProps, useFormikContext } from "formik";
 import { IBackgroundSettings } from "app/storage/app-data/backgroundSettings";
 import InlineFormControl from "components/InlineFormControl";
-import { MenuItem, Select, TextField } from "@mui/material";
+import {
+  FormControlLabel,
+  FormLabel,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  Select,
+  TextField,
+} from "@mui/material";
+import { UnsplashFetchMode } from "app/api/image-api/Unsplash";
 
 const Unsplash = () => {
   const formik = useFormikContext<IBackgroundSettings>();
 
   return (
     <>
+      <FormLabel>Fetch Mode</FormLabel>
+      <RadioGroup
+        name="unsplash_fetch_mode"
+        onChange={(e, val) => {
+          const intVal = parseInt(val);
+          formik.setFieldValue("unsplash_fetch_mode", intVal);
+        }}
+        value={formik.values.unsplash_fetch_mode}
+        row
+      >
+        <FormControlLabel
+          value={UnsplashFetchMode.RANDOM}
+          control={<Radio />}
+          label="Random"
+        />
+        <FormControlLabel
+          value={UnsplashFetchMode.SEARCH}
+          control={<Radio />}
+          label="Search"
+        />
+      </RadioGroup>
+      {formik.values.unsplash_fetch_mode === UnsplashFetchMode.SEARCH && (
+        <UnsplashSearchMode formik={formik} />
+      )}
+      {formik.values.unsplash_fetch_mode === UnsplashFetchMode.RANDOM && (
+        <UnsplashRandomMode formik={formik} />
+      )}
+    </>
+  );
+};
+
+export default Unsplash;
+
+const UnsplashSearchMode = ({
+  formik,
+}: {
+  formik: FormikProps<IBackgroundSettings>;
+}) => {
+  return (
+    <>
       <InlineFormControl label="Keyword">
         <TextField
-          name="unsplash_query"
-          value={formik.values.unsplash_query}
+          name="search_unsplash_query"
+          value={formik.values.search_unsplash_query}
           onChange={formik.handleChange}
           fullWidth
           size="small"
@@ -20,8 +69,8 @@ const Unsplash = () => {
       </InlineFormControl>
       <InlineFormControl label="Orientation">
         <Select
-          name="unsplash_orientation"
-          value={formik.values.unsplash_orientation}
+          name="search_unsplash_orientation"
+          value={formik.values.search_unsplash_orientation}
           onChange={formik.handleChange}
           fullWidth
           size="small"
@@ -33,8 +82,8 @@ const Unsplash = () => {
       </InlineFormControl>
       <InlineFormControl label="Select">
         <Select
-          name="unsplash_order_by"
-          value={formik.values.unsplash_order_by}
+          name="search_unsplash_order_by"
+          value={formik.values.search_unsplash_order_by}
           onChange={formik.handleChange}
           fullWidth
           size="small"
@@ -47,4 +96,44 @@ const Unsplash = () => {
   );
 };
 
-export default Unsplash;
+const UnsplashRandomMode = ({
+  formik,
+}: {
+  formik: FormikProps<IBackgroundSettings>;
+}) => {
+  return (
+    <>
+      <InlineFormControl label="Topic">
+        <TextField
+          name="random_unsplash_topics"
+          value={formik.values.random_unsplash_topics}
+          onChange={formik.handleChange}
+          fullWidth
+          size="small"
+        />
+      </InlineFormControl>
+      <InlineFormControl label="Keyword">
+        <TextField
+          name="random_unsplash_query"
+          value={formik.values.random_unsplash_query}
+          onChange={formik.handleChange}
+          fullWidth
+          size="small"
+        />
+      </InlineFormControl>
+      <InlineFormControl label="Orientation">
+        <Select
+          name="random_unsplash_orientation"
+          value={formik.values.random_unsplash_orientation}
+          onChange={formik.handleChange}
+          fullWidth
+          size="small"
+        >
+          <MenuItem value="landscape">Landscape</MenuItem>
+          <MenuItem value="portrait">Portrait</MenuItem>
+          <MenuItem value="squarish">Squarish</MenuItem>
+        </Select>
+      </InlineFormControl>
+    </>
+  );
+};

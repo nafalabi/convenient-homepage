@@ -1,4 +1,5 @@
 import {
+  backgroundSettingsDefault,
   IBackgroundSettings,
   STORAGE_KEY,
 } from "app/storage/app-data/backgroundSettings";
@@ -8,10 +9,10 @@ const backgroundSettings = {
   key: STORAGE_KEY,
 
   handleOnChange: async function (
-    newValue: IBackgroundSettings,
-    oldValue: IBackgroundSettings
+    newValue: IBackgroundSettings = backgroundSettingsDefault,
+    oldValue: IBackgroundSettings = backgroundSettingsDefault
   ) {
-    // Reset cycle background process
+    // Reset cycle background alarm
     if (
       newValue.cycle_interval !== oldValue.cycle_interval ||
       newValue.cycle_interval_unit !== oldValue.cycle_interval_unit
@@ -20,7 +21,7 @@ const backgroundSettings = {
       await alarms.cycleBackground.registerAlarm();
     }
 
-    // Reset refresh background list process
+    // Reset refresh background list alarm
     if (
       newValue.refresh_list_interval !== oldValue.refresh_list_interval ||
       newValue.refresh_list_interval_unit !==
