@@ -16,25 +16,31 @@ const RootQuickLinkItem = styled("div")(({ theme }) => ({
   },
 }));
 
-interface QuickLinkItemProps {
+interface QuickLinkItemProps
+  extends React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  > {
   data: QuickLinkModel;
 }
 
-const QuickLinkItem = ({ data }: QuickLinkItemProps) => {
-  const handleClick = (e: SyntheticEvent) => {
-    e.stopPropagation();
-    handleQuickLinkActions(data.id as number);
-  };
+const QuickLinkItem = React.forwardRef<HTMLDivElement, QuickLinkItemProps>(
+  ({ data, ...props }, ref) => {
+    const handleClick = (e: SyntheticEvent) => {
+      e.stopPropagation();
+      handleQuickLinkActions(data.id as number);
+    };
 
-  return (
-    <RootQuickLinkItem onClick={handleClick}>
-      <div className="icon">
-        <IconRenderer iconId={data.iconId} iconType={data.iconType} />
-      </div>
-      <div className="name">{data.title}</div>
-      <ActionMenu className="actions" data={data} />
-    </RootQuickLinkItem>
-  );
-};
+    return (
+      <RootQuickLinkItem onClick={handleClick} {...props} ref={ref}>
+        <div className="icon">
+          <IconRenderer iconId={data.iconId} iconType={data.iconType} />
+        </div>
+        <div className="name">{data.title}</div>
+        <ActionMenu className="actions" data={data} />
+      </RootQuickLinkItem>
+    );
+  }
+);
 
 export default QuickLinkItem;

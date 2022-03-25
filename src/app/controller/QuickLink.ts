@@ -71,6 +71,38 @@ class QuickLinkController {
     if (!id) return 0;
     return await dexieDB.quicklink.update(id as number, { title, url });
   };
+
+  static reorderQuickLink = async (sourceId: number, destId: number) => {
+    return await dexieDB.transaction("rw", dexieDB.quicklink, async () => {
+      const source = await dexieDB.quicklink.get(sourceId);
+      const target = await dexieDB.quicklink.get(destId);
+
+      if (!target || !source) return;
+
+      console.log(source.order, target.order);
+
+      const isIncrement = source.order < target.order;
+      const upperOffset = isIncrement ? source.order : target.order;
+      const lowerOffset = isIncrement ? target.order : source.order;
+
+      console.log("upperOffset", upperOffset);
+      console.log("lowerOffset", lowerOffset);
+
+      await dexieDB.quicklink
+        .where("order")
+        .between(upperOffset, lowerOffset + 1)
+        .modify(async (row) => {
+          if (row.id === source.id) return;
+          console.log(row.title, row.order);
+          console.log(isIncrement ? 1 : -1);
+
+          row.order += isIncrement ? -1 : 1;
+        });
+
+      source.order = target.order;
+      await source.save();
+    });
+  };
 }
 
 export default QuickLinkController;

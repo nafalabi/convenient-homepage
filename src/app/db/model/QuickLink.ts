@@ -8,7 +8,7 @@ class QuickLinkModel {
   iconType?: IconType;
   title?: string;
   refId?: number;
-  order?: number;
+  order: number = -1;
 
   url?: string; // For {this.type == QuickLinkTypes.MANUAL_LINK} only
 

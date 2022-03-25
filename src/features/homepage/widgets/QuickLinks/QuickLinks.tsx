@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { styled } from "@mui/material";
 import QuickLinkItem from "./QuickLinkItem";
 import AddNewQuickLink from "./AddNew";
 import { useLiveQuery } from "dexie-react-hooks";
 import QuickLinkModel from "app/db/model/QuickLink";
 import AppController from "app/controller";
+import { DndView } from "components/DndView";
 
 export const QUICK_LINKS_MAX_ITEM = 12;
 
@@ -32,12 +33,21 @@ const QuickLinks = () => {
     []
   );
 
+  const onMove = useCallback((sourceId, destId) => {
+    AppController.quicklink.reorderQuickLink(sourceId, destId);
+  }, []);
+
   return (
     <RootQuickLinks>
       <div className="row">
-        {list.map((ql) => (
-          <QuickLinkItem data={ql} key={`${ql.id}-${ql.type}`} />
-        ))}
+        <DndView
+          items={list}
+          itemId="id"
+          renderItem={({ itemData, ...props }) => (
+            <QuickLinkItem {...props} data={itemData} />
+          )}
+          onMove={onMove}
+        />
         {list.length < QUICK_LINKS_MAX_ITEM && <AddNewQuickLink />}
       </div>
     </RootQuickLinks>

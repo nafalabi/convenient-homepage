@@ -94,66 +94,78 @@ function TreeNode(props: TreeNodeProps) {
   const leadingIcon = totalChildren < 1 ? <div /> : undefined;
 
   // Drop On Node
-  const [{ handlerId, isNodeHovered }, drop] = useDrop({
-    accept: "node",
-    collect: (monitor: DropTargetMonitor) => {
-      return {
-        handlerId: monitor.getHandlerId(),
-        isNodeHovered: monitor.isOver({ shallow: true }),
-      };
-    },
-    drop: (item: TreeNodeDragItem, monitor) => {
-      const isHovered = monitor.isOver({ shallow: true });
-      if (onNodeDrop && isHovered)
-        onNodeDrop(item.id, nodeId, "INSIDE", nodeIndex);
-    },
-  });
-
-  // Drop Before Node
-  const [{ handlerIdBeforeNode, isBeforeNodeHovered }, dropBeforeNode] =
-    useDrop({
+  const [{ handlerId, isNodeHovered }, drop] = useDrop(
+    {
       accept: "node",
       collect: (monitor: DropTargetMonitor) => {
         return {
-          handlerIdBeforeNode: monitor.getHandlerId(),
-          isBeforeNodeHovered: monitor.isOver({ shallow: true }),
+          handlerId: monitor.getHandlerId(),
+          isNodeHovered: monitor.isOver({ shallow: true }),
         };
       },
       drop: (item: TreeNodeDragItem, monitor) => {
         const isHovered = monitor.isOver({ shallow: true });
         if (onNodeDrop && isHovered)
-          onNodeDrop(item.id, nodeId, "BEFORE", nodeIndex);
+          onNodeDrop(item.id, nodeId, "INSIDE", nodeIndex);
       },
-    });
+    },
+    [onNodeDrop, nodeId]
+  );
+
+  // Drop Before Node
+  const [{ handlerIdBeforeNode, isBeforeNodeHovered }, dropBeforeNode] =
+    useDrop(
+      {
+        accept: "node",
+        collect: (monitor: DropTargetMonitor) => {
+          return {
+            handlerIdBeforeNode: monitor.getHandlerId(),
+            isBeforeNodeHovered: monitor.isOver({ shallow: true }),
+          };
+        },
+        drop: (item: TreeNodeDragItem, monitor) => {
+          const isHovered = monitor.isOver({ shallow: true });
+          if (onNodeDrop && isHovered)
+            onNodeDrop(item.id, nodeId, "BEFORE", nodeIndex);
+        },
+      },
+      [onNodeDrop, nodeId]
+    );
 
   // Drop After Node
-  const [{ handlerIdAfterNode, isAfterNodeHovered }, dropAfterNode] = useDrop({
-    accept: "node",
-    collect: (monitor: DropTargetMonitor) => {
-      return {
-        handlerIdAfterNode: monitor.getHandlerId(),
-        isAfterNodeHovered: monitor.isOver({ shallow: true }),
-      };
+  const [{ handlerIdAfterNode, isAfterNodeHovered }, dropAfterNode] = useDrop(
+    {
+      accept: "node",
+      collect: (monitor: DropTargetMonitor) => {
+        return {
+          handlerIdAfterNode: monitor.getHandlerId(),
+          isAfterNodeHovered: monitor.isOver({ shallow: true }),
+        };
+      },
+      drop: (item: TreeNodeDragItem, monitor) => {
+        const isHovered = monitor.isOver({ shallow: true });
+        if (onNodeDrop && isHovered)
+          onNodeDrop(item.id, nodeId, "AFTER", nodeIndex);
+      },
     },
-    drop: (item: TreeNodeDragItem, monitor) => {
-      const isHovered = monitor.isOver({ shallow: true });
-      if (onNodeDrop && isHovered)
-        onNodeDrop(item.id, nodeId, "AFTER", nodeIndex);
-    },
-  });
+    [onNodeDrop, nodeId]
+  );
 
   // Drag Node
-  const [{ isDragging }, drag, dragPreview] = useDrag({
-    type: "node",
-    item: () => {
-      return { id: nodeId };
+  const [{ isDragging }, drag, dragPreview] = useDrag(
+    {
+      type: "node",
+      item: () => {
+        return { id: nodeId };
+      },
+      collect: (monitor) => {
+        return {
+          isDragging: monitor.isDragging(),
+        };
+      },
     },
-    collect: (monitor) => {
-      return {
-        isDragging: monitor.isDragging(),
-      };
-    },
-  });
+    [nodeId]
+  );
 
   dragPreview(getEmptyImage());
 
