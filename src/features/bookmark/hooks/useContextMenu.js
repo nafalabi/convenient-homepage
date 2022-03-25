@@ -7,7 +7,6 @@ const useContextMenu = (openMenuOnClickBlankArea = false) => {
     mouseY: null,
   });
   const handleClick = (event) => {
-    console.log("clicked");
     event.preventDefault();
     const clickedPosition = {
       mouseX: event.clientX - 2,

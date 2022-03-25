@@ -79,23 +79,15 @@ class QuickLinkController {
 
       if (!target || !source) return;
 
-      console.log(source.order, target.order);
-
       const isIncrement = source.order < target.order;
       const upperOffset = isIncrement ? source.order : target.order;
       const lowerOffset = isIncrement ? target.order : source.order;
-
-      console.log("upperOffset", upperOffset);
-      console.log("lowerOffset", lowerOffset);
 
       await dexieDB.quicklink
         .where("order")
         .between(upperOffset, lowerOffset + 1)
         .modify(async (row) => {
           if (row.id === source.id) return;
-          console.log(row.title, row.order);
-          console.log(isIncrement ? 1 : -1);
-
           row.order += isIncrement ? -1 : 1;
         });
 

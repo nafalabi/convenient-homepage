@@ -26,7 +26,7 @@ const SidebarContextMenu = ({ clickPosition, handleClose, clickedNodeId }) => {
   };
   const handleCloseDialog = () => setDialogOpen(false);
   const deleteBookmarkSafely = async () => {
-    console.log(dispatch(actions.selectBookmark(bookmarkDetail.parentId)));
+    dispatch(actions.selectBookmark(bookmarkDetail.parentId));
     await deleteBookmark();
   };
 
