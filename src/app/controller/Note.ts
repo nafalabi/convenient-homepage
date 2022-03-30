@@ -4,7 +4,12 @@ import dexieDB from "app/db";
 import NoteModel from "app/db/model/Note";
 import NoteContentModel from "app/db/model/NoteContent";
 
-export type NoteListItem = NoteModel & { totalChildren?: number; children?: NoteModel[] };
+export type NoteListItem = NoteModel & {
+  totalChildren?: number;
+  children?: NoteModel[];
+};
+
+export const FIRST_LEVEL_PARENTNOTE_ID = 0;
 
 class NoteController {
   /**
@@ -28,7 +33,9 @@ class NoteController {
       });
       return result;
     };
-    return map(dexieDB.note.where("firstlevel").equals(1));
+    return map(
+      dexieDB.note.where("parentnoteid").equals(FIRST_LEVEL_PARENTNOTE_ID)
+    );
   }
 
   /**
@@ -79,7 +86,7 @@ class NoteController {
    */
   static async updateNoteContent(noteid: string | number, notecontent: string) {
     const noteContent = new NoteContentModel();
-    noteContent.noteid = noteid as number;
+    noteContent.noteid = Number(noteid);
     noteContent.notecontent = notecontent;
     return await noteContent.save();
   }
@@ -127,7 +134,6 @@ class NoteController {
 
         const newNote = new NoteModel();
         newNote.notename = notename;
-        newNote.firstlevel = 0;
         newNote.parentnoteid = Number(parentnoteid);
         newNote.order = order;
         const noteid = await newNote.save();
@@ -152,11 +158,13 @@ class NoteController {
       dexieDB.note,
       dexieDB.notecontent,
       async () => {
-        const order = await dexieDB.note.where("firstlevel").equals(1).count();
+        const order = await dexieDB.note
+          .where("parentnoteid")
+          .equals(FIRST_LEVEL_PARENTNOTE_ID)
+          .count();
 
         const newNote = new NoteModel();
         newNote.notename = notename;
-        newNote.firstlevel = 1;
         newNote.parentnoteid = 0;
         newNote.order = order;
         const noteid = await newNote.save();
@@ -197,62 +205,63 @@ class NoteController {
     noteid: string,
     targetid: string,
     targetType: "BEFORE" | "INSIDE" | "AFTER",
-    targetIndex: number
   ) {
     if (parseInt(noteid) === parseInt(targetid)) return;
 
     await dexieDB
       .transaction("rw", dexieDB.note, async () => {
+        // getting and validating source note
         const note = await this.findNoteById(String(noteid));
-        const targetNote = await this.findNoteById(String(targetid));
+        if (note === undefined) throw Error("Source note does not exist");
 
-        if (note === undefined || targetNote === undefined) return;
-
-        if (await targetNote.isChildOf(note.noteid)) return;
-
+        // Rearrangements of old siblings
+        const totalOldSiblings = await dexieDB.note
+          .where({
+            parentnoteid: note.parentnoteid ?? FIRST_LEVEL_PARENTNOTE_ID,
+          })
+          .count();
         await dexieDB.note
-          .where("parentnoteid")
-          .equals(note.parentnoteid ?? 0)
+          .where(["parentnoteid", "order"])
+          .between(
+            [note.parentnoteid ?? 0, note.order],
+            [note.parentnoteid ?? 0, totalOldSiblings]
+          )
           .modify(async (row) => {
-            if (row.order > note.order) {
-              row.order -= 1;
-            }
+            if (row.order > note.order) row.order -= 1;
           });
 
-        const isTargetFirstLevel =
-          targetNote.parentnoteid === 0 ||
-          targetNote.parentnoteid === undefined;
-        const futureSiblingsCollection = isTargetFirstLevel
-          ? dexieDB.note.where("firstlevel").equals(1)
-          : dexieDB.note
-              .where("parentnoteid")
-              .equals(targetNote.parentnoteid ?? -1);
+        // getting and validating target note
+        const targetNote = await this.findNoteById(String(targetid));
+        if (targetNote === undefined) throw Error("Target note does not exist");
+        if (await targetNote.isChildOf(note.noteid))
+          throw Error("Target note is a descendant of source note");
 
+        // defining variables
+        const nextParentNoteId =
+          targetNote.parentnoteid ?? FIRST_LEVEL_PARENTNOTE_ID;
+        const nextSiblingsCollection = dexieDB.note
+          .where("parentnoteid")
+          .equals(nextParentNoteId);
+
+        // final rearrangements
         switch (targetType) {
           case "BEFORE":
-            await futureSiblingsCollection.modify(async (row) => {
-              if (row.order >= targetIndex) row.order += 1;
+            await nextSiblingsCollection.modify(async (row) => {
+              if (row.order >= targetNote.order) row.order += 1;
             });
-            note.order = targetIndex;
-            note.parentnoteid = isTargetFirstLevel
-              ? 0
-              : targetNote.parentnoteid;
-            note.firstlevel = isTargetFirstLevel ? 1 : 0;
+            note.order = targetNote.order;
+            note.parentnoteid = nextParentNoteId;
             break;
           case "AFTER":
-            await futureSiblingsCollection.modify(async (row) => {
-              if (row.order > targetIndex) row.order += 1;
+            await nextSiblingsCollection.modify(async (row) => {
+              if (row.order > targetNote.order + 1) row.order += 1;
             });
-            note.order = targetIndex + 1;
-            note.parentnoteid = isTargetFirstLevel
-              ? 0
-              : targetNote.parentnoteid;
-            note.firstlevel = isTargetFirstLevel ? 1 : 0;
+            note.order = targetNote.order + 1;
+            note.parentnoteid = nextParentNoteId;
             break;
           case "INSIDE":
             note.order = await targetNote.countChildren();
             note.parentnoteid = targetNote.noteid;
-            note.firstlevel = 0;
             break;
           default:
             break;

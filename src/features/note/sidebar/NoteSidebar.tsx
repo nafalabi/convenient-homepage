@@ -33,7 +33,10 @@ const Sidebar = () => {
     if (!(e.target as HTMLElement).closest(".MuiTreeItem-iconContainer"))
       return;
     setExpandedNoteIds(ids);
-    setTimeout(() => AppController.note.toggleExpandNote(expandedNoteIds, ids), 500);
+    setTimeout(
+      () => AppController.note.toggleExpandNote(expandedNoteIds, ids),
+      500
+    );
   };
 
   const selectNode: TreeViewProps<NoteListItem>["onNodeSelect"] = (e, id) => {
@@ -48,10 +51,9 @@ const Sidebar = () => {
   const onNodeDrop: TreeViewProps<NoteListItem>["onNodeDrop"] = async (
     id,
     targetId,
-    targetType,
-    targetIndex
+    targetType
   ) => {
-    await AppController.note.reorderNote(id, targetId, targetType, targetIndex);
+    await AppController.note.reorderNote(id, targetId, targetType);
   };
 
   return (

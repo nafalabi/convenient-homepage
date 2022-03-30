@@ -13,8 +13,8 @@ export class DexieDB extends Dexie {
   constructor() {
     super("convenient-homepage");
 
-    this.version(28).stores({
-      note: "++noteid, notename, firstlevel, parentnoteid, expanded, [parentnoteid+notename], order",
+    this.version(32).stores({
+      note: "++noteid, notename, parentnoteid, expanded, [parentnoteid+notename], order, [parentnoteid+order]",
       notecontent: "&noteid",
       backgroundimage: "++id, active, activated_at, provider",
       quicklink: "++id, order",
