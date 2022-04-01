@@ -18,15 +18,9 @@ const Bookmark = () => {
         open={isOpen}
         toggle={() => dispatch(actions.toggleBookmark())}
         title="Bookmarks"
-        ToolbarItemComponent={({ dialogRef }) => (
-          <BookmarkToolbar dialogRef={dialogRef} />
-        )}
-        SidebarComponent={({ dialogRef }) => (
-          <BookmarkSidebar dialogRef={dialogRef} />
-        )}
-        ContentComponent={({ dialogRef }) => (
-          <BookmarkMain dialogRef={dialogRef} />
-        )}
+        ToolbarItemComponent={({ dialogRef }) => <BookmarkToolbar />}
+        SidebarComponent={({ dialogRef }) => <BookmarkSidebar />}
+        ContentComponent={({ dialogRef }) => <BookmarkMain />}
       />
     </DndProvider>
   );

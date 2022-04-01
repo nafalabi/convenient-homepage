@@ -8,9 +8,19 @@ import {
 } from "@mui/material";
 import { Bookmark } from "@mui/icons-material";
 
-const DialogDeleteBookmark = ({ action, handleClose, bookmarkDetail }) => {
-  const bookmarkDomain = bookmarkDetail.url
-    ? new URL(bookmarkDetail.url).hostname
+export interface DialogDeleteBookmarkProps {
+  action: () => void;
+  handleClose: () => void;
+  bookmarkDetail: chrome.bookmarks.BookmarkTreeNode | null;
+}
+
+const DialogDeleteBookmark = ({
+  action,
+  handleClose,
+  bookmarkDetail,
+}: DialogDeleteBookmarkProps) => {
+  const bookmarkDomain = bookmarkDetail?.url
+    ? new URL(bookmarkDetail?.url).hostname
     : "";
   const favIcon = bookmarkDomain ? (
     <img
@@ -36,7 +46,7 @@ const DialogDeleteBookmark = ({ action, handleClose, bookmarkDetail }) => {
           Are you sure to delete this bookmark?
         </DialogContentText>
         <DialogContentText>
-          {favIcon} {bookmarkDetail.title}
+          {favIcon} {bookmarkDetail?.title}
         </DialogContentText>
       </DialogContent>
       <DialogActions>

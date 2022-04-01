@@ -11,7 +11,7 @@ import HomeGreeting from "./HomeGreeting";
 import ContextMenu from "./ContextMenu";
 import IconRenderer from "components/IconRenderer";
 import { IconType } from "constant";
-import { reorderBookmark } from "../utils";
+import AppController from "app/controller";
 
 const GridLayout = () => {
   const id = useSelector(selectors.selectedBookmark);
@@ -21,7 +21,7 @@ const GridLayout = () => {
 
   return (
     <>
-      {parseInt(id) === 0 && <HomeGreeting />}
+      {Number(id) === 0 && <HomeGreeting />}
       <Grid
         container
         spacing={2}
@@ -50,7 +50,15 @@ const GridLayout = () => {
 
 export default GridLayout;
 
-export const GridLayoutItem = ({ bookmark, nodeIndex, isLastItem }) => {
+export const GridLayoutItem = ({
+  bookmark,
+  nodeIndex,
+  isLastItem,
+}: {
+  bookmark: chrome.bookmarks.BookmarkTreeNode;
+  nodeIndex: number;
+  isLastItem: boolean;
+}) => {
   const dispatch = useDispatch();
   const bookmarkDomain = bookmark.url ? new URL(bookmark.url).hostname : "";
   const isFolder = bookmark.url === undefined;
@@ -70,9 +78,15 @@ export const GridLayoutItem = ({ bookmark, nodeIndex, isLastItem }) => {
         isNodeHovered: monitor.isOver({ shallow: true }),
       };
     },
-    drop: (item, monitor) => {
+    drop: (item: { id: string }, monitor) => {
       const isHovered = monitor.isOver({ shallow: true });
-      if (isHovered) reorderBookmark(item.id, bookmark.id, "INSIDE", nodeIndex);
+      if (isHovered)
+        AppController.bookmark.reorderBookmark(
+          item.id,
+          bookmark.id,
+          "INSIDE",
+          nodeIndex
+        );
     },
   });
 
@@ -92,10 +106,12 @@ export const GridLayoutItem = ({ bookmark, nodeIndex, isLastItem }) => {
 
   dragPreview(getEmptyImage());
 
+  const contextMenuData = { data: bookmark.id };
+
   return (
     <Grid item key={bookmark.id}>
       <Paper
-        ref={(ref) => {
+        ref={(ref: HTMLButtonElement) => {
           drag(ref);
           drop(ref);
         }}
@@ -128,10 +144,10 @@ export const GridLayoutItem = ({ bookmark, nodeIndex, isLastItem }) => {
             width="90px"
             height="80px"
             overflow="hidden"
-            data={bookmark.id}
+            {...contextMenuData}
           >
             <Box
-              data={bookmark.id}
+              {...contextMenuData}
               display="flex"
               mt={isFolder ? "0px" : "4px"}
               mb="4px"
@@ -153,7 +169,7 @@ export const GridLayoutItem = ({ bookmark, nodeIndex, isLastItem }) => {
                 textTransform: "none",
                 lineHeight: 1.3,
               }}
-              data={bookmark.id}
+              {...contextMenuData}
             >
               {bookmark.title}
             </Typography>

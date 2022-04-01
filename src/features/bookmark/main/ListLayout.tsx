@@ -19,31 +19,33 @@ import { useEffect } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import DroppableLine from "components/TreeViewDnd/DroppableLine";
-import { reorderBookmark } from "../utils";
+import AppController from "app/controller";
 
 const ListLayout = () => {
   const id = useSelector(selectors.selectedBookmark);
   const bookmarks = useSubscribeOneLevelBookmarks(id);
   const { handleClick, handleClose, clickPosition, clickedNodeId } =
     useContextMenu(true);
-  const rootRef = useRef();
+  const rootRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const el = rootRef.current;
     if (el) {
       const rootContainer = el.parentElement;
-      rootContainer.setAttribute("data", id);
-      rootContainer.addEventListener("contextmenu", handleClick);
+      rootContainer?.setAttribute("data", String(id));
+      rootContainer?.addEventListener("contextmenu", handleClick as any);
       return () =>
-        rootContainer.removeEventListener("contextmenu", handleClick);
+        rootContainer?.removeEventListener("contextmenu", handleClick as any);
     }
   }, [rootRef, handleClick, id]);
 
+  const contextMenuData = { data: id };
+
   return (
-    <div ref={rootRef} data={id}>
-      {parseInt(id) === 0 && <HomeGreeting />}
+    <div ref={rootRef} {...contextMenuData} onContextMenu={handleClick}>
+      {Number(id) === 0 && <HomeGreeting />}
       {bookmarks.length === 0 && <EmptyFolder />}
-      <List dense onContextMenu={handleClick}>
+      <List dense>
         {bookmarks.map((bookmark, index) => (
           <ListLayoutItem
             bookmark={bookmark}
@@ -64,7 +66,15 @@ const ListLayout = () => {
 
 export default ListLayout;
 
-const ListLayoutItem = ({ bookmark, nodeIndex, isLastItem }) => {
+const ListLayoutItem = ({
+  bookmark,
+  nodeIndex,
+  isLastItem,
+}: {
+  bookmark: chrome.bookmarks.BookmarkTreeNode;
+  nodeIndex: number;
+  isLastItem: boolean;
+}) => {
   const dispatch = useDispatch();
   const bookmarkDomain = bookmark.url ? new URL(bookmark.url).hostname : "";
   const isFolder = bookmark.url === undefined;
@@ -80,9 +90,15 @@ const ListLayoutItem = ({ bookmark, nodeIndex, isLastItem }) => {
         isNodeHovered: monitor.isOver({ shallow: true }),
       };
     },
-    drop: (item, monitor) => {
+    drop: (item: { id: string }, monitor) => {
       const isHovered = monitor.isOver({ shallow: true });
-      if (isHovered) reorderBookmark(item.id, bookmark.id, "INSIDE", nodeIndex);
+      if (isHovered)
+        AppController.bookmark.reorderBookmark(
+          item.id,
+          bookmark.id,
+          "INSIDE",
+          nodeIndex
+        );
     },
   });
 
@@ -96,10 +112,15 @@ const ListLayoutItem = ({ bookmark, nodeIndex, isLastItem }) => {
           isBeforeNodeHovered: monitor.isOver({ shallow: true }),
         };
       },
-      drop: (item, monitor) => {
+      drop: (item: { id: string }, monitor) => {
         const isHovered = monitor.isOver({ shallow: true });
         if (isHovered)
-          reorderBookmark(item.id, bookmark.id, "BEFORE", nodeIndex);
+          AppController.bookmark.reorderBookmark(
+            item.id,
+            bookmark.id,
+            "BEFORE",
+            nodeIndex
+          );
       },
     });
 
@@ -112,9 +133,15 @@ const ListLayoutItem = ({ bookmark, nodeIndex, isLastItem }) => {
         isAfterNodeHovered: monitor.isOver({ shallow: true }),
       };
     },
-    drop: (item, monitor) => {
+    drop: (item: { id: string }, monitor) => {
       const isHovered = monitor.isOver({ shallow: true });
-      if (isHovered) reorderBookmark(item.id, bookmark.id, "AFTER", nodeIndex);
+      if (isHovered)
+        AppController.bookmark.reorderBookmark(
+          item.id,
+          bookmark.id,
+          "AFTER",
+          nodeIndex
+        );
     },
   });
 
@@ -134,6 +161,8 @@ const ListLayoutItem = ({ bookmark, nodeIndex, isLastItem }) => {
 
   dragPreview(getEmptyImage());
 
+  const contextMenuData = { data: bookmark.id };
+
   return (
     <Tooltip title={bookmark.title} enterDelay={1000}>
       <>
@@ -148,7 +177,8 @@ const ListLayoutItem = ({ bookmark, nodeIndex, isLastItem }) => {
             drag(ref);
             drop(ref);
           }}
-          data={bookmark.id}
+          // data={bookmark.id}
+          {...contextMenuData}
           button
           onClick={() => {
             if (isFolder) {
@@ -190,7 +220,8 @@ const ListLayoutItem = ({ bookmark, nodeIndex, isLastItem }) => {
                 whiteSpace: "nowrap",
                 textOverflow: "ellipsis",
               },
-              data: bookmark.id,
+              // data: bookmark.id,
+              ...contextMenuData,
             }}
           />
         </ListItem>

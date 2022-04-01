@@ -1,7 +1,16 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getBookmarkDetails } from "./utils";
+import { createSlice, Dispatch } from "@reduxjs/toolkit";
+import AppController from "app/controller";
+import { DefaultRootState } from "react-redux";
 
-const initialState = {
+export interface BookmarkSliceState {
+  isOpen: boolean;
+  selectedBookmark: number | string;
+  folderStack: chrome.bookmarks.BookmarkTreeNode[];
+  layout: { mode: "list" | "grid" };
+  expandedTreeNodeIds: string[];
+}
+
+const initialState: BookmarkSliceState = {
   isOpen: false,
   selectedBookmark: 0,
   folderStack: [],
@@ -48,13 +57,15 @@ const slice = createSlice({
 export const actions = {
   ...slice.actions,
 
-  selectBookmark: (id) => async (dispatch) => {
+  selectBookmark: (id?: string | number) => async (dispatch: Dispatch) => {
     const newFolderStack = [];
 
     let loopId = id;
     do {
       if (String(loopId) === "0") break;
-      const bookmarkData = await getBookmarkDetails(loopId);
+      const bookmarkData = await AppController.bookmark.getBookmarkDetails(
+        loopId ?? 0
+      );
       newFolderStack.push(bookmarkData);
       loopId = bookmarkData.parentId;
     } while (loopId);
@@ -67,11 +78,13 @@ export const actions = {
 };
 
 export const selectors = {
-  isOpen: ({ bookmark }) => bookmark.isOpen,
-  selectedBookmark: ({ bookmark }) => bookmark.selectedBookmark,
-  folderStack: ({ bookmark }) => bookmark.folderStack,
-  layoutMode: ({ bookmark }) => bookmark.layout.mode,
-  expandedTreeNodeIds: ({ bookmark }) => bookmark.expandedTreeNodeIds,
+  isOpen: ({ bookmark }: DefaultRootState) => bookmark.isOpen,
+  selectedBookmark: ({ bookmark }: DefaultRootState) =>
+    bookmark.selectedBookmark,
+  folderStack: ({ bookmark }: DefaultRootState) => bookmark.folderStack,
+  layoutMode: ({ bookmark }: DefaultRootState) => bookmark.layout.mode,
+  expandedTreeNodeIds: ({ bookmark }: DefaultRootState) =>
+    bookmark.expandedTreeNodeIds,
 };
 
 export default slice.reducer;

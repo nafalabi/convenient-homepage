@@ -2,6 +2,13 @@ import { TreeItemProps } from "@mui/lab";
 import { FC, SyntheticEvent } from "react";
 import { IconType } from "constant";
 
+export type onNodeDropTreeView = (
+  id: string,
+  targetId: string,
+  targetType: "BEFORE" | "INSIDE" | "AFTER",
+  targetIndex: number
+) => void;
+
 export interface TreeViewProps<TItem> {
   list: TItem[];
   /**
@@ -28,12 +35,7 @@ export interface TreeViewProps<TItem> {
   /**
    * Callback function that will be called upon drag n droping a node
    */
-  onNodeDrop?: (
-    id: string,
-    targetId: string,
-    targetType: "BEFORE" | "INSIDE" | "AFTER",
-    targetIndex: number
-  ) => void;
+  onNodeDrop?: onNodeDropTreeView;
   /**
    * Callback function that will transform each row in the list to be renderable by the TreeView
    */
@@ -57,12 +59,7 @@ export interface TreeNodeProps extends TreeItemProps {
   totalChildren: number;
   isLastItem?: boolean;
   nodeIndex: number;
-  onNodeDrop?: (
-    id: string,
-    targetId: string,
-    targetType: "BEFORE" | "INSIDE" | "AFTER",
-    targetIndex: number
-  ) => void;
+  onNodeDrop?: onNodeDropTreeView;
 }
 
 export interface TreeNodeDragItem {

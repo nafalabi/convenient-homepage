@@ -7,8 +7,19 @@ import DialogAddBookmark from "../dialogs/addBookmark";
 import DialogAddBookmarkFolder from "../dialogs/addFolder";
 import { useDispatch } from "react-redux";
 import { actions } from "../slice";
+import { ClickPositionVal } from "../hooks/useContextMenu";
 
-const ContextMenu = ({ clickPosition, handleClose, clickedNodeId }) => {
+export interface ContextMenuProps {
+  clickPosition: ClickPositionVal;
+  handleClose: () => void;
+  clickedNodeId: string | null;
+}
+
+const ContextMenu = ({
+  clickPosition,
+  handleClose,
+  clickedNodeId,
+}: ContextMenuProps) => {
   const dispatch = useDispatch();
   const {
     bookmarkDetail,
@@ -16,17 +27,17 @@ const ContextMenu = ({ clickPosition, handleClose, clickedNodeId }) => {
     createBookmark,
     editBookmark,
     deleteBookmark,
-  } = useBookmarksActions(clickedNodeId);
+  } = useBookmarksActions(clickedNodeId ?? "0");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [openedDialog, setOpenedDialog] = useState(-1);
-  const openDialog = (type) => (e) => {
+  const openDialog = (type: number) => (e: React.SyntheticEvent) => {
     setOpenedDialog(type);
     handleClose();
     setDialogOpen(true);
   };
   const handleCloseDialog = () => setDialogOpen(false);
   const deleteBookmarkSafely = async () => {
-    await dispatch(actions.selectBookmark(bookmarkDetail.parentId));
+    await dispatch(actions.selectBookmark(bookmarkDetail?.parentId));
     await deleteBookmark();
   };
 

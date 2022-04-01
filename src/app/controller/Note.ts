@@ -204,7 +204,7 @@ class NoteController {
   static async reorderNote(
     noteid: string,
     targetid: string,
-    targetType: "BEFORE" | "INSIDE" | "AFTER",
+    targetType: "BEFORE" | "INSIDE" | "AFTER"
   ) {
     if (parseInt(noteid) === parseInt(targetid)) return;
 

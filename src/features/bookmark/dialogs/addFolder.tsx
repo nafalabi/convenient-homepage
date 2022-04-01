@@ -8,7 +8,15 @@ import {
 import { useFormik } from "formik";
 import React from "react";
 
-const DialogAddBookmarkFolder = ({ action, handleClose }) => {
+export interface DialogAddBookmarkFolderProps {
+  action: (title: string) => void;
+  handleClose: () => void;
+}
+
+const DialogAddBookmarkFolder = ({
+  action,
+  handleClose,
+}: DialogAddBookmarkFolderProps) => {
   const formik = useFormik({
     initialValues: {
       title: "",

@@ -3,7 +3,6 @@ import { DefaultRootState } from "react-redux";
 import db from "app/db";
 import NoteModel from "app/db/model/Note";
 import { actions as settingsActions } from "features/settings/slice";
-import store from "app/redux/store";
 
 export const NOTE_HOME = 0;
 

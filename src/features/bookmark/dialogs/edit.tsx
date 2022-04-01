@@ -8,15 +8,25 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 
-const DialogEditBookmark = ({ action, handleClose, bookmarkDetail }) => {
+interface DialogEditBookmarkProps {
+  action: (title: string, url: string | undefined) => void;
+  handleClose: () => void;
+  bookmarkDetail: chrome.bookmarks.BookmarkTreeNode | null;
+}
+
+const DialogEditBookmark = ({
+  action,
+  handleClose,
+  bookmarkDetail,
+}: DialogEditBookmarkProps) => {
   const formik = useFormik({
     initialValues: {
-      title: bookmarkDetail.title,
-      url: bookmarkDetail.url,
+      title: bookmarkDetail?.title ?? "",
+      url: bookmarkDetail?.url,
     },
     onSubmit: async (values) => {
       action(values.title, values.url);
-			handleClose();
+      handleClose();
     },
   });
 
@@ -36,7 +46,7 @@ const DialogEditBookmark = ({ action, handleClose, bookmarkDetail }) => {
           onChange={formik.handleChange}
           value={formik.values.title}
         />
-        {bookmarkDetail.url && (
+        {bookmarkDetail?.url && (
           <TextField
             autoFocus
             margin="dense"
