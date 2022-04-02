@@ -51,6 +51,11 @@ self.addEventListener("fetch", function (e) {
   if (cacheStorage.backgroundImage.cacheableHosts.includes(url.hostname)) {
     e.respondWith(cacheStorage.backgroundImage.getOrSet(e.request.url));
   }
+
+  if (cacheStorage.favicon.cacheableHosts.includes(url.hostname)) {
+    if (cacheStorage.favicon.cacheableUrlPaths.includes(url.pathname))
+      e.respondWith(cacheStorage.favicon.getOrSet(e.request.url));
+  }
 });
 
 // merely to satisfy the linter

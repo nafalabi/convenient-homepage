@@ -1,5 +1,15 @@
-export abstract class CacheStore {
-  static cacheableHosts: string[];
-  static getOrSet: (req: string | Request) => Promise<Response>;
-  static clearCache: () => Promise<boolean>;
+export interface CacheStoreConfig {
+  cacheName: string;
+  cacheableHosts?: string[];
+  cacheableUrlPaths?: string[];
+}
+
+export interface CacheStore {
+  cacheName: string;
+  cacheableHosts: string[];
+  cacheableUrlPaths: string[];
+  set: (req: string | Request, res: Response) => Promise<Response>;
+  get: (req: string | Request) => Promise<Response | undefined>;
+  getOrSet: (req: string | Request) => Promise<Response>;
+  clearCache: () => Promise<boolean>;
 }
