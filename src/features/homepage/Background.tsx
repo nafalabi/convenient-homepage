@@ -19,7 +19,7 @@ const HomepageRoot = styled.div`
   top: 0;
   margin: 0;
   opacity: 0;
-  transition: background-image 0.5s ease;
+  transition: all 0.5s ease;
 
   &::before {
     content: " ";
