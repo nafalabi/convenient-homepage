@@ -65,8 +65,10 @@ class BookmarkController {
 
     const targetBookmark = await this.getBookmarkDetails(targetId);
 
-    // Check if target is a child of source
-    let isChildOfSource = false;
+    if (targetBookmark.url && targetType === "INSIDE") return;
+
+    // Check if target is a descendant of source
+    let isDescendantOfSource = false;
     let seqid = targetBookmark.parentId;
     while (true) {
       if (
@@ -76,23 +78,23 @@ class BookmarkController {
         seqid === "2" ||
         seqid === "3"
       ) {
-        isChildOfSource = false;
+        isDescendantOfSource = false;
         break;
       }
       if (seqid === nodeId) {
-        isChildOfSource = true;
+        isDescendantOfSource = true;
         break;
       }
       const parent = await this.getBookmarkDetails(seqid);
       if (parent === undefined) {
-        isChildOfSource = false;
+        isDescendantOfSource = false;
         break;
       }
       seqid = parent.parentId;
     }
 
-    // if the target a child of source, skip
-    if (isChildOfSource) return;
+    // if the target a descendant of source, skip
+    if (isDescendantOfSource) return;
 
     let parentId = targetType === "INSIDE" ? targetId : targetBookmark.parentId;
     let index = targetType === "INSIDE" ? 0 : targetIndex;
