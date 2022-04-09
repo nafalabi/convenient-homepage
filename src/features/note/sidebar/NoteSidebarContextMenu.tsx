@@ -29,11 +29,13 @@ const NoteSidebarContextMenu = ({
   clickPosition,
   clickedNodeId,
 }: Props) => {
-  const noteDetails = useFetchNoteData(clickedNodeId);
+  const { noteData } = useFetchNoteData(clickedNodeId);
   const { updateNoteName, addSubNote, deleteNote, updateNoteIcon } =
     useNoteActions(clickedNodeId as string);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [openedDialog, setOpenedDialog] = useState<ContextMenuDialogs>(-1);
+  const [openedDialog, setOpenedDialog] = useState<ContextMenuDialogs>(
+    ContextMenuDialogs.NONE
+  );
   const openDialog = (type: ContextMenuDialogs) => (e: SyntheticEvent) => {
     setOpenedDialog(type);
     handleClose();
@@ -45,7 +47,7 @@ const NoteSidebarContextMenu = ({
     <>
       <Menu
         keepMounted
-        open={clickPosition.mouseY !== null && noteDetails != null}
+        open={clickPosition.mouseY !== null && noteData != null}
         onClose={handleClose}
         anchorReference="anchorPosition"
         anchorPosition={
@@ -72,28 +74,28 @@ const NoteSidebarContextMenu = ({
         {openedDialog === ContextMenuDialogs.ADD_SUB_NOTE && (
           <DialogAddSubNote
             handleClose={handleCloseDialog}
-            noteDetails={noteDetails}
+            noteDetails={noteData}
             action={addSubNote}
           />
         )}
         {openedDialog === ContextMenuDialogs.DELETE_NOTE && (
           <DialogDeleteNote
             handleClose={handleCloseDialog}
-            noteDetails={noteDetails}
+            noteDetails={noteData}
             action={deleteNote}
           />
         )}
         {openedDialog === ContextMenuDialogs.RENAME_NOTE && (
           <DialogRenameNote
             handleClose={handleCloseDialog}
-            noteDetails={noteDetails}
+            noteDetails={noteData}
             action={updateNoteName}
           />
         )}
         {openedDialog === ContextMenuDialogs.CHANGE_ICON && (
           <DialogChangeIcon
             handleClose={handleCloseDialog}
-            noteDetails={noteDetails}
+            noteDetails={noteData}
             action={updateNoteIcon}
           />
         )}

@@ -3,13 +3,11 @@ import Greeting from "./widgets/Greeting/Greeeting";
 import { actions } from "./slice";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "@emotion/styled";
-import { useLiveQuery } from "dexie-react-hooks";
 import ImageInfo from "./widgets/ImageInfo/ImageInfo";
-import AppController from "app/controller";
-import { IBackgroundImage } from "app/db/model/BackgroundImage";
 import SearchField from "./widgets/SearchField/SearchField";
 import Clock from "./widgets/Clock/Clock";
 import QuickLinks from "./widgets/QuickLinks/QuickLinks";
+import useSubscribeBackground from "./hooks/useSubscribeBackground";
 
 const HomepageRoot = styled.div`
   background-size: cover;
@@ -19,7 +17,7 @@ const HomepageRoot = styled.div`
   top: 0;
   margin: 0;
   opacity: 0;
-  transition: all 0.5s ease;
+  transition: background-image 0.5s ease, opacity 0.5s ease;
 
   &::before {
     content: " ";
@@ -44,11 +42,6 @@ const HomepageRoot = styled.div`
   }
 `;
 
-const blankBackground: IBackgroundImage = {
-  image_url:
-    "data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==",
-};
-
 const Background = (props: { alreadySetup: boolean }) => {
   const dispatch = useDispatch();
 
@@ -58,14 +51,7 @@ const Background = (props: { alreadySetup: boolean }) => {
 
   const initialized = useSelector(({ homepage }) => homepage.initialized);
 
-  const background = useLiveQuery(
-    async () => {
-      const result = await AppController.backgroundimage.getCurActiveImage();
-      return result ? result : blankBackground;
-    },
-    [initialized],
-    blankBackground
-  );
+  const background = useSubscribeBackground(initialized);
 
   return (
     <HomepageRoot

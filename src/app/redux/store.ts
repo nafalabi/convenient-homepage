@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, Dispatch } from "@reduxjs/toolkit";
 import homepageReducer from "features/homepage/slice";
 import drawerReducer from "features/drawer/slice";
 import noteReducer from "features/note/slice";
@@ -26,3 +26,5 @@ export type RootState = ReturnType<typeof store.getState>;
 declare module "react-redux" {
   interface DefaultRootState extends RootState {}
 }
+
+export type AppThunks = (dispatch: Dispatch, getState: () => RootState) => any;

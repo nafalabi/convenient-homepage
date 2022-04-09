@@ -6,19 +6,25 @@ import NoteModel from "app/db/model/Note";
 /**
  * Get details of a note
  * @param noteid the id of the note
- * @returns Returns Note details on success, undefined on not found, and null when not loaded yet
  */
 const useFetchNoteData = (noteid: string | null) => {
+  const [isLoading, setLoading] = useState(true);
   const [noteData, setNoteData] = useState<
     (NoteContentModel & NoteModel) | null | undefined
   >(null);
 
   useEffect(() => {
-    if (noteid !== null)
-      AppController.note.fetchNoteData(noteid).then((val) => setNoteData(val));
-  }, [noteid, setNoteData]);
+    setLoading(true);
 
-  return noteData;
+    if (noteid !== null) {
+      AppController.note.fetchNoteData(noteid).then((val) => {
+        setNoteData(val);
+        setLoading(false);
+      });
+    }
+  }, [noteid]);
+
+  return { noteData, isLoading };
 };
 
 export default useFetchNoteData;

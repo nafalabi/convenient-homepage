@@ -8986,10 +8986,10 @@ os-browserify@^0.3.0:
   resolved "https://registry.yarnpkg.com/os-browserify/-/os-browserify-0.3.0.tgz#854373c7f5c2315914fc9bfc6bd8238fdda1ec27"
   integrity sha1-hUNzx/XCMVkU/Jv8a9gjj92h7Cc=
 
-outline-icons@^1.26.1:
-  version "1.34.0"
-  resolved "https://registry.yarnpkg.com/outline-icons/-/outline-icons-1.34.0.tgz#2cd02e55abfd28a7afa594d994dbefaf427b5747"
-  integrity sha512-7UN+gGB0o3Z37cfRHEucfsYjrggjCuzpmJxhVJ4/WFRV/+ZfwGSyiosY6SYKhao0E5kHPYYaEGSWpylHWHrTww==
+outline-icons@^1.38.1:
+  version "1.41.1"
+  resolved "https://registry.yarnpkg.com/outline-icons/-/outline-icons-1.41.1.tgz#a56968fb3f955c692dcb0b4aeb17894ff2649ff4"
+  integrity sha512-acYnKEb9FIS781IVL9gfE51NwFXTB+q0ibPFIOEjpQRN47xkf/8ixrt9Mm/y/o6VNe71O226Do74OGmN5jBWdA==
 
 p-each-series@^2.1.0:
   version "2.2.0"
@@ -10986,10 +10986,10 @@ rgba-regex@^1.0.0:
   resolved "https://registry.yarnpkg.com/rgba-regex/-/rgba-regex-1.0.0.tgz#43374e2e2ca0968b0ef1523460b7d730ff22eeb3"
   integrity sha1-QzdOLiyglosO8VI0YLfXMP8i7rM=
 
-rich-markdown-editor@^11.19.4:
-  version "11.20.0"
-  resolved "https://registry.yarnpkg.com/rich-markdown-editor/-/rich-markdown-editor-11.20.0.tgz#6c02f8c7576caf56ac8eb8f3800333e809815839"
-  integrity sha512-7tQBPPhO27JVAPzjXRmaxWOqDQqNn5wf4z46oD1haOxD2zX6gGcoOpE7fcRH3TzkHVx52UWc2qxuInf0YBnk9Q==
+rich-markdown-editor@^11.21.3:
+  version "11.21.3"
+  resolved "https://registry.yarnpkg.com/rich-markdown-editor/-/rich-markdown-editor-11.21.3.tgz#9c1fc32d10e75c1adf53e7fda7d4a72be52f3363"
+  integrity sha512-XqVDfwDiGMVVtb+HUY35FQvfo97ECAe+Pgo1veFiYiL5f9Jfp9zuF6fOK5eze9h8rApBsgD9iVHEsA8/gyv5Jg==
   dependencies:
     copy-to-clipboard "^3.0.8"
     fuzzy-search "^3.2.1"
@@ -10998,7 +10998,7 @@ rich-markdown-editor@^11.19.4:
     markdown-it "^12.2.0"
     markdown-it-container "^3.0.0"
     markdown-it-emoji "^2.0.0"
-    outline-icons "^1.26.1"
+    outline-icons "^1.38.1"
     prosemirror-commands "^1.1.6"
     prosemirror-dropcursor "^1.3.3"
     prosemirror-gapcursor "^1.1.5"

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
 import debounce from "@mui/utils/debounce";
@@ -9,8 +9,11 @@ import { IconData } from "components/IconPicker/types";
 const useNoteActions = (noteid?: number | string) => {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const [touched, setTouched] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
+  const [modifiedContent, setModifiedContent] = useState("");
+
+  useEffect(() => {
+    setModifiedContent("");
+  }, [noteid]);
 
   const updateNoteName = useCallback(
     (value) => {
@@ -22,23 +25,38 @@ const useNoteActions = (noteid?: number | string) => {
     [noteid]
   );
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const updateNoteContent = useCallback(
-    debounce((getData: () => string) => {
-      if (!noteid) return;
-      !touched && setTouched(true);
-      !isSaving && setIsSaving(true);
-      setTimeout(async () => {
-        try {
-          const notecontent = getData();
-          await AppController.note.updateNoteContent(noteid as number, notecontent);
-        } catch (error) {
-          console.log(error);
-        }
-        setIsSaving(false);
-      }, 300);
-    }, 1000),
-    [noteid, touched, isSaving, setTouched, setIsSaving]
+  const saveContent = useMemo(
+    () =>
+      debounce(() => {
+        if (!noteid) return;
+        if (!modifiedContent) return;
+
+        dispatch(actions.setIsSaving(true));
+
+        setTimeout(async () => {
+          try {
+            await AppController.note.updateNoteContent(
+              noteid as number,
+              modifiedContent
+            );
+          } catch (error) {
+            console.log(error);
+          }
+
+          dispatch(actions.setIsSaving(false));
+          dispatch(actions.setIsModified(false));
+        }, 300);
+      }, 300),
+    [dispatch, modifiedContent, noteid]
+  );
+
+  const modifyContent = useMemo(
+    () =>
+      debounce((getData: () => string) => {
+        dispatch(actions.setIsModified(true));
+        setModifiedContent(getData());
+      }, 500),
+    [dispatch]
   );
 
   const onSearchLink = useCallback(async (term) => {
@@ -133,14 +151,14 @@ const useNoteActions = (noteid?: number | string) => {
 
   return {
     updateNoteName,
-    updateNoteContent,
+    saveContent,
+    modifyContent,
+    modifiedContent,
     updateNoteIcon,
     onSearchLink,
     addSubNote,
     deleteNote,
     uploadImage,
-    touched,
-    isSaving,
     onClickLink,
   };
 };

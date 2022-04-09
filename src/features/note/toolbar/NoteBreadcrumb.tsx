@@ -1,6 +1,6 @@
 import React from "react";
 import { Breadcrumbs, darken, Link, useTheme } from "@mui/material";
-import withStyles from '@mui/styles/withStyles';
+import withStyles from "@mui/styles/withStyles";
 import { Home, NavigateNext } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "../slice";
@@ -26,6 +26,7 @@ const NoteBreadcrumb = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const noteStack = useSelector(selectors.noteStack);
+  const isModified = useSelector(({ note }) => note.isModified);
 
   return (
     <StyledBreadcrumbs
@@ -53,6 +54,7 @@ const NoteBreadcrumb = () => {
                 dispatch(actions.selectNote(noteData.noteid));
             }}
           >
+            {index + 1 === noteStack.length && isModified ? "*" : null}
             {noteData.notename}
           </Link>
         );

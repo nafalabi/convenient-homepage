@@ -1,15 +1,27 @@
-import { createSlice, Dispatch } from "@reduxjs/toolkit";
+import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
 import { DefaultRootState } from "react-redux";
 import db from "app/db";
-import NoteModel from "app/db/model/Note";
 import { actions as settingsActions } from "features/settings/slice";
+import { AppThunks } from "app/redux/store";
+import {
+  setPreventWindowUnload,
+  unsetPreventWindowUnload,
+} from "app/utils/preventWindowUnload";
 
 export const NOTE_HOME = 0;
 
+export interface NoteStackItem {
+  noteid: number;
+  notename: string;
+}
+
 const initialState = {
   isOpen: false,
-  selectedNote: NOTE_HOME,
-  noteStack: [], // for breadcrumb
+  selectedNoteId: NOTE_HOME,
+  noteStack: [] as NoteStackItem[],
+
+  isModified: false,
+  isSaving: false,
 };
 
 const slice = createSlice({
@@ -19,41 +31,81 @@ const slice = createSlice({
     toggleNote: (state) => {
       state.isOpen = !state.isOpen;
     },
-    selectNote: (state, { payload: noteId }) => {
-      state.selectedNote = noteId;
+
+    selectNote: (state, { payload: noteId }: PayloadAction<number>) => {
+      state.selectedNoteId = noteId;
     },
-    replaceNoteStack: (state, { payload: newStack }) => {
+
+    replaceNoteStack: (
+      state,
+      { payload: newStack }: PayloadAction<NoteStackItem[]>
+    ) => {
       state.noteStack = newStack;
+    },
+
+    setIsModified: (state, { payload }: PayloadAction<boolean>) => {
+      state.isModified = payload;
+    },
+
+    setIsSaving: (state, { payload }: PayloadAction<boolean>) => {
+      state.isSaving = payload;
     },
   },
 });
 
 export const actions = {
   ...slice.actions,
-  selectNote: (noteId?: number) => (dispatch: Dispatch) => {
-    dispatch(slice.actions.selectNote(noteId));
 
-    // Processing Breadcrumb
-    (async () => {
-      const newNoteStack = [];
+  selectNote:
+    (noteId?: number): AppThunks =>
+    (dispatch, getState) => {
+      if (!noteId) return;
 
-      let loopId = noteId;
+      const {
+        note: { isModified },
+      } = getState();
 
-      while (loopId) {
-        const noteData = await db.note.where({ noteid: loopId }).first();
-        if (!noteData) break;
-        newNoteStack.push({
-          noteid: noteData.noteid,
-          notename: noteData.notename,
-        });
-        loopId = noteData.parentnoteid;
+      if (isModified) {
+        const isConfirmed = window.confirm(
+          "Changes on the current note is still not saved, are you sure want to discard it?"
+        );
+
+        if (!isConfirmed) return;
+        dispatch(slice.actions.setIsModified(false));
       }
 
-      newNoteStack.reverse();
+      dispatch(slice.actions.selectNote(noteId));
 
-      dispatch(slice.actions.replaceNoteStack(newNoteStack));
-    })();
-  },
+      // Processing Breadcrumb
+      (async () => {
+        const newNoteStack: NoteStackItem[] = [];
+
+        let loopId = noteId;
+
+        while (loopId) {
+          const noteData = await db.note.where({ noteid: loopId }).first();
+          if (!noteData) break;
+          newNoteStack.push({
+            noteid: noteData.noteid as number,
+            notename: noteData.notename as string,
+          });
+          loopId = noteData.parentnoteid as number;
+        }
+
+        newNoteStack.reverse();
+
+        dispatch(slice.actions.replaceNoteStack(newNoteStack));
+      })();
+    },
+
+  setIsModified:
+    (newValue: boolean): AppThunks =>
+    (dispatch) => {
+      newValue === true ? setPreventWindowUnload() : unsetPreventWindowUnload();
+
+      dispatch(slice.actions.setIsModified(newValue));
+    },
+
   toggleEditable:
     () => (dispatch: Dispatch, getState: () => DefaultRootState) => {
       const state = getState();
@@ -65,8 +117,8 @@ export const actions = {
 
 export const selectors = {
   isOpen: ({ note }: DefaultRootState) => note.isOpen,
-  selectedNote: ({ note }: DefaultRootState) => note.selectedNote,
-  noteStack: ({ note }: DefaultRootState) => note.noteStack as NoteModel[],
+  selectedNote: ({ note }: DefaultRootState) => note.selectedNoteId,
+  noteStack: ({ note }: DefaultRootState) => note.noteStack,
   editable: ({ settings }: DefaultRootState) => settings.noteSettings.editable,
 };
 

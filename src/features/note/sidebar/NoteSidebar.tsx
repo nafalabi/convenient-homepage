@@ -15,6 +15,7 @@ import useSubscribeNoteList from "../hooks/useSubscribeNoteList";
 
 const Sidebar = () => {
   const selectedNote = useSelector(selectors.selectedNote);
+  const isModified = useSelector(({ note }) => note.isModified);
   const { expandedNoteIds, setExpandedNoteIds } = useFetchExpandedNoteIds();
   const noteList = useSubscribeNoteList();
   const dispatch = useDispatch();
@@ -65,15 +66,20 @@ const Sidebar = () => {
         onNodeToggle={toggleExpandNode}
         onNodeSelect={selectNode}
         onNodeDrop={onNodeDrop}
-        resolveData={(data) => ({
-          id: data.noteid ?? 0,
-          label: data.notename ?? "",
-          iconId: data.iconId ?? "Subject",
-          iconType: data.iconType ?? IconType.MATERIAL_ICON,
-          hasChildren: Boolean(data.totalChildren),
-          children: data.children,
-          expanding: (data.totalChildren ?? 0) > 0 && !data.children,
-        })}
+        resolveData={(data) => {
+          const isSelected = data.noteid === selectedNote;
+          const label =
+            (isSelected && isModified ? "*" : "") + (data.notename ?? "");
+          return {
+            id: data.noteid ?? 0,
+            label,
+            iconId: data.iconId ?? "Subject",
+            iconType: data.iconType ?? IconType.MATERIAL_ICON,
+            hasChildren: Boolean(data.totalChildren),
+            children: data.children,
+            expanding: (data.totalChildren ?? 0) > 0 && !data.children,
+          };
+        }}
       />
       <Box ml={4} mr={1} mt={1}>
         <InputWithConfirmation
