@@ -3,6 +3,12 @@ import BackgroundImageModel from "./model/BackgroundImage";
 import NoteModel from "./model/Note";
 import NoteContentModel from "./model/NoteContent";
 import QuickLinkModel from "./model/QuickLink";
+import {
+  exportDB,
+  ExportOptions,
+  importInto,
+  ImportOptions,
+} from "dexie-export-import";
 
 export class DexieDB extends Dexie {
   note: Dexie.Table<NoteModel, number>;
@@ -28,5 +34,14 @@ export class DexieDB extends Dexie {
 }
 
 const dexieDB = new DexieDB();
+
+dexieDB.export = async function (options: ExportOptions) {
+  const blob = await exportDB(this, options);
+  return blob;
+};
+
+dexieDB.import = async function (blobDb, options: ImportOptions) {
+  return await importInto(this, blobDb, options);
+};
 
 export default dexieDB;
