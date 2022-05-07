@@ -1,8 +1,10 @@
 import { IconType } from "constant";
 import db from "app/db";
+import { v4 as uuidv4 } from "uuid";
 
 class NoteModel {
   noteid?: number;
+  ref?: string;
   notename?: string;
   parentnoteid?: number = 0;
   expanded?: 0 | 1;
@@ -51,6 +53,7 @@ class NoteModel {
 
   async save() {
     try {
+      if (!this.ref) this.ref = uuidv4();
       const noteid = await db.note.put(this, this.noteid);
       this.noteid = noteid;
       return noteid;

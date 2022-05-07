@@ -9,6 +9,7 @@ import {
   importInto,
   ImportOptions,
 } from "dexie-export-import";
+import defineSchema from "./migration/wrapper";
 
 export class DexieDB extends Dexie {
   note: Dexie.Table<NoteModel, number>;
@@ -19,12 +20,7 @@ export class DexieDB extends Dexie {
   constructor() {
     super("convenient-homepage");
 
-    this.version(32).stores({
-      note: "++noteid, notename, parentnoteid, expanded, [parentnoteid+notename], order, [parentnoteid+order]",
-      notecontent: "&noteid",
-      backgroundimage: "++id, active, activated_at, provider",
-      quicklink: "++id, order",
-    });
+    defineSchema(this);
 
     this.note = this.table("note");
     this.notecontent = this.table("notecontent");
