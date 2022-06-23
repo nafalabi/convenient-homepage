@@ -1,5 +1,5 @@
 import { Box, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
-import { Image, LibraryBooks, Settings } from "@mui/icons-material";
+import { Image, LibraryBooks, Settings, Storage } from "@mui/icons-material";
 import React, { RefObject } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actions } from "./slice";
@@ -20,6 +20,11 @@ const pages = [
     icon: <LibraryBooks />,
     label: "Note",
     page: SettingsPage.NOTE,
+  },
+  {
+    icon: <Storage />,
+    label: "Database",
+    page: SettingsPage.DATABASE,
   },
 ];
 

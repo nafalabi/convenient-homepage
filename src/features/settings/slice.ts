@@ -19,8 +19,10 @@ import { IShortcuts, shortcutDefault } from "app/storage/app-data/shortcuts";
 export const slice = createSlice({
   name: "settings",
   initialState: {
-    isOpen: false,
-    page: SettingsPage.BACKGROUND,
+    // isOpen: false,
+    // page: SettingsPage.BACKGROUND,
+    isOpen: true,
+    page: SettingsPage.DATABASE,
     generalSettings: generalSettingsDefault,
     backgroundSettings: backgroundSettingsDefault,
     noteSettings: noteSettingsDefault,

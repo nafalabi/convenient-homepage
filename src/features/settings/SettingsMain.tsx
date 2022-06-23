@@ -1,6 +1,7 @@
 import React, { RefObject } from "react";
 import { useSelector } from "react-redux";
 import Background from "./pages/Background/index";
+import DatabaseSetting from "./pages/Database";
 import General from "./pages/General/index";
 import NoteSettingsPage from "./pages/Note";
 import { SettingsPage } from "./types";
@@ -17,6 +18,7 @@ const SettingsMain = (props: { dialogRef: RefObject<HTMLDivElement> }) => {
       {page === SettingsPage.BACKGROUND && <Background />}
       {page === SettingsPage.GENERAL && <General />}
       {page === SettingsPage.NOTE && <NoteSettingsPage />}
+      {page === SettingsPage.DATABASE && <DatabaseSetting />}
     </>
   );
 };

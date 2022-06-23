@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Migration } from "./types";
 
 export default {
-  schema: {
+  indexes: {
     note: "++noteid, ref, notename, parentnoteid, expanded, [parentnoteid+notename], order, [parentnoteid+order]",
   },
   version: 33,
