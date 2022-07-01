@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import IconRenderer from "components/IconRenderer";
 import NoteModel from "app/db/model/Note";
-import { IconType } from "constant";
+import { IconType } from "app/constant";
 
 interface Props {
   action: () => void;

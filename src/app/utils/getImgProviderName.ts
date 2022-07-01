@@ -1,4 +1,4 @@
-import { ImageProvider } from "constant";
+import { ImageProvider } from "app/constant";
 
 const getImgProviderName = (provider?: ImageProvider) => {
   switch (provider) {

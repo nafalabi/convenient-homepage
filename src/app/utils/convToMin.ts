@@ -1,4 +1,4 @@
-import { TimeCycleUnits } from "constant";
+import { TimeCycleUnits } from "app/constant";
 
 const convToMin = (unit: TimeCycleUnits, val: number) => {
   let result = 0;

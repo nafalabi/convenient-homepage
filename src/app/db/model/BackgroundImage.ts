@@ -1,4 +1,4 @@
-import { ImageProvider } from "constant";
+import { ImageProvider } from "app/constant";
 import dexieDB from "app/db";
 
 export interface IBackgroundImage {

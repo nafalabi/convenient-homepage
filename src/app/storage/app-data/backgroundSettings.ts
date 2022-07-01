@@ -1,6 +1,6 @@
-import { ImageProvider } from "constant";
+import { ImageProvider } from "app/constant";
 import setOrGet from "./abstract";
-import { TimeCycleUnits } from "constant";
+import { TimeCycleUnits } from "app/constant";
 import { UnsplashFetchMode } from "app/api/image-api/Unsplash";
 
 export type BackgroundCycleIntervalUnit = Exclude<TimeCycleUnits, "weeks">;

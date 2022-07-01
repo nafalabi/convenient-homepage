@@ -1,4 +1,4 @@
-import { IconType } from "constant";
+import { IconType } from "app/constant";
 import db from "app/db";
 import { v4 as uuidv4 } from "uuid";
 

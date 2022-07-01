@@ -1,5 +1,5 @@
 import AppController from "app/controller";
-import { IconType } from "constant";
+import { IconType } from "app/constant";
 import predefinedActions, { PredefinedActionsIds } from "./predefined-actions";
 import { SearchItem, SearchItemType } from "../types";
 import getFaviconFromUrl from "app/utils/getFaviconFromUrl";

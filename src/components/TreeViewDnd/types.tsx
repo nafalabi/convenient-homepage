@@ -1,6 +1,6 @@
 import { TreeItemProps } from "@mui/lab";
 import { FC, SyntheticEvent } from "react";
-import { IconType } from "constant";
+import { IconType } from "app/constant";
 
 export type onNodeDropTreeView = (
   id: string,

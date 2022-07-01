@@ -8,7 +8,7 @@ import {
 import { Box } from "@mui/system";
 import { IBackgroundSettings } from "app/storage/app-data/backgroundSettings";
 import getImgProviderName from "app/utils/getImgProviderName";
-import { ImageProvider } from "constant";
+import { ImageProvider } from "app/constant";
 import { useFormikContext } from "formik";
 import React, { FormEvent, useState } from "react";
 import { useDialog } from "../hooks/useDialog";

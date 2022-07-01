@@ -13,7 +13,7 @@ import { useFormik } from "formik";
 import QuickLinkModel from "app/db/model/QuickLink";
 import IconRenderer from "components/IconRenderer";
 import InlineFormControl from "components/InlineFormControl";
-import { IconType, QuickLinkTypes } from "constant";
+import { IconType, QuickLinkTypes } from "app/constant";
 import React, { SyntheticEvent, useRef, useState } from "react";
 import AppController from "app/controller";
 import handleQuickLinkActions from "./handleActions";

@@ -1,4 +1,4 @@
-import { IconType, QuickLinkTypes } from "constant";
+import { IconType, QuickLinkTypes } from "app/constant";
 import dexieDB from "app/db";
 
 class QuickLinkModel {

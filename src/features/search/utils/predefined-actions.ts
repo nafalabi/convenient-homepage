@@ -1,4 +1,4 @@
-import { IconType } from "constant";
+import { IconType } from "app/constant";
 import { SearchItem, SearchItemType } from "../types";
 
 export enum PredefinedActionsIds {

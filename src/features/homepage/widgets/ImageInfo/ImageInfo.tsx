@@ -6,7 +6,7 @@ import {
   PhotoCameraOutlined,
   RotateLeftOutlined,
 } from "@mui/icons-material";
-import { ImageProvider } from "constant";
+import { ImageProvider } from "app/constant";
 import getImgProviderName from "app/utils/getImgProviderName";
 import AppController from "app/controller";
 

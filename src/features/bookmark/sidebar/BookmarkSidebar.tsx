@@ -6,7 +6,7 @@ import { selectors, actions } from "../slice";
 import useContextMenu from "../hooks/useContextMenu";
 import SidebarContextMenu from "./SidebarContextMenu";
 import TreeViewDnd from "components/TreeViewDnd";
-import { IconType } from "constant";
+import { IconType } from "app/constant";
 import AppController from "app/controller";
 
 const BookmarkSidebar = () => {

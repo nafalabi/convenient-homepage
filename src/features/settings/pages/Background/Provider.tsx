@@ -3,7 +3,7 @@ import { Box, Button, Switch } from "@mui/material";
 import { IBackgroundSettings } from "app/storage/app-data/backgroundSettings";
 import InlineFormControl from "components/InlineFormControl";
 import SimpleAccordion from "components/SimpleAccordion";
-import { ImageProvider } from "constant";
+import { ImageProvider } from "app/constant";
 import { useFormikContext } from "formik";
 import React, { useCallback } from "react";
 import { useEditProviderDialog } from "./dialogs/EditProviderParam";

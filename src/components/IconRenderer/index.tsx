@@ -1,6 +1,6 @@
 import React from "react";
 import { Icon } from "@mui/material";
-import { IconType } from "constant";
+import { IconType } from "app/constant";
 import { Emoji } from "emoji-mart";
 import toSnakeCase from "app/utils/toSnakeCase";
 

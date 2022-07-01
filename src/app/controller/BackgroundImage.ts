@@ -2,7 +2,7 @@ import appData from "app/storage/app-data";
 import cacheStorage from "app/cache";
 import BackgroundImageModel from "app/db/model/BackgroundImage";
 import dexieDB from "app/db";
-import { ImageProvider } from "constant";
+import { ImageProvider } from "app/constant";
 import ImageAPI from "app/api/image-api";
 import Unsplash from "app/api/image-api/Unsplash";
 

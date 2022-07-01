@@ -9,7 +9,7 @@ import React, { useState } from "react";
 import NoteModel from "app/db/model/Note";
 import IconPicker from "components/IconPicker";
 import { IconData } from "components/IconPicker/types";
-import { IconType } from "constant";
+import { IconType } from "app/constant";
 
 interface Props {
   action: (icon: IconData) => void;

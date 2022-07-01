@@ -1,5 +1,5 @@
 import AppController from "app/controller";
-import { QuickLinkTypes } from "constant";
+import { QuickLinkTypes } from "app/constant";
 import {
   handleActions,
   handleOpenNotes,

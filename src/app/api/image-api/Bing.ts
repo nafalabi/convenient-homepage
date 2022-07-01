@@ -1,5 +1,5 @@
 import { IBackgroundSettings } from "app/storage/app-data/backgroundSettings";
-import { ImageProvider } from "constant";
+import { ImageProvider } from "app/constant";
 import { AbstractImageAPI } from "./type";
 import { IBackgroundImage } from "app/db/model/BackgroundImage";
 

@@ -4,7 +4,7 @@ import Bing from "./Bing";
 import { AbstractImageAPI } from "./type";
 import { IBackgroundSettings } from "app/storage/app-data/backgroundSettings";
 import { IBackgroundImage } from "app/db/model/BackgroundImage";
-import { ImageProvider } from "constant";
+import { ImageProvider } from "app/constant";
 
 class ImageAPI {
   parameters: IBackgroundSettings;

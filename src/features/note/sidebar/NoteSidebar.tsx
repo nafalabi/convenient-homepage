@@ -10,7 +10,7 @@ import TreeViewDnd from "components/TreeViewDnd";
 import AppController from "app/controller";
 import { TreeViewProps } from "components/TreeViewDnd/types";
 import { NoteListItem } from "app/controller/Note";
-import { IconType } from "constant";
+import { IconType } from "app/constant";
 import useSubscribeNoteList from "../hooks/useSubscribeNoteList";
 
 const Sidebar = () => {

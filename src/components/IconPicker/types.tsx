@@ -1,4 +1,4 @@
-import { IconType } from "constant";
+import { IconType } from "app/constant";
 
 export interface IconDataMaterial {
   importName: string;

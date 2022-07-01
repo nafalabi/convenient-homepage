@@ -10,7 +10,7 @@ import { selectors, actions } from "../slice";
 import HomeGreeting from "./HomeGreeting";
 import ContextMenu from "./ContextMenu";
 import IconRenderer from "components/IconRenderer";
-import { IconType } from "constant";
+import { IconType } from "app/constant";
 import AppController from "app/controller";
 
 const GridLayout = () => {

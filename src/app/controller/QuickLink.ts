@@ -1,7 +1,7 @@
 import dexieDB from "app/db";
 import QuickLinkModel from "app/db/model/QuickLink";
 import getFaviconFromUrl from "app/utils/getFaviconFromUrl";
-import { IconType, QuickLinkTypes } from "constant";
+import { IconType, QuickLinkTypes } from "app/constant";
 import { SearchItem, SearchItemType } from "features/search/types";
 
 class QuickLinkController {
@@ -86,7 +86,7 @@ class QuickLinkController {
       await dexieDB.quicklink
         .where("order")
         .between(upperOffset, lowerOffset + 1)
-        .modify(async (row) => {
+        .modify(async (row: QuickLinkModel) => {
           if (row.id === source.id) return;
           row.order += isIncrement ? -1 : 1;
         });
