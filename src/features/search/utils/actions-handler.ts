@@ -55,7 +55,7 @@ export const handleOpenNotes = async (noteid?: number) => {
 };
 
 export const handleOpenSettings = async () => {
-  history.push("setting");
+  history.push("/setting");
 };
 
 export const handleOpenBookmarks = async (bookmarkid?: string) => {
