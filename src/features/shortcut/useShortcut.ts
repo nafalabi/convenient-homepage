@@ -1,13 +1,10 @@
 import { ShortcutNames } from "app/storage/app-data/shortcuts";
-import { actions as bookmarkActions } from "features/bookmark/slice";
-import { actions as drawerActions } from "features/drawer/slice";
-import { actions as noteActions } from "features/note/slice";
-import { actions } from "features/settings/slice";
 import { useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const useShortcut = () => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const shortcuts = useSelector(({ settings }) => settings.shortcuts);
 
   const handleShortcut = useCallback(
@@ -36,22 +33,22 @@ const useShortcut = () => {
 
       switch (matchedShortcut) {
         case ShortcutNames.OPEN_DRAWER:
-          dispatch(drawerActions.toggleDrawer());
+          navigate("/drawer");
           break;
         case ShortcutNames.OPEN_NOTES:
-          dispatch(noteActions.toggleNote());
+          navigate("/note");
           break;
         case ShortcutNames.OPEN_BOOKMARKS:
-          dispatch(bookmarkActions.toggleBookmark());
+          navigate("/bookmark");
           break;
         case ShortcutNames.OPEN_SETTINGS:
-          dispatch(actions.toggleSettings());
+          navigate("/setting");
           break;
         default:
           break;
       }
     },
-    [shortcuts, dispatch]
+    [shortcuts, navigate]
   );
 
   useEffect(() => {

@@ -22,7 +22,7 @@ const BookmarkSidebar = () => {
       dispatch(actions.toggleExpandNode(String(id)));
       return;
     }
-    dispatch(actions.selectBookmark(String(id)));
+    dispatch(actions.navigateTo(String(id)));
   };
 
   return (

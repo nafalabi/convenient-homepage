@@ -1,9 +1,9 @@
 import React from "react";
 import { Breadcrumbs, darken, Link, useTheme } from "@mui/material";
-import withStyles from '@mui/styles/withStyles';
+import withStyles from "@mui/styles/withStyles";
 import { Home, NavigateNext } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { actions, selectors } from "../slice";
+import { actions, HOME_BOOKMARK, selectors } from "../slice";
 
 const StyledBreadcrumbs = withStyles((theme) => ({
   li: {
@@ -36,7 +36,7 @@ const BookmarkBreadcrumb = () => {
       <Link
         color="inherit"
         style={{ display: "flex" }}
-        onClick={() => dispatch(actions.selectBookmark("0"))}
+        onClick={() => dispatch(actions.navigateTo(HOME_BOOKMARK))}
       >
         <Home
           style={{ marginRight: theme.spacing(0.5), width: 20, height: 20 }}
@@ -50,7 +50,7 @@ const BookmarkBreadcrumb = () => {
             key={bookmarkData.id}
             onClick={() => {
               if (index + 1 < folderStack.length)
-                dispatch(actions.selectBookmark(bookmarkData.id));
+                dispatch(actions.navigateTo(bookmarkData.id));
             }}
           >
             {bookmarkData.title}

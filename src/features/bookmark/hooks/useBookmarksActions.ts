@@ -42,7 +42,7 @@ const useBookmarksActions = (nodeId: string) => {
 
   const deleteBookmark = useCallback(async () => {
     if (selectedBookmarkId === nodeId) {
-      dispatch(actions.selectBookmark(bookmarkDetail?.parentId));
+      dispatch(actions.navigateTo(bookmarkDetail?.parentId));
       setTimeout(() => AppController.bookmark.removeBookmark(nodeId), 300);
     } else {
       await AppController.bookmark.removeBookmark(nodeId);

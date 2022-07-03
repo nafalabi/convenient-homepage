@@ -1,11 +1,11 @@
 import store from "app/redux/store";
+import { actions as drawerActions } from "features/drawer/slice";
 import { actions as bookmarkActions } from "features/bookmark/slice";
 import { actions as noteActions } from "features/note/slice";
-import { actions as settingActions } from "features/settings/slice";
 import { actions as searchActions } from "../slice";
 import { PredefinedActionsIds } from "./predefined-actions";
 import { SearchItem, SearchItemType } from "../types";
-import { actions as drawerActions } from "features/drawer/slice";
+import { history } from "routes/CustomRouter";
 
 export const handleActions = async (item: SearchItem, keyword?: string) => {
   const { id, type } = item;
@@ -51,18 +51,15 @@ export const handleActions = async (item: SearchItem, keyword?: string) => {
 };
 
 export const handleOpenNotes = async (noteid?: number) => {
-  store.dispatch(noteActions.toggleNote());
-  if (noteid !== undefined) store.dispatch(noteActions.selectNote(noteid));
+  store.dispatch(noteActions.navigateTo(noteid));
 };
 
 export const handleOpenSettings = async () => {
-  store.dispatch(settingActions.toggleSettings());
+  history.push("setting");
 };
 
 export const handleOpenBookmarks = async (bookmarkid?: string) => {
-  store.dispatch(bookmarkActions.toggleBookmark());
-  if (bookmarkid !== undefined)
-    store.dispatch(bookmarkActions.selectBookmark(bookmarkid));
+  store.dispatch(bookmarkActions.navigateTo(bookmarkid));
 };
 
 export const handleVisitBookmarks = async (bookmarkid?: string) => {

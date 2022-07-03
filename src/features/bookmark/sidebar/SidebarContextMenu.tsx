@@ -37,7 +37,7 @@ const SidebarContextMenu = ({
   };
   const handleCloseDialog = () => setDialogOpen(false);
   const deleteBookmarkSafely = async () => {
-    dispatch(actions.selectBookmark(bookmarkDetail?.parentId));
+    dispatch(actions.navigateTo(bookmarkDetail?.parentId));
     await deleteBookmark();
   };
 

@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SettingsPage } from "./types";
 import appData from "app/storage/app-data";
 import {
@@ -19,18 +19,16 @@ import { IShortcuts, shortcutDefault } from "app/storage/app-data/shortcuts";
 export const slice = createSlice({
   name: "settings",
   initialState: {
-    // isOpen: false,
-    // page: SettingsPage.BACKGROUND,
-    isOpen: true,
-    page: SettingsPage.DATABASE,
+    isOpen: false,
+    page: SettingsPage.BACKGROUND,
     generalSettings: generalSettingsDefault,
     backgroundSettings: backgroundSettingsDefault,
     noteSettings: noteSettingsDefault,
     shortcuts: shortcutDefault,
   },
   reducers: {
-    toggleSettings: (state) => {
-      state.isOpen = !state.isOpen;
+    setOpen: (state, { payload }: PayloadAction<boolean>) => {
+      state.isOpen = payload;
     },
     changePage: (state, { payload: page }: { payload: SettingsPage }) => {
       state.page = page;

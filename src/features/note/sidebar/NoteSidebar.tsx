@@ -42,7 +42,7 @@ const Sidebar = () => {
 
   const selectNode: TreeViewProps<NoteListItem>["onNodeSelect"] = (e, id) => {
     !(e.target as HTMLElement).closest(".MuiTreeItem-iconContainer") &&
-      dispatch(actions.selectNote(parseInt(id)));
+      dispatch(actions.navigateTo(Number(id) || undefined));
   };
 
   const addNewNote = async (notename: string) => {

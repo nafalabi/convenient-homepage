@@ -5,7 +5,7 @@ import Editor from "rich-markdown-editor";
 
 import useFetchNoteData from "../hooks/useFetchNoteData";
 import useNoteActions from "../hooks/useNoteActions";
-import { actions, NOTE_HOME, selectors } from "../slice";
+import { actions, HOME_NOTE, selectors } from "../slice";
 
 import NoteCouldntLoad from "./NoteCouldntLoad";
 import welcomeMessage from "./welcome-message";
@@ -42,7 +42,7 @@ const NoteEditor = () => {
     );
   }, [noteData?.notecontent, modifiedContent, dispatch]);
 
-  const isHome = selectedNote === NOTE_HOME;
+  const isHome = selectedNote === HOME_NOTE;
   if (!isLoading && !noteData && !isHome) return <NoteCouldntLoad />;
 
   return (

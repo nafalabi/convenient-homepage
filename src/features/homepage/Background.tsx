@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Greeting from "./widgets/Greeting/Greeeting";
-import { actions } from "./slice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import styled from "@emotion/styled";
 import ImageInfo from "./widgets/ImageInfo/ImageInfo";
 import SearchField from "./widgets/SearchField/SearchField";
@@ -43,12 +42,6 @@ const HomepageRoot = styled.div`
 `;
 
 const Background = (props: { alreadySetup: boolean }) => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(actions.initialize());
-  }, [dispatch]);
-
   const initialized = useSelector(({ homepage }) => homepage.initialized);
 
   const background = useSubscribeBackground(initialized);

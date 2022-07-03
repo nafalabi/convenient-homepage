@@ -2,18 +2,16 @@ import { useSelector } from "react-redux";
 import React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material";
+import { Outlet } from "react-router-dom";
 
 import CustomSnackbarProvider from "components/NotifstackProvider";
 
 import Background from "features/homepage/Background";
-import Drawer from "features/drawer/Drawer";
-import Note from "features/note/Note";
-import Bookmark from "features/bookmark/Bookmark";
-import Settings from "features/settings/Settings";
 import FirstSetupScreen from "features/first-setup";
 import SearchComponent from "features/search/SearchComponent";
 import useSummonSearchComponent from "features/search/hooks/useSummonSearchComponent";
 import useShortcut from "features/shortcut/useShortcut";
+import DrawerTogglerButton from "features/drawer/DrawerTogglerButton";
 
 const generateTheme = (darkMode: boolean) =>
   createTheme({
@@ -40,11 +38,9 @@ const Homepage = () => {
           <FirstSetupScreen />
         ) : (
           <>
-            <Drawer />
-            <Note />
-            <Bookmark />
-            <Settings />
+            <DrawerTogglerButton />
             <SearchComponent />
+            <Outlet />
           </>
         )}
       </CustomSnackbarProvider>

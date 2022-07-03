@@ -37,7 +37,7 @@ const ContextMenu = ({
   };
   const handleCloseDialog = () => setDialogOpen(false);
   const deleteBookmarkSafely = async () => {
-    await dispatch(actions.selectBookmark(bookmarkDetail?.parentId));
+    dispatch(actions.navigateTo(bookmarkDetail?.parentId));
     await deleteBookmark();
   };
 

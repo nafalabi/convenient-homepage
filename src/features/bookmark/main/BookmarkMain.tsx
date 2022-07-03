@@ -10,7 +10,7 @@ const BookmarkMain = () => {
   if (layout === "grid") return <GridLayout />;
   if (layout === "list") return <ListLayout />;
 
-  return null;
+  return <></>;
 };
 
 export default BookmarkMain;

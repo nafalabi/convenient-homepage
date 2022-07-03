@@ -1,6 +1,10 @@
-import { createSlice, Dispatch } from "@reduxjs/toolkit";
+import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
 import AppController from "app/controller";
+import QueryString from "app/utils/querystring";
 import { DefaultRootState } from "react-redux";
+import { history } from "routes/CustomRouter";
+
+export const HOME_BOOKMARK = 0;
 
 export interface BookmarkSliceState {
   isOpen: boolean;
@@ -12,7 +16,7 @@ export interface BookmarkSliceState {
 
 const initialState: BookmarkSliceState = {
   isOpen: false,
-  selectedBookmark: 0,
+  selectedBookmark: HOME_BOOKMARK,
   folderStack: [],
   layout: {
     mode: "list", // possible values - grid, list
@@ -24,8 +28,8 @@ const slice = createSlice({
   initialState,
   name: "bookmark",
   reducers: {
-    toggleBookmark: (state) => {
-      state.isOpen = !state.isOpen;
+    setOpen: (state, { payload }: PayloadAction<boolean>) => {
+      state.isOpen = payload;
     },
     selectBookmark: (state, { payload: bookmarkId }) => {
       state.selectedBookmark = bookmarkId;
@@ -56,6 +60,12 @@ const slice = createSlice({
 
 export const actions = {
   ...slice.actions,
+  navigateTo: (id?: string | number) => (dispatch: Dispatch) => {
+    const params: any = {};
+    if (id) params["bookmarkid"] = id;
+    const qs = QueryString.stringify(params);
+    history.push(`/bookmark?${qs}`);
+  },
 
   selectBookmark: (id?: string | number) => async (dispatch: Dispatch) => {
     const newFolderStack = [];

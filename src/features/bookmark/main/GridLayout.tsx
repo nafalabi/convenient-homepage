@@ -130,7 +130,7 @@ export const GridLayoutItem = ({
         component={Button}
         onClick={() => {
           if (isFolder) {
-            dispatch(actions.selectBookmark(bookmark.id));
+            dispatch(actions.navigateTo(bookmark.id));
           } else {
             window.open(bookmark.url);
           }

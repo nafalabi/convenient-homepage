@@ -37,7 +37,7 @@ const NoteBreadcrumb = () => {
       <Link
         color="inherit"
         style={{ display: "flex" }}
-        onClick={() => dispatch(actions.selectNote(0))}
+        onClick={() => dispatch(actions.navigateTo())}
       >
         <Home
           style={{ marginRight: theme.spacing(0.5), width: 20, height: 20 }}
@@ -51,7 +51,7 @@ const NoteBreadcrumb = () => {
             key={noteData.noteid}
             onClick={() => {
               if (index + 1 < noteStack.length)
-                dispatch(actions.selectNote(noteData.noteid));
+                dispatch(actions.navigateTo(noteData.noteid));
             }}
           >
             {index + 1 === noteStack.length && isModified ? "*" : null}

@@ -1,23 +1,24 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PanelWithSidebar from "components/PanelWithSidebar";
 import SettingsMain from "./SettingsMain";
 import SettingsSidebar from "./SettingsSidebar";
 import { actions } from "./slice";
+import useModalRouteAction from "hooks/useModalRouteAction";
 
 const Settings = () => {
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(actions.init());
-  }, [dispatch]);
-
   const isOpen = useSelector(({ settings }) => settings.isOpen);
+
+  const { handleClose } = useModalRouteAction({
+    open: () => dispatch(actions.setOpen(true)),
+    close: () => dispatch(actions.setOpen(false)),
+  });
 
   return (
     <PanelWithSidebar
       open={isOpen}
-      toggle={() => dispatch(actions.toggleSettings())}
+      onClose={handleClose}
       title="Settings"
       SidebarComponent={({ dialogRef }) => (
         <SettingsSidebar dialogRef={dialogRef} />

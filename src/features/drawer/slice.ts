@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export const slice = createSlice({
   name: "drawer",
@@ -6,8 +6,8 @@ export const slice = createSlice({
     isOpen: false,
   },
   reducers: {
-    toggleDrawer: (state) => {
-      state.isOpen = !state.isOpen;
+    setOpen: (state, { payload }: PayloadAction<boolean>) => {
+      state.isOpen = payload;
     },
   },
 });

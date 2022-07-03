@@ -5,6 +5,7 @@ import debounce from "@mui/utils/debounce";
 import { actions } from "../slice";
 import AppController from "app/controller";
 import { IconData } from "components/IconPicker/types";
+import createNoteLink from "../utils/createNoteLink";
 
 const useNoteActions = (noteid?: number | string) => {
   const dispatch = useDispatch();
@@ -69,7 +70,7 @@ const useNoteActions = (noteid?: number | string) => {
         results.push({
           title: note.notename ?? "",
           subtitle: note.parentnoteid ? `Sub Note` : `Root Note`,
-          url: `/note?id=${note.noteid}`,
+          url: createNoteLink(note.noteid),
         });
       });
     } catch (e) {
@@ -90,7 +91,7 @@ const useNoteActions = (noteid?: number | string) => {
         console.log(error);
       }
 
-      return `/note?id=${subnoteid}`;
+      return createNoteLink(subnoteid);
     },
     [noteid]
   );
@@ -107,22 +108,15 @@ const useNoteActions = (noteid?: number | string) => {
 
   const onClickLink = useCallback(
     async (href: string) => {
-      const match = href.match(/\/note\?id=(\d+)/);
+      const match = href.match(/\/note\?noteid=(\d+)/);
       if (match) {
         const noteid = match[1];
-        const noteData = await AppController.note.findNoteById(noteid);
-        if (noteData === undefined) {
-          enqueueSnackbar("The page doesn't exist", {
-            variant: "error",
-          });
-          return;
-        }
-        dispatch(actions.selectNote(parseInt(noteid)));
+        dispatch(actions.navigateTo(Number(noteid) || undefined));
       } else {
         window.open(href, "_blank")?.focus();
       }
     },
-    [dispatch, enqueueSnackbar]
+    [dispatch]
   );
 
   const deleteNote = useCallback(async () => {

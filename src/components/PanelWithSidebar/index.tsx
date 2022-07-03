@@ -118,7 +118,7 @@ type CompositionComponent = (props: {
 
 export interface PanelWithSidebarProps {
   open: boolean;
-  toggle: () => void;
+  onClose: () => void;
   title: string;
   SidebarComponent: CompositionComponent;
   ContentComponent: CompositionComponent;
@@ -128,7 +128,7 @@ export interface PanelWithSidebarProps {
 
 const PanelWithSidebar = ({
   open,
-  toggle,
+  onClose,
   title,
   SidebarComponent,
   ContentComponent,
@@ -219,7 +219,7 @@ const PanelWithSidebar = ({
       <StyledDialog
         ref={dialogRef}
         open={open}
-        onClose={toggle}
+        onClose={onClose}
         maxWidth="lg"
         fullWidth={true}
         classes={{ paper: classes.dialogPaper, root: classes.dialogRoot }}

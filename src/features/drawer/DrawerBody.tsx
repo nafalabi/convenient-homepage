@@ -1,9 +1,6 @@
 import React, { useMemo } from "react";
 import { useDispatch } from "react-redux";
-import { actions, actions as drawerActions } from "./slice";
-import { actions as noteActions } from "features/note/slice";
-import { actions as bookmarkActions } from "features/bookmark/slice";
-import { actions as settingsActions } from "features/settings/slice";
+import { actions } from "./slice";
 import {
   List,
   ListItem,
@@ -18,6 +15,8 @@ import {
   Apps,
   Tab,
 } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import sleep from "app/utils/sleep";
 
 const DrawerBodyRoot = styled("div")({
   width: 250,
@@ -25,22 +24,24 @@ const DrawerBodyRoot = styled("div")({
 
 const DrawerBody = ({ ...props }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const items = useMemo(
     () => [
       {
         label: "Notes",
         icon: <LibraryBooks />,
-        onClick: () => dispatch(noteActions.toggleNote()),
+        onClick: () => navigate("/note"),
       },
       {
         label: "Bookmarks",
         icon: <CollectionsBookmark />,
-        onClick: () => dispatch(bookmarkActions.toggleBookmark()),
+        onClick: () => navigate("/bookmark"),
       },
       {
         label: "Settings",
         icon: <Settings />,
-        onClick: () => dispatch(settingsActions.toggleSettings()),
+        onClick: () => navigate("/setting"),
       },
       {
         label: "Chrome apps",
@@ -53,7 +54,7 @@ const DrawerBody = ({ ...props }) => {
         onClick: () => actions.handleOpenOriginalHomepage(),
       },
     ],
-    [dispatch]
+    [navigate]
   );
 
   return (
@@ -63,9 +64,10 @@ const DrawerBody = ({ ...props }) => {
           <ListItem
             button
             key={`drawer-item-${index}`}
-            onClick={() => {
+            onClick={async () => {
+              dispatch(actions.setOpen(false));
+              await sleep(50);
               onClick();
-              dispatch(drawerActions.toggleDrawer());
             }}
           >
             <ListItemIcon>{icon}</ListItemIcon>

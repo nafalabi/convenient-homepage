@@ -7,8 +7,10 @@ import {
   setPreventWindowUnload,
   unsetPreventWindowUnload,
 } from "app/utils/preventWindowUnload";
+import QueryString from "app/utils/querystring";
+import { history } from "routes/CustomRouter";
 
-export const NOTE_HOME = 0;
+export const HOME_NOTE = -1;
 
 export interface NoteStackItem {
   noteid: number;
@@ -17,7 +19,7 @@ export interface NoteStackItem {
 
 const initialState = {
   isOpen: false,
-  selectedNoteId: NOTE_HOME,
+  selectedNoteId: HOME_NOTE,
   noteStack: [] as NoteStackItem[],
 
   isModified: false,
@@ -28,8 +30,8 @@ const slice = createSlice({
   initialState,
   name: "note",
   reducers: {
-    toggleNote: (state) => {
-      state.isOpen = !state.isOpen;
+    setOpen: (state, { payload }: PayloadAction<boolean>) => {
+      state.isOpen = payload;
     },
 
     selectNote: (state, { payload: noteId }: PayloadAction<number>) => {
@@ -55,6 +57,13 @@ const slice = createSlice({
 
 export const actions = {
   ...slice.actions,
+
+  navigateTo: (noteid?: number) => (dispatch: Dispatch) => {
+    const param: any = {};
+    if (noteid) param["noteid"] = noteid;
+    const qs = QueryString.stringify(param);
+    history.push(`/note?${qs}`);
+  },
 
   selectNote:
     (noteId?: number): AppThunks =>

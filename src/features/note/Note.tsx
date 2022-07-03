@@ -1,23 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PanelWithSidebar from "components/PanelWithSidebar";
 import NoteMain from "./main/NoteMain";
 import NoteSidebar from "./sidebar/NoteSidebar";
-import { actions, selectors } from "./slice";
+import { actions, HOME_NOTE, selectors } from "./slice";
 import NoteToolbar from "./toolbar/NoteToolbar";
+import useModalRouteAction from "hooks/useModalRouteAction";
+import { useSearchParams } from "react-router-dom";
 
 const Note = () => {
   const dispatch = useDispatch();
   const isOpen = useSelector(selectors.isOpen);
+  const [params] = useSearchParams();
+
+  const { handleClose } = useModalRouteAction({
+    open: () => dispatch(actions.setOpen(true)),
+    close: () => dispatch(actions.setOpen(false)),
+  });
+
+  useEffect(() => {
+    let noteid = params.get("noteid") ?? HOME_NOTE;
+    dispatch(actions.selectNote(Number(noteid)));
+  }, [dispatch, params]);
 
   return (
     <PanelWithSidebar
       open={isOpen}
-      toggle={() => dispatch(actions.toggleNote())}
+      onClose={handleClose}
       title="Note"
-      ToolbarItemComponent={({ dialogRef }) => <NoteToolbar />}
-      SidebarComponent={({ dialogRef }) => <NoteSidebar />}
-      ContentComponent={({ dialogRef }) => <NoteMain />}
+      ToolbarItemComponent={NoteToolbar}
+      SidebarComponent={NoteSidebar}
+      ContentComponent={NoteMain}
     />
   );
 };
