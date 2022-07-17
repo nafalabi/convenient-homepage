@@ -15,7 +15,7 @@ import useSubscribeNoteList from "../hooks/useSubscribeNoteList";
 
 const Sidebar = () => {
   const selectedNote = useSelector(selectors.selectedNote);
-  const isModified = useSelector(({ note }) => note.isModified);
+  const isUnsaved = useSelector(({ note }) => note.isUnsaved);
   const { expandedNoteIds, setExpandedNoteIds } = useFetchExpandedNoteIds();
   const noteList = useSubscribeNoteList();
   const dispatch = useDispatch();
@@ -69,7 +69,7 @@ const Sidebar = () => {
         resolveData={(data) => {
           const isSelected = data.noteid === selectedNote;
           const label =
-            (isSelected && isModified ? "*" : "") + (data.notename ?? "");
+            (isSelected && isUnsaved ? "*" : "") + (data.notename ?? "");
           return {
             id: data.noteid ?? 0,
             label,

@@ -37,7 +37,7 @@ const NoteEditor = () => {
     new Promise(
       debounce(() => {
         if (modifiedContent === noteData?.notecontent)
-          dispatch(actions.setIsModified(false));
+          dispatch(actions.setIsUnsaved(false));
       }, 500)
     );
   }, [noteData?.notecontent, modifiedContent, dispatch]);

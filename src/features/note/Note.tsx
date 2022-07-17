@@ -3,14 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import PanelWithSidebar from "components/PanelWithSidebar";
 import NoteMain from "./main/NoteMain";
 import NoteSidebar from "./sidebar/NoteSidebar";
-import { actions, HOME_NOTE, selectors } from "./slice";
+import { actions, HOME_NOTE } from "./slice";
 import NoteToolbar from "./toolbar/NoteToolbar";
 import useModalRouteAction from "hooks/useModalRouteAction";
 import { useSearchParams } from "react-router-dom";
 
 const Note = () => {
   const dispatch = useDispatch();
-  const isOpen = useSelector(selectors.isOpen);
+  const isOpen = useSelector(({ note }) => note.isOpen);
+  const isUnsaved = useSelector(({ note }) => note.isUnsaved);
   const [params] = useSearchParams();
 
   const { handleClose } = useModalRouteAction({
@@ -27,7 +28,7 @@ const Note = () => {
     <PanelWithSidebar
       open={isOpen}
       onClose={handleClose}
-      title="Note"
+      title={`Note${isUnsaved ? " (Unsaved)" : ""}`}
       ToolbarItemComponent={NoteToolbar}
       SidebarComponent={NoteSidebar}
       ContentComponent={NoteMain}

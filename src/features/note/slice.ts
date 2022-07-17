@@ -22,7 +22,7 @@ const initialState = {
   selectedNoteId: HOME_NOTE,
   noteStack: [] as NoteStackItem[],
 
-  isModified: false,
+  isUnsaved: false,
   isSaving: false,
 };
 
@@ -45,8 +45,8 @@ const slice = createSlice({
       state.noteStack = newStack;
     },
 
-    setIsModified: (state, { payload }: PayloadAction<boolean>) => {
-      state.isModified = payload;
+    setIsUnsaved: (state, { payload }: PayloadAction<boolean>) => {
+      state.isUnsaved = payload;
     },
 
     setIsSaving: (state, { payload }: PayloadAction<boolean>) => {
@@ -116,28 +116,28 @@ export const actions = {
   checkShouldProceedWhenUnsaved:
     (): AppThunk<boolean> => (dispatch, getState) => {
       const {
-        note: { isModified },
+        note: { isUnsaved },
       } = getState();
 
-      if (isModified) {
+      if (isUnsaved) {
         const isConfirmed = window.confirm(
           "Changes on the current note is still not saved, are you sure want to discard it?"
         );
 
         if (!isConfirmed) return false;
 
-        dispatch(slice.actions.setIsModified(false));
+        dispatch(slice.actions.setIsUnsaved(false));
       }
 
       return true;
     },
 
-  setIsModified:
+  setIsUnsaved:
     (newValue: boolean): AppThunk =>
     (dispatch) => {
       newValue === true ? setPreventWindowUnload() : unsetPreventWindowUnload();
 
-      dispatch(slice.actions.setIsModified(newValue));
+      dispatch(slice.actions.setIsUnsaved(newValue));
     },
 
   toggleEditable:

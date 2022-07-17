@@ -45,7 +45,7 @@ const useNoteActions = (noteid?: number | string) => {
           }
 
           dispatch(actions.setIsSaving(false));
-          dispatch(actions.setIsModified(false));
+          dispatch(actions.setIsUnsaved(false));
         }, 300);
       }, 300),
     [dispatch, modifiedContent, noteid]
@@ -54,7 +54,7 @@ const useNoteActions = (noteid?: number | string) => {
   const modifyContent = useMemo(
     () =>
       debounce((getData: () => string) => {
-        dispatch(actions.setIsModified(true));
+        dispatch(actions.setIsUnsaved(true));
         setModifiedContent(getData());
       }, 500),
     [dispatch]

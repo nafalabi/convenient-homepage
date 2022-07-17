@@ -26,7 +26,7 @@ const NoteBreadcrumb = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const noteStack = useSelector(selectors.noteStack);
-  const isModified = useSelector(({ note }) => note.isModified);
+  const isUnsaved = useSelector(({ note }) => note.isUnsaved);
 
   return (
     <StyledBreadcrumbs
@@ -54,7 +54,7 @@ const NoteBreadcrumb = () => {
                 dispatch(actions.navigateTo(noteData.noteid));
             }}
           >
-            {index + 1 === noteStack.length && isModified ? "*" : null}
+            {index + 1 === noteStack.length && isUnsaved ? "*" : null}
             {noteData.notename}
           </Link>
         );
