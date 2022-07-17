@@ -2,7 +2,7 @@ import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
 import { DefaultRootState } from "react-redux";
 import db from "app/db";
 import { actions as settingsActions } from "features/settings/slice";
-import { AppThunks } from "app/redux/store";
+import { AppThunk } from "app/redux/store";
 import {
   setPreventWindowUnload,
   unsetPreventWindowUnload,
@@ -58,30 +58,36 @@ const slice = createSlice({
 export const actions = {
   ...slice.actions,
 
-  navigateTo: (noteid?: number) => (dispatch: Dispatch) => {
-    const param: any = {};
-    if (noteid) param["noteid"] = noteid;
-    const qs = QueryString.stringify(param);
-    history.push(`/note?${qs}`);
-  },
+  setOpen:
+    (value: boolean): AppThunk<boolean | undefined> =>
+    (dispatch) => {
+      const shouldProceed = dispatch(actions.checkShouldProceedWhenUnsaved());
+      const preventProceed = !shouldProceed;
+
+      if (preventProceed) return preventProceed;
+
+      dispatch(slice.actions.setOpen(value));
+    },
+
+  navigateTo:
+    (noteid?: number): AppThunk =>
+    (dispatch) => {
+      const shouldProceed = dispatch(actions.checkShouldProceedWhenUnsaved());
+      if (!shouldProceed) return;
+
+      const param: any = {};
+      if (noteid) param["noteid"] = noteid;
+      const qs = QueryString.stringify(param);
+      history.push(`/note?${qs}`);
+    },
 
   selectNote:
-    (noteId?: number): AppThunks =>
-    (dispatch, getState) => {
+    (noteId?: number): AppThunk =>
+    (dispatch) => {
       if (!noteId) return;
 
-      const {
-        note: { isModified },
-      } = getState();
-
-      if (isModified) {
-        const isConfirmed = window.confirm(
-          "Changes on the current note is still not saved, are you sure want to discard it?"
-        );
-
-        if (!isConfirmed) return;
-        dispatch(slice.actions.setIsModified(false));
-      }
+      const shouldProceed = dispatch(actions.checkShouldProceedWhenUnsaved());
+      if (!shouldProceed) return;
 
       dispatch(slice.actions.selectNote(noteId));
 
@@ -107,8 +113,27 @@ export const actions = {
       })();
     },
 
+  checkShouldProceedWhenUnsaved:
+    (): AppThunk<boolean> => (dispatch, getState) => {
+      const {
+        note: { isModified },
+      } = getState();
+
+      if (isModified) {
+        const isConfirmed = window.confirm(
+          "Changes on the current note is still not saved, are you sure want to discard it?"
+        );
+
+        if (!isConfirmed) return false;
+
+        dispatch(slice.actions.setIsModified(false));
+      }
+
+      return true;
+    },
+
   setIsModified:
-    (newValue: boolean): AppThunks =>
+    (newValue: boolean): AppThunk =>
     (dispatch) => {
       newValue === true ? setPreventWindowUnload() : unsetPreventWindowUnload();
 

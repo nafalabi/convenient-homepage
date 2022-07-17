@@ -16,7 +16,7 @@ const NoteCouldntLoad = () => {
       </Box>
       <Box mt={1}>
         <Button
-          variant="contained"
+          variant="outlined"
           color="primary"
           startIcon={<Home />}
           onClick={backToHome}

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 interface Arguments {
   open: () => void;
-  close: () => void;
+  close: () => boolean | void | undefined;
 }
 
 const useModalRouteAction = ({ open, close }: Arguments) => {
@@ -16,11 +16,16 @@ const useModalRouteAction = ({ open, close }: Arguments) => {
     return () => {
       close();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open.toString(), close.toString()]);
 
   const handleClose = async () => {
-    close();
+    const isPrevented = close();
+
+    if (isPrevented) {
+      return;
+    }
+
     await sleep(300);
     navigate("/");
   };

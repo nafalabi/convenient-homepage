@@ -12,7 +12,9 @@ const Settings = () => {
 
   const { handleClose } = useModalRouteAction({
     open: () => dispatch(actions.setOpen(true)),
-    close: () => dispatch(actions.setOpen(false)),
+    close: () => {
+      dispatch(actions.setOpen(false));
+    },
   });
 
   return (
