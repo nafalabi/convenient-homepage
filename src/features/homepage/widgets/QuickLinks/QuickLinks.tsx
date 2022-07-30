@@ -24,10 +24,16 @@ const RootQuickLinks = styled("div")(({ theme }) => ({
   },
 }));
 
-const QuickLinks = () => {
+export interface QuickLinksProps {
+  onCompleteLoading: () => void;
+}
+
+const QuickLinks = ({ onCompleteLoading }: QuickLinksProps) => {
   const list = useLiveQuery<QuickLinkModel[], QuickLinkModel[]>(
     async () => {
-      return await AppController.quicklink.getList();
+      const result = await AppController.quicklink.getList();
+      onCompleteLoading();
+      return result;
     },
     [],
     []

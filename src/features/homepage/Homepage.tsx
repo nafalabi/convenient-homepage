@@ -8,10 +8,8 @@ import CustomSnackbarProvider from "components/NotifstackProvider";
 
 import Background from "features/homepage/Background";
 import FirstSetupScreen from "features/first-setup";
-import SearchComponent from "features/search/SearchComponent";
 import useSummonSearchComponent from "features/search/hooks/useSummonSearchComponent";
 import useShortcut from "features/shortcut/useShortcut";
-import DrawerTogglerButton from "features/drawer/DrawerTogglerButton";
 
 const generateTheme = (darkMode: boolean) =>
   createTheme({
@@ -21,10 +19,10 @@ const generateTheme = (darkMode: boolean) =>
   });
 
 const Homepage = () => {
-  const alreadySetup = useSelector(({ homepage }) => homepage.alreadySetup);
-  const darkMode = useSelector(
-    ({ settings }) => settings.generalSettings.darkMode
-  );
+  const { alreadySetup, darkMode } = useSelector(({ homepage, settings }) => ({
+    alreadySetup: homepage.alreadySetup,
+    darkMode: homepage.alreadySetup ? settings.generalSettings.darkMode : false,
+  }));
 
   useSummonSearchComponent();
   useShortcut();
@@ -34,15 +32,7 @@ const Homepage = () => {
       <CustomSnackbarProvider>
         <CssBaseline />
         <Background alreadySetup={alreadySetup} />
-        {!alreadySetup ? (
-          <FirstSetupScreen />
-        ) : (
-          <>
-            <DrawerTogglerButton />
-            <SearchComponent />
-            <Outlet />
-          </>
-        )}
+        {!alreadySetup ? <FirstSetupScreen /> : <Outlet />}
       </CustomSnackbarProvider>
     </ThemeProvider>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "@emotion/styled";
+import { styled } from "@mui/material";
 import {
   ImageOutlined,
   // LocationOnOutlined,
@@ -10,13 +10,15 @@ import { ImageProvider } from "app/constant";
 import getImgProviderName from "app/utils/getImgProviderName";
 import AppController from "app/controller";
 
-const RootComp = styled.div`
+const RootComp = styled("div")`
   position: fixed;
   bottom: 0;
   left: 1rem;
   padding-bottom: 1rem;
   color: rgba(255, 255, 255, 0.8);
   user-select: none;
+  opacity: 0;
+  transition: opacity 0.5s ease 0.5s;
 
   & > div {
     display: flex;
@@ -60,6 +62,7 @@ const RootComp = styled.div`
 `;
 
 interface Props {
+  isImageLoaded: boolean;
   provider?: ImageProvider;
   photographer?: string;
   photoLocation?: string;
@@ -69,6 +72,7 @@ interface Props {
 }
 
 const ImageInfo = ({
+  isImageLoaded,
   provider,
   photographer,
   photoLocation,
@@ -94,7 +98,7 @@ const ImageInfo = ({
   };
 
   return (
-    <RootComp>
+    <RootComp sx={{ opacity: Number(isImageLoaded) }}>
       {description && (
         <div className="description" onClick={openImageSource}>
           <ImageOutlined />
