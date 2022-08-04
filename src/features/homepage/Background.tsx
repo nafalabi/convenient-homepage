@@ -47,9 +47,7 @@ const Background = (props: { alreadySetup: boolean }) => {
     >
       {props.alreadySetup && (
         <>
-          <div className="background-content">
-            <LazyWidgets imageIsLoaded={isImageLoaded} />
-          </div>
+          <LazyWidgets imageIsLoaded={isImageLoaded} />
           <DrawerTogglerButton isImageLoaded={isImageLoaded} />
           <SearchComponent />
           <ImageInfo

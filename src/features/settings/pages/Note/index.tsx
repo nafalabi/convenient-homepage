@@ -24,7 +24,7 @@ const NoteSettingsPage = () => {
 
   return (
     <Box>
-      <Typography variant="h5">General Settings</Typography>
+      <Typography variant="h5">Note Settings</Typography>
       <Box mt={1} mb={2}>
         <Divider />
       </Box>

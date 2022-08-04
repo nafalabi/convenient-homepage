@@ -78,7 +78,7 @@ const Lifecycle = () => {
 
           <Box alignSelf="flex-end" mt={1} display="flex" alignItems="center">
             <Button
-              variant="contained"
+              variant="outlined"
               color="primary"
               type="submit"
               startIcon={<Save />}

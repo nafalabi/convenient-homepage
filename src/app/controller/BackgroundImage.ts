@@ -24,8 +24,16 @@ class BackgroundImageController {
     }
 
     // activate one random image
-    const bgActive = Math.floor(Math.random() * bgInstList.length);
-    await bgInstList[bgActive].activate();
+    const activeIndex = Math.floor(Math.random() * bgInstList.length);
+    await bgInstList[activeIndex].activate();
+
+    // caching active image
+    const res = await fetch(bgInstList[activeIndex]?.image_url ?? "null");
+    if (res.status === 200)
+      await cacheStorage.backgroundImage.set(
+        bgInstList[activeIndex]?.image_url ?? "",
+        res
+      );
 
     // push all the images to dexie
     return await dexieDB.backgroundimage.bulkPut(bgInstList);
