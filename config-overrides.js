@@ -128,6 +128,7 @@ const customOverrideWebpack = (config, env) => {
         try {
           prebuildScript(isEnvProduction);
           process.stdout.write("Success running pre-build script\n");
+          process.stdout.write("Continue building...\n");
         } catch (error) {
           process.stderr.write(`Error running pre-build script: ${error}\n`);
         }
