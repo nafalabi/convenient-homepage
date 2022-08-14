@@ -1,8 +1,8 @@
 import { Identifier } from "dnd-core";
 
 export type RenderDndItem<TItemData> = (props: {
-  ["data-handler-id"]: Identifier | null;
-  ref: React.Ref<any>;
+  ["data-handler-id"]?: Identifier | null;
+  ref?: React.Ref<any> | null;
   style: React.CSSProperties;
   itemData: TItemData;
 }) => JSX.Element;

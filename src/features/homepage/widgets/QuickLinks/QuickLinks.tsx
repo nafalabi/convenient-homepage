@@ -48,7 +48,7 @@ const QuickLinks = ({ onCompleteLoading }: QuickLinksProps) => {
       <div className="row">
         <DndView
           items={list}
-          itemId="id"
+          itemIdKeys="id"
           renderItem={({ itemData, ...props }) => (
             <QuickLinkItem {...props} data={itemData} />
           )}

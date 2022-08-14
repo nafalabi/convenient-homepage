@@ -3,7 +3,7 @@ import LazyComponent from "components/LazyComponent";
 import { styled } from "@mui/material";
 const Clock = React.lazy(() => import("./widgets/Clock/Clock"));
 const Greeting = React.lazy(() => import("./widgets/Greeting/Greeeting"));
-const QuickLinks = React.lazy(() => import("./widgets/QuickLinks/QuickLinks"));
+const QuickLinks = React.lazy(() => import("./widgets/QuickLinks"));
 const SearchField = React.lazy(
   () => import("./widgets/SearchField/SearchField")
 );

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { Identifier } from "dnd-core";
 import { RenderDndItem, DraggableItemMeta } from "./types";
+import { getEmptyImage } from "react-dnd-html5-backend";
 
 export interface DragItemProps<TId, TItemData> {
   type: Identifier;
@@ -18,7 +19,7 @@ const DragItem = <TId, TItemData>({
   renderItem,
   onMove,
 }: DragItemProps<TId, TItemData>) => {
-  const [dragProps, dragRef] = useDrag(
+  const [dragProps, dragRef, preview] = useDrag(
     {
       type: type,
       canDrag: true,
@@ -54,6 +55,10 @@ const DragItem = <TId, TItemData>({
     }),
     [dragProps.isDragging]
   );
+
+  useEffect(() => {
+    preview(getEmptyImage(), { captureDraggingState: true });
+  }, [preview]);
 
   return renderItem({
     "data-handler-id": dragProps.handlerId,
