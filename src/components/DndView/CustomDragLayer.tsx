@@ -58,8 +58,8 @@ export const CustomDragLayer = <TItems extends Array<any>>({
   );
 
   const itemData = useMemo(() => {
-    if (!item) return false;
-    if (items.length === 0) return false;
+    if (!item) return;
+    if (items.length === 0) return;
 
     return items.find((data) => {
       const id = data[itemIdKeys];
@@ -79,7 +79,7 @@ export const CustomDragLayer = <TItems extends Array<any>>({
     };
   }, []);
 
-  if (!isDragging || !mountPointEl.current) {
+  if (!isDragging || !mountPointEl.current || !itemData) {
     return null;
   }
 
