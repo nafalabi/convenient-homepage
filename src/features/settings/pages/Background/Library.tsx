@@ -163,13 +163,15 @@ const BackgroundImagePreview = ({
   id?: number;
   background: BackgroundImageModel;
 }) => {
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const isActive = Boolean(background.active);
 
   const deleteImage = () => background.delete();
 
-  const setAsBackground = () => {
-    AppController.backgroundimage.setAsActive(background.id);
+  const setAsBackground = async () => {
+    enqueueSnackbar("Changing background image...", { variant: "info" });
+    await AppController.backgroundimage.setAsActive(background.id);
+    closeSnackbar();
   };
 
   const downloadImage = () => {
