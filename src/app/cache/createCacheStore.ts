@@ -27,9 +27,12 @@ const createCacheStore = ({
     // and serve second one
     let responseClone = response.clone();
 
+    // important to block the process until the response sucessfully received
+    const responseBody = await response.blob();
+
     if (response.status === 200) set(req, responseClone);
 
-    return response;
+    return new Response(responseBody);
   };
 
   const clearCache = async () => await caches.delete(cacheName);
