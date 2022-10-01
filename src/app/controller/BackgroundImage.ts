@@ -12,11 +12,7 @@ class BackgroundImageController {
     const imgApi = new ImageAPI(settings);
     const list = await imgApi.getImageList();
 
-    // clear old data
-    await dexieDB.backgroundimage.clear();
-    await cacheStorage.backgroundImage.clearCache();
-
-    const bgInstList = [];
+    const bgInstList: BackgroundImageModel[] = [];
     // convert plain obj to dexie row instance
     for (const image of list) {
       const imgInst = new BackgroundImageModel(image);
@@ -27,16 +23,26 @@ class BackgroundImageController {
     const activeIndex = Math.floor(Math.random() * bgInstList.length);
     await bgInstList[activeIndex].activate();
 
-    // caching active image
+    // retrieving active image
     const res = await fetch(bgInstList[activeIndex]?.image_url ?? "null");
-    if (res.status === 200)
+    const resBlob = await res.blob(); // important, to wait until the response successfully received
+    
+    if (res.status === 200) {
+      // clear old cached images
+      await cacheStorage.backgroundImage.clearCache();
+      // save active image as cache
       await cacheStorage.backgroundImage.set(
         bgInstList[activeIndex]?.image_url ?? "",
-        res
+        new Response(resBlob)
       );
+    }
 
-    // push all the images to dexie
-    return await dexieDB.backgroundimage.bulkPut(bgInstList);
+    return dexieDB.transaction('rw', dexieDB.backgroundimage, async () => {
+      // clear old background images
+      await dexieDB.backgroundimage.clear();
+      // push all the images to dexie
+      return await dexieDB.backgroundimage.bulkPut(bgInstList);
+    })
   }
 
   static async getCurActiveImage() {
