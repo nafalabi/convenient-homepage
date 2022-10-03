@@ -26,7 +26,7 @@ class BackgroundImageController {
     // retrieving active image
     const res = await fetch(bgInstList[activeIndex]?.image_url ?? "null");
     const resBlob = await res.blob(); // important, to wait until the response successfully received
-    
+
     if (res.status === 200) {
       // clear old cached images
       await cacheStorage.backgroundImage.clearCache();
@@ -37,12 +37,12 @@ class BackgroundImageController {
       );
     }
 
-    return dexieDB.transaction('rw', dexieDB.backgroundimage, async () => {
+    return dexieDB.transaction("rw", dexieDB.backgroundimage, async () => {
       // clear old background images
       await dexieDB.backgroundimage.clear();
       // push all the images to dexie
       return await dexieDB.backgroundimage.bulkPut(bgInstList);
-    })
+    });
   }
 
   static async getCurActiveImage() {
