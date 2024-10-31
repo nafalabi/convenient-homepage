@@ -23,6 +23,9 @@
     "default_popup": "popup.html"
   },
   "options_page": "index.html",
+  "chrome_url_overrides" : {
+    "newtab": "index.html"
+  },
   "oauth2": {
     "client_id": "",
     "scopes": [""]
