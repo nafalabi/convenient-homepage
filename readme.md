@@ -28,8 +28,6 @@
 ![](screenshots/ch-search-panel-open.png)
 ### Global Search - searching keyword
 ![](screenshots/ch-search-panel-entered-keyword.png)
-### Menu
-![](screenshots/ch-menus.png)
 ### Notes
 ![](screenshots/ch-notes.png)
 ### Settings
@@ -38,3 +36,5 @@
 ![](screenshots/ch-background-settings2.png)
 ### Bookmarks
 ![](screenshots/ch-bookmarks.png)
+### Menu
+![](screenshots/ch-menus.png)
