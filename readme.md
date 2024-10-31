@@ -4,7 +4,7 @@
 
 # Features
 - **Background rotation** - configurable background rotation, utilize images from bing, unsplash, pixabay
-- **Notes** - create and save markdown like notes locally in you browser
+- **Notes** - create and save markdown-like notes locally in you browser
 - **Bookmarks** - enumerate all your bookmarks and manage them here
 - **Global search panel** - search everything in one place
 - **Restorable Database** - backup and restore your data as json
